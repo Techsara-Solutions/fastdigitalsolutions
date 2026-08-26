@@ -1,0 +1,90 @@
+name: Deploy to EC2
+
+# Production deployment (main branch only). The workflow is inert until the
+# repository secrets below are configured — see docs/DEPLOYMENT.md.
+#
+# Required secrets:
+#   EC2_HOST      — public IP or DNS of the EC2 instance
+#   EC2_USER      — SSH user (e.g. "ubuntu")
+#   EC2_SSH_KEY   — private key for that user (PEM contents)
+# Optional secret:
+#   EC2_PORT      — SSH port (defaults to 22)
+# Optional repository variables (Settings → Variables) used at build time:
+#   NEXT_PUBLIC_SITE_URL, NEXT_PUBLIC_CONTACT_API_URL, NEXT_PUBLIC_CONTACT_API_TIMEOUT_MS
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+env:
+  DEPLOY_ROOT: /var/www/fastdigitalsolutions
+  KEEP_RELEASES: "5"
+
+jobs:
+  deploy:
+    name: Build and deploy static export
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build static export
+        env:
+          NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}
+          NEXT_PUBLIC_CONTACT_API_URL: ${{ vars.NEXT_PUBLIC_CONTACT_API_URL }}
+          NEXT_PUBLIC_CONTACT_API_TIMEOUT_MS: ${{ vars.NEXT_PUBLIC_CONTACT_API_TIMEOUT_MS }}
+        run: npm run build
+
+      - name: Package release
+        run: tar czf site.tar.gz -C out .
+
+      - name: Configure SSH
+        env:
+          EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_PORT: ${{ secrets.EC2_PORT }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "$EC2_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          {
+            echo "Host ec2"
+            echo "  HostName $EC2_HOST"
+            echo "  User ${{ secrets.EC2_USER }}"
+            echo "  Port ${EC2_PORT:-22}"
+            echo "  IdentityFile ~/.ssh/deploy_key"
+            echo "  StrictHostKeyChecking accept-new"
+          } > ~/.ssh/config
+
+      - name: Upload release
+        run: scp site.tar.gz ec2:/tmp/site.tar.gz
+
+      - name: Activate release (atomic symlink swap, keep last ${{ env.KEEP_RELEASES }})
+        run: |
+          ssh ec2 "set -euo pipefail
+            RELEASE=\$(date -u +%Y%m%d%H%M%S)-${GITHUB_SHA::7}
+            DEPLOY_ROOT='${{ env.DEPLOY_ROOT }}'
+            mkdir -p \"\$DEPLOY_ROOT/releases/\$RELEASE\"
+            tar xzf /tmp/site.tar.gz -C \"\$DEPLOY_ROOT/releases/\$RELEASE\"
+            rm -f /tmp/site.tar.gz
+            ln -sfn \"\$DEPLOY_ROOT/releases/\$RELEASE\" \"\$DEPLOY_ROOT/current.new\"
+            mv -Tf \"\$DEPLOY_ROOT/current.new\" \"\$DEPLOY_ROOT/current\"
+            ls -1dt \"\$DEPLOY_ROOT/releases/\"* | tail -n +$(( ${{ env.KEEP_RELEASES }} + 1 )) | xargs -r rm -rf
+            echo \"Activated release \$RELEASE\""
+
+      - name: Health check
+        run: |
+          ssh ec2 "curl -fsS -o /dev/null -w 'HTTP %{http_code}\n' http://127.0.0.1/ && curl -fsS -o /dev/null -w 'HTTP %{http_code} (404 page)\n' http://127.0.0.1/404.html"
