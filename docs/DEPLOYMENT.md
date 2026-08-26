@@ -9,18 +9,18 @@ request** — the deviation is recorded in [ARCHITECTURE.md](ARCHITECTURE.md).
 
 ## Current production environment
 
-| Item             | Value                                                                             |
-| ---------------- | --------------------------------------------------------------------------------- |
-| EC2 instance     | `i-00719a511f891b6d8` ("fastdigitalsolutions.com")                                |
-| Region           | `us-east-1`                                                                       |
-| Instance type    | `t2.small` (2 GB RAM, 8 GB disk)                                                  |
-| Operating system | **Amazon Linux 2023**                                                             |
-| SSH user         | **`ec2-user`**                                                                    |
-| Public IPv4      | `44.197.228.225` — ⚠️ **auto-assigned, not an Elastic IP**                        |
-| Public DNS       | `ec2-44-197-228-225.compute-1.amazonaws.com`                                      |
-| Web server       | nginx 1.30.4                                                                      |
-| Document root    | `/var/www/fastdigitalsolutions/current` (symlink)                                 |
-| SSH key          | `fastdigitalsolutions.com.pem` (kept in the project root; gitignored via `*.pem`) |
+| Item             | Value                                                                                                                    |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| EC2 instance     | `i-00719a511f891b6d8` ("fastdigitalsolutions.com")                                                                       |
+| Region           | `us-east-1`                                                                                                              |
+| Instance type    | `t2.small` (2 GB RAM, 8 GB disk)                                                                                         |
+| Operating system | **Amazon Linux 2023**                                                                                                    |
+| SSH user         | **`ec2-user`**                                                                                                           |
+| Public IPv4      | `44.197.228.225` — ⚠️ **auto-assigned, not an Elastic IP**                                                               |
+| Public DNS       | `ec2-44-197-228-225.compute-1.amazonaws.com`                                                                             |
+| Web server       | nginx 1.30.4                                                                                                             |
+| Document root    | `/var/www/fastdigitalsolutions/current` (symlink)                                                                        |
+| SSH key          | `fastdigitalsolutions.com.pem` — held by the owner outside the repo; GitHub has its own copy as the `EC2_SSH_KEY` secret |
 
 > ⚠️ **Allocate an Elastic IP.** The current public IP is auto-assigned, which
 > means it **changes if the instance is ever stopped and started**. That would
@@ -195,6 +195,43 @@ mv -Tf "$ROOT/current.new" "$ROOT/current"
 No nginx reload needed. Alternatively re-run the deploy workflow from a
 known-good commit. Tag production releases (`git tag v1.x.y`) so good points
 are easy to find (PRD §23.9).
+
+## Troubleshooting
+
+### `TypeError: Invalid URL` during the deploy build
+
+Fixed on 2026-08-27, recorded here because the underlying trap is easy to
+reintroduce.
+
+GitHub Actions substitutes an **empty string** for an unset `${{ vars.X }}`
+reference — it does not leave the variable undefined. Code of the form
+`process.env.X ?? fallback` therefore does **not** fall back: an empty string
+is neither `null` nor `undefined`, so it passes straight through, and
+`new URL("")` throws.
+
+Two safeguards now exist:
+
+- `readEnv()` in `src/content/site.ts` treats blank and whitespace-only values
+  as absent, and `isPlaceholder()` reports them as placeholders.
+- `ci.yml` builds with the same repository variables `deploy.yml` uses. The
+  original bug survived CI precisely because CI built without them, so the two
+  workflows were not exercising the same code path.
+
+**Rule of thumb:** when reading configuration from CI, test for _blank_, not
+just for _undefined_.
+
+### Deploy fails at the SSH or upload step
+
+Usually the `EC2_HOST` secret no longer matches the instance. If the instance
+was stopped and started, its auto-assigned public IP changed — allocate an
+Elastic IP and update the secret.
+
+### The site serves an old version
+
+Check what the symlink points at:
+`ssh … 'readlink /var/www/fastdigitalsolutions/current'`. If it points at the
+newest release but browsers disagree, it is a client cache — HTML is served
+`Cache-Control: no-cache`, so a hard refresh should resolve it.
 
 ## Operational notes
 

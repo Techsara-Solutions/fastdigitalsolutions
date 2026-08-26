@@ -9,7 +9,7 @@ Legend: ✅ built and verified · 🚧 built, needs external input to finish ·
 
 Version 1 of the website is **fully built and now hosted**: all 22 routes, the
 design system, the contact form with every specified state, the
-content-credibility gate, the test suite (29 unit + 45 E2E/accessibility tests,
+content-credibility gate, the test suite (41 unit + 45 E2E/accessibility tests,
 all passing), the CI pipeline, and the EC2 deployment pipeline.
 
 **The site is live at http://44.197.228.225/** — Amazon Linux 2023 + nginx,
@@ -66,7 +66,7 @@ is the owner-supplied inputs and verifications listed under
 
 | Item                                                            | Status | Notes                                                       |
 | --------------------------------------------------------------- | ------ | ----------------------------------------------------------- |
-| Unit tests (29)                                                 | ✅     | schemas, gating, content integrity, form logic              |
+| Unit tests (41)                                                 | ✅     | schemas, gating, content integrity, form logic, env config  |
 | Playwright E2E (45, desktop + mobile)                           | ✅     | nav, mobile menu focus/Escape, form states, 404, overflow   |
 | Automated a11y: axe WCAG 2.2 AA on 11 pages                     | ✅     | zero violations; enforced in CI                             |
 | Manual a11y pass (screen reader, 200%/400% zoom, forced colors) | ⏳     | required before launch (PRD §28.7) — automated ≠ sufficient |
@@ -76,21 +76,30 @@ is the owner-supplied inputs and verifications listed under
 
 ## CI/CD and operations
 
-| Item                                                    | Status | Notes                                                            |
-| ------------------------------------------------------- | ------ | ---------------------------------------------------------------- |
-| CI workflow (format/lint/typecheck/tests/build/E2E)     | ✅     | passing on hd-dev and dev                                        |
-| Deploy workflow (main → EC2, atomic releases, rollback) | ✅     | secrets configured; fires on the first merge to `main`           |
-| EC2 server provisioned (Amazon Linux 2023 + nginx)      | ✅     | `44.197.228.225`; setup script re-runnable                       |
-| Nginx config (security headers, caching, gzip, 404)     | ✅     | verified over the public internet                                |
-| First deployment (performed manually to validate)       | ✅     | release `20260826185249-5877ef2`, 133 files                      |
-| GitHub secrets (EC2_HOST / EC2_USER / EC2_SSH_KEY)      | ✅     | set via `gh secret set`, key read from disk                      |
-| EC2 setup script + runbook                              | ✅     | `deploy/setup-ec2.sh`, `docs/DEPLOYMENT.md`                      |
-| Dependabot (npm + actions)                              | ✅     |                                                                  |
-| **Elastic IP**                                          | ⏳     | **recommended now** — current IP changes on instance stop/start  |
-| Branch protection on `main`                             | ⏳     | enable in GitHub settings (require CI + review)                  |
-| Automated deploy proven end to end                      | ⏳     | happens on the first `main` merge; server side already validated |
-| TLS + canonical host redirects                          | ⏳     | after domain purchase (runbook ready)                            |
-| Restrict SSH (port 22) to trusted IPs                   | ⏳     | security-group hardening                                         |
+| Item                                                    | Status | Notes                                                                |
+| ------------------------------------------------------- | ------ | -------------------------------------------------------------------- |
+| CI workflow (format/lint/typecheck/tests/build/E2E)     | ✅     | builds with the same env vars deploy uses, so the two cannot diverge |
+| Deploy workflow (main → EC2, atomic releases, rollback) | ✅     | **proven end to end** — release `20260826193334-267f94b`             |
+| EC2 server provisioned (Amazon Linux 2023 + nginx)      | ✅     | `44.197.228.225`; setup script re-runnable                           |
+| Nginx config (security headers, caching, gzip, 404)     | ✅     | verified over the public internet                                    |
+| GitHub secrets (EC2_HOST / EC2_USER / EC2_SSH_KEY)      | ✅     | set via `gh secret set`, key read from disk                          |
+| EC2 setup script + runbook                              | ✅     | `deploy/setup-ec2.sh`, `docs/DEPLOYMENT.md`                          |
+| Dependabot (npm + actions)                              | ✅     | Actions bumped to v7; two npm majors blocked upstream (below)        |
+| **Elastic IP**                                          | ⏳     | **recommended now** — current IP changes on instance stop/start      |
+| Branch protection on `main`                             | ⏳     | enable in GitHub settings (require CI + review)                      |
+| TLS + canonical host redirects                          | ⏳     | after domain purchase (runbook ready)                                |
+| Restrict SSH (port 22) to trusted IPs                   | ⏳     | security-group hardening                                             |
+
+### Blocked dependency updates (no action available)
+
+Dependabot has two open PRs that CI correctly rejects. Both are upstream
+ecosystem gaps, not defects in this project — leave them open until the
+upstream packages catch up, then merge.
+
+| PR               | Blocker                                                                                                                                            |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| eslint 9 → 10    | `eslint-plugin-react` (pulled in by `eslint-config-next`) calls a rule API removed in ESLint 10: `contextOrFilename.getFilename is not a function` |
+| typescript 6 → 7 | `typescript-eslint` reports `does not support TS 7.0`                                                                                              |
 
 ## Production blockers (PRD §32.1)
 
