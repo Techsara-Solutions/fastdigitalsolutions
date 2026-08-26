@@ -33,21 +33,68 @@ request** — the deviation is recorded in [ARCHITECTURE.md](ARCHITECTURE.md).
 ```
 push to main
   → GitHub Actions (.github/workflows/deploy.yml)
-      npm ci → npm run build          (content gate + static export into out/)
-      tar out/ → scp to EC2:/tmp/site.tar.gz
-      ssh: unpack to /var/www/fastdigitalsolutions/releases/<timestamp>-<sha>
-           atomically re-point the `current` symlink at it
-           prune to the 5 newest releases
-      health check (curl on the instance)
+      job 1 "CI gate"  — calls ci.yml as a reusable workflow
+          quality: format, lint, typecheck, unit tests, content gate, build
+                   → publishes out/ as the "site-build" artifact
+          e2e:     Playwright + axe-core (built separately with a mock API)
+      job 2 "Deploy"   — needs: ci   (cannot start until every check passes)
+          download the "site-build" artifact  (no rebuild)
+          tar → scp to EC2:/tmp/site.tar.gz
+          record the currently live release   (for rollback)
+          ssh: unpack to releases/<timestamp>-<sha>
+               atomically re-point the `current` symlink at it
+               prune to the 5 newest releases
+          health check (curl on the instance)
+          on failure: restore the previously live release
   → nginx serves /var/www/fastdigitalsolutions/current
 ```
 
-The **symlink swap** is the important trick. Rather than overwriting the live
-directory (during which visitors would see a half-written site), each
+Three properties are deliberate:
+
+**Deploy is gated on CI.** The two used to run in parallel on push to main,
+which meant a commit with failing tests or type errors would deploy while CI
+turned red beside it. `deploy` now declares `needs: ci`, so nothing reaches
+production until every check is green. The gate lives in the workflow because
+repository branch protection is not available on the current GitHub plan.
+
+**Build once, deploy what was tested.** CI publishes the production build as an
+artifact and the deploy job downloads that exact artifact. Previously each
+workflow built the site independently, so the bytes that shipped were never
+literally the bytes that passed the tests. As a side effect the deploy job needs
+neither a checkout nor Node, and finishes in about ten seconds.
+
+**The symlink swap makes releases atomic.** Rather than overwriting the live
+directory — during which visitors would see a half-written site — each
 deployment unpacks into a brand-new directory and then moves a symlink. `mv -T`
 is atomic on Linux, so every request is served either entirely by the old
-release or entirely by the new one — never a mixture. It also makes rollback
+release or entirely by the new one, never a mixture. It also makes rollback
 instant, because the previous release is still sitting on disk untouched.
+
+### Automatic rollback
+
+The symlink is swapped before the health check runs, so a failed check would
+otherwise leave a broken release live. The workflow therefore records what was
+live beforehand and restores it if anything after the swap fails. A rollback
+still reports the run as failed — it prevents a bad release from serving, it
+does not pretend the deployment succeeded.
+
+Rehearse it any time without risk, from _Actions → Deploy to EC2 → Run
+workflow_, ticking **simulate_health_check_failure**:
+
+```bash
+gh workflow run deploy.yml -f simulate_health_check_failure=true
+```
+
+That deploys a perfectly good build, forces the health check to fail, and
+confirms the previous release is restored — so the rollback path is exercised
+on a normal day rather than for the first time during an incident. Verified
+2026-08-27: restored the prior release and returned `post-rollback HTTP 200`.
+
+Afterwards, run the workflow again normally to move back to the newest release.
+
+> Because deploy.yml calls ci.yml for main, **CI no longer triggers separately
+> on push to main** — it appears as the "CI gate" job inside the deploy run.
+> It still runs standalone for `dev`, `hd-dev`, and every pull request.
 
 ## Server directory layout
 

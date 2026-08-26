@@ -76,19 +76,24 @@ is the owner-supplied inputs and verifications listed under
 
 ## CI/CD and operations
 
-| Item                                                    | Status | Notes                                                                |
-| ------------------------------------------------------- | ------ | -------------------------------------------------------------------- |
-| CI workflow (format/lint/typecheck/tests/build/E2E)     | ✅     | builds with the same env vars deploy uses, so the two cannot diverge |
-| Deploy workflow (main → EC2, atomic releases, rollback) | ✅     | **proven end to end** — release `20260826193334-267f94b`             |
-| EC2 server provisioned (Amazon Linux 2023 + nginx)      | ✅     | `44.197.228.225`; setup script re-runnable                           |
-| Nginx config (security headers, caching, gzip, 404)     | ✅     | verified over the public internet                                    |
-| GitHub secrets (EC2_HOST / EC2_USER / EC2_SSH_KEY)      | ✅     | set via `gh secret set`, key read from disk                          |
-| EC2 setup script + runbook                              | ✅     | `deploy/setup-ec2.sh`, `docs/DEPLOYMENT.md`                          |
-| Dependabot (npm + actions)                              | ✅     | Actions bumped to v7; two npm majors blocked upstream (below)        |
-| **Elastic IP**                                          | ⏳     | **recommended now** — current IP changes on instance stop/start      |
-| Branch protection on `main`                             | ⏳     | enable in GitHub settings (require CI + review)                      |
-| TLS + canonical host redirects                          | ⏳     | after domain purchase (runbook ready)                                |
-| Restrict SSH (port 22) to trusted IPs                   | ⏳     | security-group hardening                                             |
+| Item                                                | Status | Notes                                                                                                                      |
+| --------------------------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------- |
+| CI workflow (format/lint/typecheck/tests/build/E2E) | ✅     | reusable (`workflow_call`); same env vars as deploy, so they cannot diverge                                                |
+| Deploy gated on CI passing                          | ✅     | `deploy` declares `needs: ci`; nothing ships until every check is green                                                    |
+| Build once, deploy the tested artifact              | ✅     | CI publishes `site-build`; deploy ships that exact artifact, no rebuild                                                    |
+| Automatic rollback on failed health check           | ✅     | **rehearsed 2026-08-27** — prior release restored, `post-rollback HTTP 200`                                                |
+| Deploy workflow (main → EC2, atomic releases)       | ✅     | proven end to end; deploy job now completes in ~10s                                                                        |
+| EC2 server provisioned (Amazon Linux 2023 + nginx)  | ✅     | `44.197.228.225`; setup script re-runnable                                                                                 |
+| Nginx config (security headers, caching, gzip, 404) | ✅     | verified over the public internet                                                                                          |
+| GitHub secrets (EC2_HOST / EC2_USER / EC2_SSH_KEY)  | ✅     | set via `gh secret set`, key read from disk                                                                                |
+| EC2 setup script + runbook                          | ✅     | `deploy/setup-ec2.sh`, `docs/DEPLOYMENT.md`                                                                                |
+| Dependabot (npm + actions)                          | ✅     | Actions bumped to v7; two npm majors blocked upstream (below)                                                              |
+| **Elastic IP**                                      | ⏳     | **recommended now** — current IP changes on instance stop/start                                                            |
+| TLS + canonical host redirects                      | ⏳     | after domain purchase (runbook ready)                                                                                      |
+| Restrict SSH (port 22) to trusted IPs               | ⏳     | security-group hardening                                                                                                   |
+| Branch protection on `main`                         | ❌     | **not available on this GitHub plan** (private repo, free tier) — the workflow-level `needs: ci` gate covers the same risk |
+| CloudFront in front of EC2                          | ⏳     | optional; adds global edge caching + managed TLS, keeps the pipeline as is                                                 |
+| Replace SSH key with GitHub OIDC + SSM              | ⏳     | optional hardening; removes the long-lived key and closes port 22                                                          |
 
 ### Blocked dependency updates (no action available)
 
@@ -140,9 +145,14 @@ Remaining infrastructure actions, in priority order:
 1. **Allocate an Elastic IP** and update the `EC2_HOST` secret — without it the
    address changes if the instance is ever stopped.
 2. **Restrict port 22** in the security group to trusted IPs.
-3. **Enable branch protection** on `main` (require CI + a review).
-4. Later: the purchased **domain** (then TLS via certbot) and the **contact API
+3. Later: the purchased **domain** (then TLS via certbot) and the **contact API
    URL** from the backend developer.
+
+Branch protection on `main` is **not available on the current GitHub plan** —
+the API returns `403: Upgrade to GitHub Pro or make this repository public`.
+The `needs: ci` gate in `deploy.yml` covers the same risk (nothing deploys
+without passing checks); what it cannot enforce is a required review before a
+merge. Upgrading the plan would add that.
 
 ## Deviations from the PRD (agreed)
 

@@ -67,11 +67,13 @@ metrics, people) from ever publishing, per PRD §2.
 
 - `hd-dev` — active implementation branch
 - `dev` — integration (PR from `hd-dev`, created manually)
-- `main` — production; **pushes to `main` deploy to EC2** (once secrets are configured)
+- `main` — production; **pushes to `main` deploy to EC2**
 
-CI (lint, typecheck, tests, build, E2E) runs on every PR and on pushes to all
-three branches. Enable branch protection on `main` (require the CI checks and
-a PR review) in the GitHub repository settings.
+CI (lint, typecheck, tests, build, E2E) runs standalone on every pull request
+and on pushes to `dev` and `hd-dev`. On `main` it runs as the **CI gate** job
+inside the deploy workflow: the deploy job declares `needs: ci`, so a commit
+that fails any check cannot reach production. That gate lives in the workflow
+because repository branch protection requires a paid plan for private repos.
 
 ## Deployment
 
