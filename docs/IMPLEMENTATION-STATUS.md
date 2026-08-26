@@ -1,21 +1,25 @@
 # Implementation Status
 
-**Last updated: 2026-08-26** · Update this file whenever the state changes.
+**Last updated: 2026-08-27** · Update this file whenever the state changes.
 
 Legend: ✅ built and verified · 🚧 built, needs external input to finish ·
 ⏳ blocked on owner/third-party input · ❌ not started (deliberately)
 
 ## Summary
 
-Version 1 of the website is **fully built**: all 22 routes, the design
-system, the contact form with every specified state, the content-credibility
-gate, the test suite (29 unit + 45 E2E/accessibility tests, all passing), the
-CI pipeline, and the EC2 deployment pipeline (inert until secrets are added).
+Version 1 of the website is **fully built and now hosted**: all 22 routes, the
+design system, the contact form with every specified state, the
+content-credibility gate, the test suite (29 unit + 45 E2E/accessibility tests,
+all passing), the CI pipeline, and the EC2 deployment pipeline.
+
+**The site is live at http://44.197.228.225/** — Amazon Linux 2023 + nginx,
+serving all routes with security headers, compression, and asset caching
+verified from the public internet. Crawlers are deliberately blocked until a
+real domain exists.
 
 What stands between this and a public production launch is **not code** — it
 is the owner-supplied inputs and verifications listed under
-[Production blockers](#production-blockers-prd-321), plus activating the
-deployment (EC2 details + GitHub secrets).
+[Production blockers](#production-blockers-prd-321).
 
 ## Foundation and tooling
 
@@ -72,16 +76,21 @@ deployment (EC2 details + GitHub secrets).
 
 ## CI/CD and operations
 
-| Item                                                    | Status | Notes                                           |
-| ------------------------------------------------------- | ------ | ----------------------------------------------- |
-| CI workflow (format/lint/typecheck/tests/build/E2E)     | ✅     | all PRs + pushes to hd-dev/dev/main             |
-| Deploy workflow (main → EC2, atomic releases, rollback) | ✅     | **inert until GitHub secrets are added**        |
-| Nginx config (security headers, caching, 404)           | ✅     | `deploy/nginx/`; HSTS enabled after TLS         |
-| EC2 setup script + runbook                              | ✅     | `deploy/setup-ec2.sh`, `docs/DEPLOYMENT.md`     |
-| Dependabot (npm + actions)                              | ✅     |                                                 |
-| Branch protection on `main`                             | ⏳     | enable in GitHub settings (require CI + review) |
-| EC2 instance provisioned + secrets configured           | ⏳     | owner: see "What I need from you" below         |
-| TLS + canonical host redirects                          | ⏳     | after domain purchase (runbook ready)           |
+| Item                                                    | Status | Notes                                                            |
+| ------------------------------------------------------- | ------ | ---------------------------------------------------------------- |
+| CI workflow (format/lint/typecheck/tests/build/E2E)     | ✅     | passing on hd-dev and dev                                        |
+| Deploy workflow (main → EC2, atomic releases, rollback) | ✅     | secrets configured; fires on the first merge to `main`           |
+| EC2 server provisioned (Amazon Linux 2023 + nginx)      | ✅     | `44.197.228.225`; setup script re-runnable                       |
+| Nginx config (security headers, caching, gzip, 404)     | ✅     | verified over the public internet                                |
+| First deployment (performed manually to validate)       | ✅     | release `20260826185249-5877ef2`, 133 files                      |
+| GitHub secrets (EC2_HOST / EC2_USER / EC2_SSH_KEY)      | ✅     | set via `gh secret set`, key read from disk                      |
+| EC2 setup script + runbook                              | ✅     | `deploy/setup-ec2.sh`, `docs/DEPLOYMENT.md`                      |
+| Dependabot (npm + actions)                              | ✅     |                                                                  |
+| **Elastic IP**                                          | ⏳     | **recommended now** — current IP changes on instance stop/start  |
+| Branch protection on `main`                             | ⏳     | enable in GitHub settings (require CI + review)                  |
+| Automated deploy proven end to end                      | ⏳     | happens on the first `main` merge; server side already validated |
+| TLS + canonical host redirects                          | ⏳     | after domain purchase (runbook ready)                            |
+| Restrict SSH (port 22) to trusted IPs                   | ⏳     | security-group hardening                                         |
 
 ## Production blockers (PRD §32.1)
 
@@ -111,16 +120,20 @@ Every item below must be resolved before public launch. None can be invented.
 All rendering for these already exists and activates automatically when
 verified records are added — see docs/CONTENT-GUIDE.md.
 
-## What I need from you (to activate deployment)
+## Hosting — done (2026-08-27)
 
-1. **EC2 instance details**: public IP/DNS, SSH user, and whether I should
-   assume Ubuntu 22.04/24.04 (the setup script targets it).
-2. **SSH key**: ideally a new dedicated deploy key (instructions in
-   docs/DEPLOYMENT.md §3) — add it as the `EC2_SSH_KEY` GitHub secret along
-   with `EC2_HOST` and `EC2_USER`.
-3. **Security group**: confirm ports 80/443 are open (and 22 restricted).
-4. Later: the purchased **domain** and the **contact API URL** from the
-   backend developer.
+EC2 provisioning, nginx configuration, the first deployment, and the GitHub
+secrets are all complete. See [DEPLOYMENT.md](DEPLOYMENT.md) for the
+environment details and the manual runbook.
+
+Remaining infrastructure actions, in priority order:
+
+1. **Allocate an Elastic IP** and update the `EC2_HOST` secret — without it the
+   address changes if the instance is ever stopped.
+2. **Restrict port 22** in the security group to trusted IPs.
+3. **Enable branch protection** on `main` (require CI + a review).
+4. Later: the purchased **domain** (then TLS via certbot) and the **contact API
+   URL** from the backend developer.
 
 ## Deviations from the PRD (agreed)
 
