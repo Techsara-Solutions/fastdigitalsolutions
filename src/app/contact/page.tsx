@@ -4,7 +4,7 @@ import { buildMetadata } from "@/lib/metadata";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { ContactForm } from "@/components/forms/ContactForm";
-import { siteConfig, isPlaceholder } from "@/content/site";
+import { siteConfig, isPlaceholder, getContactApiUrl } from "@/content/site";
 
 export const metadata: Metadata = buildMetadata({
   title: "Contact",
@@ -21,9 +21,10 @@ const DEFAULT_TIMEOUT_MS = 12000;
  * fallback state instead of a silently failing form (PRD §22.6).
  */
 export default function ContactPage() {
-  const apiUrl = process.env.NEXT_PUBLIC_CONTACT_API_URL ?? "";
+  // Blank and placeholder endpoints both resolve to undefined, so an unset CI
+  // variable can never produce a form that posts nowhere.
+  const apiUrl = getContactApiUrl();
   const timeoutMs = Number(process.env.NEXT_PUBLIC_CONTACT_API_TIMEOUT_MS) || DEFAULT_TIMEOUT_MS;
-  const formAvailable = apiUrl.length > 0 && !isPlaceholder(apiUrl);
   const address = siteConfig.mailingAddress;
 
   return (
@@ -51,7 +52,7 @@ export default function ContactPage() {
                 Tell us about the project
               </h2>
               <div className="mt-6">
-                {formAvailable ? (
+                {apiUrl ? (
                   <ContactForm apiUrl={apiUrl} timeoutMs={timeoutMs} />
                 ) : (
                   <div className="rounded-[12px] border border-stone bg-paper p-8" role="status">

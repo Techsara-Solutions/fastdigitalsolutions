@@ -34,12 +34,37 @@ export const siteConfig = {
 
 export type SiteConfig = typeof siteConfig;
 
-/** Resolves the public site URL: env var wins, then config, for metadata generation. */
-export function getSiteUrl(): string {
-  return process.env.NEXT_PUBLIC_SITE_URL ?? siteConfig.domain;
+/**
+ * Reads an environment variable, treating blank values as absent.
+ *
+ * CI systems substitute an EMPTY STRING for an unset variable rather than
+ * leaving it undefined — GitHub Actions does this for every `${{ vars.X }}`
+ * reference. `??` does not catch that, so an unset repository variable would
+ * otherwise be mistaken for a real configured value.
+ */
+function readEnv(value: string | undefined): string | undefined {
+  const trimmed = value?.trim();
+  return trimmed ? trimmed : undefined;
 }
 
-/** True when the value still carries a development placeholder. */
+/** Resolves the public site URL: env var wins, then config, for metadata generation. */
+export function getSiteUrl(): string {
+  return readEnv(process.env.NEXT_PUBLIC_SITE_URL) ?? siteConfig.domain;
+}
+
+/** Resolves the contact API endpoint, or undefined when it is not configured. */
+export function getContactApiUrl(): string | undefined {
+  const url = readEnv(process.env.NEXT_PUBLIC_CONTACT_API_URL);
+  return url && !isPlaceholder(url) ? url : undefined;
+}
+
+/**
+ * True when a value is not a usable production value — either missing/blank or
+ * still carrying a development placeholder. Blank counts as a placeholder:
+ * nothing downstream (canonical URLs, JSON-LD, sitemap) may be built from it.
+ */
 export function isPlaceholder(value: string | null | undefined): boolean {
-  return typeof value === "string" && value.includes("PENDING");
+  if (typeof value !== "string") return true;
+  const trimmed = value.trim();
+  return trimmed.length === 0 || trimmed.includes("PENDING");
 }

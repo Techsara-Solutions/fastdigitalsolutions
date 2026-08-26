@@ -37,6 +37,13 @@ jobs:
         run: npm run test
 
       - name: Content validation + static build
+        # Mirror the deploy workflow's environment exactly. Unset repository
+        # variables arrive as empty strings, and building without them here
+        # once let a blank-URL crash reach production while CI stayed green.
+        env:
+          NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}
+          NEXT_PUBLIC_CONTACT_API_URL: ${{ vars.NEXT_PUBLIC_CONTACT_API_URL }}
+          NEXT_PUBLIC_CONTACT_API_TIMEOUT_MS: ${{ vars.NEXT_PUBLIC_CONTACT_API_TIMEOUT_MS }}
         run: npm run build
 
   e2e:

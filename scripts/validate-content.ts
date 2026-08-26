@@ -32,7 +32,7 @@ import { caseStudies } from "../src/content/case-studies";
 import { careerRoles } from "../src/content/careers";
 import { people } from "../src/content/people";
 import { certifications, clientLogos, metrics, testimonials } from "../src/content/proof";
-import { siteConfig, isPlaceholder } from "../src/content/site";
+import { siteConfig, isPlaceholder, getContactApiUrl } from "../src/content/site";
 
 const errors: string[] = [];
 const warnings: string[] = [];
@@ -197,8 +197,38 @@ if (siteConfig.legalName === null)
 if (!fs.existsSync(path.join(process.cwd(), "public", "images", "logo.svg"))) {
   warnings.push("Final logo is pending (text wordmark in use)");
 }
-if (!process.env.NEXT_PUBLIC_CONTACT_API_URL) {
+if (!getContactApiUrl()) {
   warnings.push("NEXT_PUBLIC_CONTACT_API_URL is not set (contact page shows the fallback state)");
+}
+
+/* Environment sanity (fail fast rather than deep inside the build) ---- */
+//
+// A configured-but-malformed site URL would otherwise surface as an opaque
+// "TypeError: Invalid URL" while Next collects page metadata. Note that CI
+// systems pass an EMPTY STRING for unset variables, which getSiteUrl() treats
+// as absent — this check only runs against a genuinely provided value.
+const envSiteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+if (envSiteUrl && !isPlaceholder(envSiteUrl)) {
+  try {
+    const parsed = new URL(envSiteUrl);
+    if (parsed.protocol !== "https:" && parsed.hostname !== "localhost") {
+      warnings.push(`NEXT_PUBLIC_SITE_URL is not https (${envSiteUrl})`);
+    }
+  } catch {
+    errors.push(
+      `NEXT_PUBLIC_SITE_URL is not a valid absolute URL: "${envSiteUrl}". ` +
+        `Use a full origin, for example https://example.com`,
+    );
+  }
+}
+
+const envApiUrl = process.env.NEXT_PUBLIC_CONTACT_API_URL?.trim();
+if (envApiUrl && !isPlaceholder(envApiUrl)) {
+  try {
+    new URL(envApiUrl);
+  } catch {
+    errors.push(`NEXT_PUBLIC_CONTACT_API_URL is not a valid absolute URL: "${envApiUrl}"`);
+  }
 }
 
 /* Report ------------------------------------------------------------- */
