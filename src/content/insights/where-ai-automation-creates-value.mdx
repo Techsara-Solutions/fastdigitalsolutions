@@ -1,0 +1,60 @@
+---
+title: "Where AI automation creates value — and where it does not"
+description: "A practical way to judge whether a workflow is a good candidate for AI automation, the traps that make pilots succeed and rollouts fail, and the cases where simpler automation wins."
+topic: "AI, data, and automation"
+author: "[AUTHOR-PENDING]"
+authorRole: "[ROLE-PENDING]"
+publishedAt: "2026-08-26"
+publishStatus: "draft"
+verified: false
+relatedServiceSlugs:
+  - "ai-data-automation"
+---
+
+The question we hear most often about AI is not "how does it work?" but "where should we actually use it?" It is the right question. AI automation creates real value in a fairly specific set of conditions — and applied outside them, it produces expensive demos, quiet workarounds, and a lingering organizational suspicion that the whole subject is hype.
+
+This article describes how we evaluate candidate workflows, drawn from the pattern of what tends to work rather than from vendor enthusiasm.
+
+## The shape of a good candidate
+
+Workflows where AI automation earns its keep tend to share four properties.
+
+**The work is high-volume and repetitive, but not perfectly uniform.** If every case is identical, you do not need AI — a rule or a template will be cheaper, faster, and easier to audit. If every case is unique, AI has nothing to generalize from. The sweet spot is volume with variation: inbound documents in fifty layouts, support requests that cluster into themes, records that need judgment applied the same way a thousand times.
+
+**A wrong answer is cheap to catch and cheap to correct.** The economics of AI automation are set less by accuracy than by the cost of the errors that get through. Drafting a response a person reviews is a good fit. Making an irreversible decision about money, safety, or a customer relationship with no review step is not — regardless of how well the model benchmarks.
+
+**Ground truth exists.** You can only manage what you can measure, and you can only measure against a definition of "correct". If experienced staff disagree about the right output for a given case, an AI system will not resolve that disagreement — it will just automate the ambiguity.
+
+**The data is available and usable.** Not perfect — usable. If the inputs live in fifteen unconnected systems, or the historical examples are too sensitive to use, data work comes first. That work is unglamorous and frequently turns out to be most of the project. It is also usually valuable on its own.
+
+## Where the value actually comes from
+
+When these conditions hold, the value tends to show up in three places, roughly in order of reliability:
+
+**Removing re-keying and routing.** Reading a document, extracting the fields that matter, and putting them where they belong is the most dependable category of AI automation we see. The work is tedious, error-prone for humans, and easy to verify. The gains arrive quickly and are simple to explain.
+
+**Producing a strong first draft.** Summaries, classifications, responses, and reports where a person reviews and finishes the work. The person stays accountable; the model removes the blank page. Value here depends heavily on how the review step is designed — a bad review interface can spend every minute the model saved.
+
+**Surfacing what deserves attention.** Flagging the anomalous invoice, the at-risk order, the case that should not wait in the queue. The model does not decide; it prioritizes. This is often the least disruptive way to introduce AI into a workflow that people are protective of.
+
+## Where it does not create value
+
+Some patterns predict disappointment reliably enough to treat them as warnings.
+
+**Automating a process nobody has examined.** If the workflow is inefficient, automating it produces faster inefficiency. It is common to find that half the problem disappears with a process change that needs no model at all. Do that first; what remains is a better-defined automation target.
+
+**Choosing AI where deterministic automation is available.** If the logic can be written as rules, write it as rules. Rules are testable, auditable, explainable, and cheap to run. Reaching for a model to do a lookup or apply a threshold adds cost and uncertainty for no benefit. The question is not "can AI do this?" — it usually can — but "is AI the cheapest reliable way to do this?"
+
+**Pilots without a path to production.** A proof of concept that runs on curated examples, judged by impression rather than measurement, proves very little. The hard parts of AI automation are the unglamorous ones: the messy edge cases, the integration into systems of record, the monitoring, the handling of failures. A pilot designed without those in view tends to succeed brilliantly and then die in the gap between demo and deployment.
+
+**Automating the judgment instead of the drudgery.** The strongest resistance — and the weakest results — come from pointing automation at the part of the job people find meaningful. Aim it at the part they resent. The distinction is usually obvious to anyone who does the work, which is one more reason to involve them from the start.
+
+## The oversight question
+
+Every AI automation needs an answer to one question: what happens when the model is wrong? Because it will be wrong — some percentage of the time, forever.
+
+A production-worthy design specifies where a human reviews, what triggers escalation, how accuracy is measured continuously rather than assumed from the pilot, and how the system fails safely when confidence is low. If a proposal cannot answer these, it is a demo, not a solution. Oversight is not a tax on automation value; it is what makes the value durable enough to rely on.
+
+## A simple starting discipline
+
+Before commissioning any AI automation, write down four things: the workflow and its volume, the measurable objective, the cost of an undetected error, and how correctness will be judged. If the four answers are specific, you likely have a real candidate, and a bounded proof of concept on genuine data will tell you the rest. If the answers stay vague, the honest conclusion is that you have an interesting technology in search of a problem — and the most valuable next step is picking a better problem.

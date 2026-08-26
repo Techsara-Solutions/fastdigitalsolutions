@@ -1,0 +1,118 @@
+@import "tailwindcss";
+
+/*
+ * Warm Precision design tokens — PRD §15.
+ * Palette ratio target: ~70% paper/canvas/white space, ~20% ink/espresso,
+ * ~10% clay/stone/olive accents.
+ */
+@theme {
+  /* Core palette — PRD §15.3 */
+  --color-paper: #f8f5ef;
+  --color-canvas: #f2ece3;
+  --color-stone: #e3d8cc;
+  --color-ink: #211d19;
+  --color-espresso: #2c241f;
+  --color-muted: #665b52;
+  --color-clay: #9a5f3f;
+  --color-clay-dark: #7a4229;
+  --color-olive: #6b6a4e;
+
+  /* Typography — PRD §15.4 */
+  --font-sans:
+    var(--font-manrope), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-serif: var(--font-source-serif), Georgia, "Times New Roman", serif;
+
+  --text-display: clamp(3rem, 6vw, 5.5rem);
+  --text-display--line-height: 1;
+  --text-display--letter-spacing: -0.02em;
+  --text-h1: clamp(2.75rem, 5vw, 4.5rem);
+  --text-h1--line-height: 1.02;
+  --text-h1--letter-spacing: -0.02em;
+  --text-h2: clamp(2rem, 3.6vw, 3.25rem);
+  --text-h2--line-height: 1.08;
+  --text-h2--letter-spacing: -0.015em;
+  --text-h3: clamp(1.35rem, 2vw, 1.8rem);
+  --text-h3--line-height: 1.2;
+  --text-lead: clamp(1.125rem, 1.5vw, 1.375rem);
+  --text-lead--line-height: 1.55;
+
+  /* Breakpoints — PRD §18.1 (small <640, medium 640–899, large 900–1199, xl ≥1200) */
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 56.25rem;
+  --breakpoint-lg: 75rem;
+  --breakpoint-xl: 80rem;
+
+  /* Shape — PRD §15.6 */
+  --radius-card: 12px;
+  --radius-panel: 20px;
+}
+
+@layer base {
+  html {
+    scroll-padding-top: 6rem; /* account for sticky header on anchor navigation */
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: var(--color-clay);
+    color: #ffffff;
+  }
+
+  /* Strong, consistent visible focus — PRD §19.2 */
+  :focus-visible {
+    outline: 2px solid var(--color-clay-dark);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  .on-dark :focus-visible,
+  [data-surface="dark"] :focus-visible {
+    outline-color: var(--color-stone);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 600;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* Eyebrow label — the only sanctioned uppercase text (PRD §15.4) */
+  .eyebrow {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-clay-dark);
+  }
+
+  [data-surface="dark"] .eyebrow {
+    color: var(--color-stone);
+  }
+}
