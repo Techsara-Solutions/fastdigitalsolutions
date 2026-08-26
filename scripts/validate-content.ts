@@ -92,9 +92,15 @@ validateCollection("certifications", certifications, certificationSchema);
 const serviceSlugs = services.map((s) => s.slug);
 const scenarioSlugs = scenarios.map((s) => s.slug);
 assertUniqueSlugs("services", serviceSlugs);
-assertUniqueSlugs("industries", industries.map((i) => i.slug));
+assertUniqueSlugs(
+  "industries",
+  industries.map((i) => i.slug),
+);
 assertUniqueSlugs("scenarios", scenarioSlugs);
-assertUniqueSlugs("caseStudies", caseStudies.map((c) => c.slug));
+assertUniqueSlugs(
+  "caseStudies",
+  caseStudies.map((c) => c.slug),
+);
 
 /* Cross-reference validity (CTA/link destinations — PRD §17.2) ------- */
 for (const service of services) {
@@ -186,7 +192,8 @@ for (const legal of ["privacy.mdx", "terms.mdx", "accessibility.mdx"]) {
 /* Placeholder warnings (production blockers — PRD §17.3, §32.1) ------- */
 if (isPlaceholder(siteConfig.domain)) warnings.push("Site domain is a placeholder");
 if (isPlaceholder(siteConfig.email)) warnings.push("Business email is a placeholder");
-if (siteConfig.legalName === null) warnings.push("Legal entity name is unverified (footer shows brand name only)");
+if (siteConfig.legalName === null)
+  warnings.push("Legal entity name is unverified (footer shows brand name only)");
 if (!fs.existsSync(path.join(process.cwd(), "public", "images", "logo.svg"))) {
   warnings.push("Final logo is pending (text wordmark in use)");
 }
@@ -208,4 +215,6 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log(`Content validation passed: ${services.length} services, ${industries.length} industries, ${scenarios.length} scenarios, ${insightSlugs.length} insight file(s).`);
+console.log(
+  `Content validation passed: ${services.length} services, ${industries.length} industries, ${scenarios.length} scenarios, ${insightSlugs.length} insight file(s).`,
+);

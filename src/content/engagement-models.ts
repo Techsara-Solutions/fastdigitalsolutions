@@ -8,8 +8,7 @@ export const engagementModels: EngagementModel[] = [
   {
     slug: "fixed-scope-project",
     name: "Fixed-scope project",
-    bestFor:
-      "A defined outcome with agreed deliverables, acceptance criteria, and change control.",
+    bestFor: "A defined outcome with agreed deliverables, acceptance criteria, and change control.",
     explanation:
       "A defined project with agreed scope, milestones, responsibilities, and acceptance criteria.",
   },
@@ -24,8 +23,7 @@ export const engagementModels: EngagementModel[] = [
     slug: "dedicated-delivery-team",
     name: "Dedicated delivery team",
     bestFor: "A sustained roadmap or owned workstream that needs a stable, cross-functional team.",
-    explanation:
-      "A focused team aligned to your roadmap, tools, governance, and delivery cadence.",
+    explanation: "A focused team aligned to your roadmap, tools, governance, and delivery cadence.",
   },
   {
     slug: "staff-augmentation",

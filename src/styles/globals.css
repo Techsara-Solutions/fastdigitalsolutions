@@ -16,6 +16,8 @@
   --color-clay: #9a5f3f;
   --color-clay-dark: #7a4229;
   --color-olive: #6b6a4e;
+  /* Darkened olive for small text on tinted badges — AA-safe (PRD §15.3 color rules). */
+  --color-olive-dark: #4c4b36;
 
   /* Typography — PRD §15.4 */
   --font-sans:
@@ -103,6 +105,98 @@
 }
 
 @layer components {
+  /* Long-form article and legal content (PRD §14.8, §14.11) */
+  .rich-text {
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: var(--color-ink);
+  }
+
+  .rich-text h2 {
+    margin-top: 2.5rem;
+    margin-bottom: 0.875rem;
+    font-size: 1.5rem;
+    line-height: 1.25;
+    scroll-margin-top: 6rem;
+  }
+
+  .rich-text h3 {
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    font-size: 1.1875rem;
+    line-height: 1.3;
+  }
+
+  .rich-text p {
+    margin-bottom: 1.125rem;
+  }
+
+  .rich-text ul,
+  .rich-text ol {
+    margin-bottom: 1.125rem;
+    padding-left: 1.5rem;
+  }
+
+  .rich-text ul {
+    list-style: disc;
+  }
+
+  .rich-text ol {
+    list-style: decimal;
+  }
+
+  .rich-text li {
+    margin-bottom: 0.5rem;
+  }
+
+  .rich-text li::marker {
+    color: var(--color-clay);
+  }
+
+  .rich-text a {
+    color: var(--color-clay-dark);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .rich-text blockquote {
+    margin: 1.75rem 0;
+    border-left: 2px solid var(--color-clay);
+    padding-left: 1.25rem;
+    font-family: var(--font-serif);
+    font-size: 1.1875rem;
+    color: var(--color-muted);
+  }
+
+  .rich-text strong {
+    font-weight: 700;
+  }
+
+  .rich-text hr {
+    margin: 2.5rem 0;
+    border-color: var(--color-stone);
+  }
+
+  /* Responsive wrapper for tables in long-form content (PRD §18.2) */
+  .rich-text table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+  }
+
+  .rich-text th,
+  .rich-text td {
+    border: 1px solid var(--color-stone);
+    padding: 0.625rem 0.875rem;
+    text-align: left;
+  }
+
+  .rich-text th {
+    background-color: var(--color-canvas);
+    font-weight: 700;
+  }
+
   /* Eyebrow label — the only sanctioned uppercase text (PRD §15.4) */
   .eyebrow {
     font-size: 0.8125rem;

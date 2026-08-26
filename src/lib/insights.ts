@@ -1,11 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
-import {
-  insightFrontmatterSchema,
-  isPublishable,
-  type InsightFrontmatter,
-} from "@/lib/schemas";
+import { insightFrontmatterSchema, isPublishable, type InsightFrontmatter } from "@/lib/schemas";
 
 /**
  * Filesystem-based insights loader (PRD §14.8, §17.1).

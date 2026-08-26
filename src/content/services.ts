@@ -345,10 +345,7 @@ export const services: Service[] = [
       },
       {
         title: "Keep it understood",
-        items: [
-          "Documentation maintenance",
-          "Support transition and knowledge capture",
-        ],
+        items: ["Documentation maintenance", "Support transition and knowledge capture"],
       },
     ],
     deliveryApproach: [

@@ -135,6 +135,7 @@ export const afterEnquirySteps = [
   },
   {
     title: "Proposal or discovery plan where appropriate",
-    detail: "When there is a fit, a written proposal or discovery plan with scope and responsibilities.",
+    detail:
+      "When there is a fit, a written proposal or discovery plan with scope and responsibilities.",
   },
 ];

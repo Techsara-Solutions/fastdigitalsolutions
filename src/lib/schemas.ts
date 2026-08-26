@@ -17,7 +17,10 @@ export const proofRecordSchema = z.object({
   verified: z.boolean(),
   approvalReference: z.string().min(1).optional(),
   approvedBy: z.string().min(1).optional(),
-  approvedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "approvedAt must be YYYY-MM-DD").optional(),
+  approvedAt: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "approvedAt must be YYYY-MM-DD")
+    .optional(),
 });
 export type ProofRecord = z.infer<typeof proofRecordSchema>;
 

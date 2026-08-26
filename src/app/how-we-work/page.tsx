@@ -1,0 +1,202 @@
+import type { Metadata } from "next";
+import { buildMetadata } from "@/lib/metadata";
+import { Container } from "@/components/ui/Container";
+import { Section } from "@/components/ui/Section";
+import { SectionIntro } from "@/components/ui/SectionIntro";
+import { PullStatement } from "@/components/content/PullStatement";
+import { CtaPanel } from "@/components/content/CtaPanel";
+import { afterEnquirySteps, deliveryStages, workingCommitments } from "@/content/delivery-method";
+import { engagementModels } from "@/content/engagement-models";
+
+export const metadata: Metadata = buildMetadata({
+  title: "How we work",
+  description:
+    "The client-first delivery method behind every Fast Digital Solutions engagement: align, architect, deliver, validate, improve — with visible progress and documented decisions.",
+  path: "/how-we-work/",
+});
+
+export default function HowWeWorkPage() {
+  return (
+    <>
+      <Section surface="paper" spacing="tight" ariaLabelledby="hww-hero">
+        <Container>
+          <div className="max-w-[46rem] py-6">
+            <p className="eyebrow mb-4">How we work</p>
+            <h1 id="hww-hero" className="text-h1 font-semibold">
+              Delivery you can see, question, and steer.
+            </h1>
+            <p className="mt-6 text-lead text-muted">
+              Most delivery risk comes from working in the dark: progress you cannot verify,
+              decisions you were not part of, problems raised too late to fix cheaply. Our method is
+              designed to remove that darkness.
+            </p>
+          </div>
+        </Container>
+      </Section>
+
+      <Section surface="canvas" spacing="tight" ariaLabelledby="philosophy-heading">
+        <Container>
+          <h2 id="philosophy-heading" className="sr-only">
+            Delivery philosophy
+          </h2>
+          <div className="max-w-[46rem]">
+            <PullStatement>
+              Understand the business context. Define a practical plan. Deliver in visible
+              increments. Communicate risks early. Document decisions. Leave behind systems and
+              knowledge the client can maintain.
+            </PullStatement>
+          </div>
+        </Container>
+      </Section>
+
+      {/* Five-stage method, in full */}
+      <Section surface="paper" ariaLabelledby="stages-heading">
+        <Container>
+          <SectionIntro
+            id="stages-heading"
+            eyebrow="The method"
+            title="Five stages, each with visible outputs."
+          />
+          <div className="mt-12 space-y-10">
+            {deliveryStages.map((stage) => (
+              <article
+                key={stage.name}
+                className="grid gap-6 rounded-[12px] border border-stone bg-white/40 p-6 md:grid-cols-[auto_1fr_1fr] md:gap-10 md:p-8"
+              >
+                <div className="flex items-start gap-4 md:w-44">
+                  <span
+                    aria-hidden="true"
+                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-clay text-base font-bold text-clay-dark"
+                  >
+                    {stage.number}
+                  </span>
+                  <h3 className="pt-2 text-h3 font-semibold">{stage.name}</h3>
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold uppercase tracking-[0.1em] text-muted">
+                    Purpose
+                  </h4>
+                  <ul className="mt-3 space-y-2">
+                    {stage.purpose.map((point) => (
+                      <li
+                        key={point}
+                        className="flex gap-2.5 text-[0.9375rem] leading-relaxed text-ink/85"
+                      >
+                        <span
+                          aria-hidden="true"
+                          className="mt-[0.55em] h-1 w-3 shrink-0 rounded-full bg-clay/70"
+                        />
+                        {point}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold uppercase tracking-[0.1em] text-muted">
+                    {stage.outputsTitle}
+                  </h4>
+                  <ul className="mt-3 space-y-2">
+                    {stage.outputs.map((output) => (
+                      <li
+                        key={output}
+                        className="flex gap-2.5 text-[0.9375rem] leading-relaxed text-ink/85"
+                      >
+                        <span
+                          aria-hidden="true"
+                          className="mt-[0.55em] h-1 w-3 shrink-0 rounded-full bg-olive/70"
+                        />
+                        {output}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </article>
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      {/* Communication, governance, quality, documentation */}
+      <Section surface="espresso" ariaLabelledby="commitments-heading">
+        <Container>
+          <SectionIntro
+            id="commitments-heading"
+            eyebrow="Working practices"
+            title="Commitments we can be held to."
+            lead="These are operating principles, not slogans — each one is something you can check during an engagement."
+          />
+          <ul className="mt-12 grid gap-x-10 gap-y-5 md:grid-cols-2">
+            {workingCommitments.map((commitment) => (
+              <li
+                key={commitment}
+                className="flex gap-3 border-b border-white/10 pb-5 text-[0.9375rem] text-stone"
+              >
+                <span
+                  aria-hidden="true"
+                  className="mt-[0.55em] h-1 w-3 shrink-0 rounded-full bg-clay"
+                />
+                {commitment}
+              </li>
+            ))}
+          </ul>
+        </Container>
+      </Section>
+
+      {/* Engagement models */}
+      <Section surface="paper" id="engagement-models" ariaLabelledby="models-heading">
+        <Container>
+          <SectionIntro
+            id="models-heading"
+            eyebrow="Engagement models"
+            title="Shape the engagement to the work."
+          />
+          <div className="mt-12 grid gap-6 md:grid-cols-2">
+            {engagementModels.map((model) => (
+              <article
+                key={model.slug}
+                className="rounded-[12px] border border-stone bg-white/40 p-6 lg:p-8"
+              >
+                <h3 className="text-h3 font-semibold">{model.name}</h3>
+                <p className="mt-2 text-sm font-medium text-clay-dark">Best for: {model.bestFor}</p>
+                <p className="mt-3 text-[0.9375rem] leading-relaxed text-muted">
+                  {model.explanation}
+                </p>
+              </article>
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      {/* What happens after enquiry */}
+      <Section surface="canvas" ariaLabelledby="after-enquiry-heading">
+        <Container>
+          <SectionIntro
+            id="after-enquiry-heading"
+            eyebrow="After you get in touch"
+            title="What happens when you enquire."
+            lead="No pressure sequence, no automated sales cadence — a considered response within two business days."
+          />
+          <ol className="mt-12 grid gap-8 md:grid-cols-5">
+            {afterEnquirySteps.map((step, index) => (
+              <li key={step.title} className="relative">
+                <span
+                  aria-hidden="true"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-clay bg-paper text-sm font-bold text-clay-dark"
+                >
+                  {index + 1}
+                </span>
+                <h3 className="mt-4 text-base font-bold">{step.title}</h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-muted">{step.detail}</p>
+              </li>
+            ))}
+          </ol>
+        </Container>
+      </Section>
+
+      <CtaPanel
+        heading="See the method applied to your priority."
+        copy="Tell us what needs to move forward and we will walk you through how we would run it — stage by stage."
+      />
+    </>
+  );
+}
