@@ -5,6 +5,7 @@ import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { SectionIntro } from "@/components/ui/SectionIntro";
 import { DeliveryTimeline } from "@/components/content/DeliveryTimeline";
+import { PageHero } from "@/components/content/PageHero";
 import { LeadershipGrid } from "@/components/trust/TrustSections";
 import { CtaPanel } from "@/components/content/CtaPanel";
 import { siteConfig, isPlaceholder } from "@/content/site";
@@ -54,22 +55,19 @@ export default function AboutPage() {
 
   return (
     <>
-      <Section surface="paper" spacing="tight" ariaLabelledby="about-hero">
-        <Container>
-          <div className="max-w-[46rem] py-6">
-            <p className="eyebrow mb-4">About</p>
-            <h1 id="about-hero" className="text-h1 font-semibold">
-              Built to be a practical technology partner.
-            </h1>
-            <p className="mt-6 text-lead text-muted">{siteConfig.categoryStatement}</p>
-            <p className="mt-4 text-[1.0625rem] text-muted">
-              {siteConfig.sinceStatement}, we work with growing organizations that need experienced
-              technology capacity, clear communication, and a delivery approach shaped around their
-              business.
-            </p>
-          </div>
-        </Container>
-      </Section>
+      <PageHero
+        headingId="about-hero"
+        variant="split"
+        image="hero-about"
+        eyebrow="About"
+        title="Built to be a practical technology partner."
+        lead={siteConfig.categoryStatement}
+      >
+        <p className="mt-4 text-[1.0625rem] text-muted">
+          We work with growing organizations that need experienced technology capacity, clear
+          communication, and a delivery approach shaped around their business.
+        </p>
+      </PageHero>
 
       <Section surface="canvas" ariaLabelledby="mission-heading">
         <Container>
@@ -82,7 +80,7 @@ export default function AboutPage() {
             />
             <ul className="grid gap-x-8 gap-y-8 sm:grid-cols-2">
               {principles.map((principle) => (
-                <li key={principle.title} className="border-t-2 border-clay/50 pt-4">
+                <li key={principle.title} className="border-t-2 border-accent/50 pt-4">
                   <h3 className="text-base font-bold">{principle.title}</h3>
                   <p className="mt-2 text-[0.9375rem] leading-relaxed text-muted">
                     {principle.detail}
@@ -105,7 +103,7 @@ export default function AboutPage() {
             <DeliveryTimeline variant="preview" />
           </div>
           <p className="mt-10">
-            <Link href="/how-we-work/" className="font-semibold text-clay-dark hover:underline">
+            <Link href="/how-we-work/" className="font-semibold text-accent-dark hover:underline">
               See how we work in detail <span aria-hidden="true">→</span>
             </Link>
           </p>
@@ -126,7 +124,7 @@ export default function AboutPage() {
               <p className="mt-4 text-[0.9375rem] text-muted">
                 <a
                   href={siteConfig.phoneHref}
-                  className="font-semibold text-clay-dark hover:underline"
+                  className="font-semibold text-accent-dark hover:underline"
                 >
                   {siteConfig.phoneDisplay}
                 </a>
@@ -137,7 +135,7 @@ export default function AboutPage() {
                     <br />
                     <a
                       href={`mailto:${siteConfig.email}`}
-                      className="font-semibold text-clay-dark hover:underline"
+                      className="font-semibold text-accent-dark hover:underline"
                     >
                       {siteConfig.email}
                     </a>
@@ -159,7 +157,7 @@ export default function AboutPage() {
               <h2 className="text-h3 font-semibold">Careers</h2>
               <p className="mt-4 text-[0.9375rem] leading-relaxed text-muted">
                 Interested in working with us?{" "}
-                <Link href="/careers/" className="font-semibold text-clay-dark hover:underline">
+                <Link href="/careers/" className="font-semibold text-accent-dark hover:underline">
                   See our careers page
                 </Link>
                 .

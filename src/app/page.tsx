@@ -5,7 +5,7 @@ import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { SectionIntro } from "@/components/ui/SectionIntro";
 import { Button } from "@/components/ui/Button";
-import { GeoMotif } from "@/components/content/GeoMotif";
+import { PageHero } from "@/components/content/PageHero";
 import { ServiceCard } from "@/components/content/ServiceCard";
 import { IndustryPanel } from "@/components/content/IndustryPanel";
 import { ScenarioCard } from "@/components/content/ScenarioCard";
@@ -54,38 +54,26 @@ export default function HomePage() {
 
   return (
     <>
-      {/* A. Hero — text-led, no carousel, no automatic motion */}
-      <Section
-        surface="paper"
-        spacing="tight"
-        ariaLabelledby="hero-heading"
-        className="overflow-hidden"
-      >
-        <Container>
-          <div className="grid items-center gap-12 lg:grid-cols-[7fr_5fr]">
-            <div className="py-6 md:py-10">
-              <h1 id="hero-heading" className="text-h1 font-semibold">
-                Technology delivery built around your business.
-              </h1>
-              <p className="mt-6 max-w-[36rem] text-lead text-muted">
-                Fast Digital Solutions helps growing organizations modernize applications, move to
-                the cloud, automate operations, and strengthen engineering delivery—from discovery
-                through ongoing support.
-              </p>
-              <div className="mt-8 flex flex-wrap gap-4">
-                <Button href="/contact/">Discuss your project</Button>
-                <Button href="/services/" variant="secondary">
-                  Explore our capabilities
-                </Button>
-              </div>
-            </div>
-            <GeoMotif className="hidden h-auto w-full max-w-[420px] justify-self-end lg:block" />
-          </div>
-        </Container>
-      </Section>
+      {/* A. Hero — full-bleed photograph, copy over the scrim */}
+      <PageHero
+        headingId="hero-heading"
+        variant="full-bleed"
+        image="hero-home"
+        eyebrow="Cloud, AI and digital engineering"
+        title="Technology delivery built around your business."
+        lead="Fast Digital Solutions helps growing organizations modernize applications, move to the cloud, automate operations, and strengthen engineering delivery—from discovery through ongoing support."
+        actions={
+          <>
+            <Button href="/contact/">Discuss your project</Button>
+            <Button href="/services/" variant="outlineOnDark">
+              Explore our capabilities
+            </Button>
+          </>
+        }
+      />
 
-      {/* B. Capability strip — text-based, deliberately NOT "Trusted by" */}
-      <div className="border-y border-stone bg-canvas py-5">
+      {/* B. Capability strip */}
+      <div className="border-b border-stone bg-canvas py-5">
         <Container>
           <ul
             aria-label="Capability areas"
@@ -94,11 +82,11 @@ export default function HomePage() {
             {services.map((service, index) => (
               <li key={service.slug} className="flex items-center gap-3">
                 {index > 0 ? (
-                  <span aria-hidden="true" className="text-clay">
+                  <span aria-hidden="true" className="text-accent">
                     ·
                   </span>
                 ) : null}
-                <Link href={`/services/${service.slug}/`} className="hover:text-clay-dark">
+                <Link href={`/services/${service.slug}/`} className="hover:text-accent-dark">
                   {service.stripLabel}
                 </Link>
               </li>
@@ -119,7 +107,7 @@ export default function HomePage() {
             />
             <ul className="grid gap-x-8 gap-y-8 sm:grid-cols-2">
               {commitments.map((commitment) => (
-                <li key={commitment.title} className="border-t-2 border-clay/50 pt-4">
+                <li key={commitment.title} className="reveal border-t-2 border-accent/60 pt-4">
                   <h3 className="text-base font-bold">{commitment.title}</h3>
                   <p className="mt-2 text-[0.9375rem] leading-relaxed text-muted">
                     {commitment.detail}
@@ -131,34 +119,42 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      {/* D. Services overview */}
+      {/* D. Services overview — photo cards */}
       <Section surface="canvas" ariaLabelledby="services-heading">
         <Container>
-          <SectionIntro
-            id="services-heading"
-            eyebrow="Services"
-            title="Connected capabilities for complex delivery needs."
-            lead="Bring together the cloud, software, data, quality, and delivery skills needed to move a defined business priority forward."
-          />
+          <div className="flex flex-wrap items-end justify-between gap-6">
+            <SectionIntro
+              id="services-heading"
+              eyebrow="Services"
+              title="Connected capabilities for complex delivery needs."
+              lead="Bring together the cloud, software, data, quality, and delivery skills needed to move a defined business priority forward."
+            />
+            <Link href="/services/" className="font-semibold text-accent-dark hover:underline">
+              All services <span aria-hidden="true">→</span>
+            </Link>
+          </div>
           <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {services.map((service) => (
-              <ServiceCard key={service.slug} service={service} />
+              <ServiceCard
+                key={service.slug}
+                service={service}
+                variant="image"
+                className="reveal"
+              />
             ))}
           </div>
         </Container>
       </Section>
 
       {/* E. How We Work preview — dark surface */}
-      <Section surface="espresso" ariaLabelledby="method-heading">
+      <Section surface="navy" ariaLabelledby="method-heading">
         <Container>
-          <div className="flex flex-wrap items-end justify-between gap-6">
-            <SectionIntro
-              id="method-heading"
-              eyebrow="How we work"
-              title="A practical path from problem to progress."
-              lead="Align on the outcome. Architect the right approach. Deliver in visible increments. Validate what matters. Improve with the learning captured along the way."
-            />
-          </div>
+          <SectionIntro
+            id="method-heading"
+            eyebrow="How we work"
+            title="A practical path from problem to progress."
+            lead="Align on the outcome. Architect the right approach. Deliver in visible increments. Validate what matters. Improve with the learning captured along the way."
+          />
           <div className="mt-14">
             <DeliveryTimeline variant="preview" onDark />
           </div>
@@ -170,7 +166,7 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      {/* F. Industries */}
+      {/* F. Industries — photo tiles */}
       <Section surface="paper" ariaLabelledby="industries-heading">
         <Container>
           <SectionIntro
@@ -179,9 +175,11 @@ export default function HomePage() {
             title="Operating contexts we understand."
             lead="Four environments where our services naturally apply — approached through the challenges teams actually face."
           />
-          <div className="mt-12 grid gap-6 md:grid-cols-2">
+          <div className="mt-12 grid gap-6 sm:grid-cols-2">
             {industries.map((industry) => (
-              <IndustryPanel key={industry.slug} industry={industry} />
+              <div key={industry.slug} className="reveal">
+                <IndustryPanel industry={industry} variant="tile" />
+              </div>
             ))}
           </div>
         </Container>
@@ -198,7 +196,9 @@ export default function HomePage() {
           />
           <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {scenarios.map((scenario) => (
-              <ScenarioCard key={scenario.slug} scenario={scenario} />
+              <div key={scenario.slug} className="reveal">
+                <ScenarioCard scenario={scenario} />
+              </div>
             ))}
           </div>
         </Container>
@@ -215,7 +215,7 @@ export default function HomePage() {
           />
           <dl className="mt-12 grid gap-x-10 gap-y-8 sm:grid-cols-2">
             {engagementModels.map((model) => (
-              <div key={model.slug} className="border-l border-stone pl-5">
+              <div key={model.slug} className="border-l-2 border-accent/40 pl-5">
                 <dt className="text-base font-bold">{model.name}</dt>
                 <dd className="mt-1.5 text-[0.9375rem] leading-relaxed text-muted">
                   {model.explanation}
@@ -226,7 +226,7 @@ export default function HomePage() {
           <p className="mt-10">
             <Link
               href="/how-we-work/#engagement-models"
-              className="font-semibold text-clay-dark hover:underline"
+              className="font-semibold text-accent-dark hover:underline"
             >
               Compare engagement models <span aria-hidden="true">→</span>
             </Link>
@@ -234,7 +234,7 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      {/* I. Insights preview — rendered only when ≥3 approved articles exist (PRD §14.1I) */}
+      {/* I. Insights preview — rendered only when ≥3 approved articles exist */}
       {showInsights ? (
         <Section surface="canvas" ariaLabelledby="insights-heading">
           <Container>

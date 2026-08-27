@@ -71,18 +71,21 @@ describe("getSiteUrl", () => {
 });
 
 describe("getContactApiUrl", () => {
-  it("is undefined when unset, blank, or a placeholder", () => {
+  it("falls back to the production endpoint when unset or blank (the CI failure mode)", () => {
     delete process.env[API_URL];
-    expect(getContactApiUrl()).toBeUndefined();
+    expect(getContactApiUrl()).toBe(siteConfig.contactApiUrl);
     process.env[API_URL] = "";
-    expect(getContactApiUrl()).toBeUndefined();
+    expect(getContactApiUrl()).toBe(siteConfig.contactApiUrl);
     process.env[API_URL] = "   ";
-    expect(getContactApiUrl()).toBeUndefined();
+    expect(getContactApiUrl()).toBe(siteConfig.contactApiUrl);
+  });
+
+  it("is undefined (fallback state) when explicitly set to a placeholder", () => {
     process.env[API_URL] = "https://[CONTACT-API-PENDING]";
     expect(getContactApiUrl()).toBeUndefined();
   });
 
-  it("returns a real endpoint", () => {
+  it("lets the env var override the endpoint", () => {
     process.env[API_URL] = "https://api.example.com/contact";
     expect(getContactApiUrl()).toBe("https://api.example.com/contact");
   });
@@ -91,9 +94,17 @@ describe("getContactApiUrl", () => {
 describe("buildMetadata", () => {
   const page = { title: "About", description: "About us.", path: "/about/" };
 
-  it("does not throw and marks pages noindex when the site URL is blank", () => {
+  it("does not throw and falls back to the configured domain when the site URL is blank", () => {
     process.env[SITE_URL] = "";
     expect(() => buildMetadata(page)).not.toThrow();
+    const metadata = buildMetadata(page);
+    expect(metadata.robots).toBeUndefined();
+    expect(String(metadata.metadataBase)).toBe(`${siteConfig.domain}/`);
+    expect(metadata.alternates?.canonical).toBe("/about/");
+  });
+
+  it("marks pages noindex while the site URL is a placeholder", () => {
+    process.env[SITE_URL] = "https://[DOMAIN-PENDING]";
     const metadata = buildMetadata(page);
     expect(metadata.robots).toEqual({ index: false, follow: false });
     expect(metadata.metadataBase).toBeUndefined();

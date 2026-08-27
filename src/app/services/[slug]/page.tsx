@@ -6,9 +6,11 @@ import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { CtaPanel } from "@/components/content/CtaPanel";
+import { PageHero } from "@/components/content/PageHero";
 import { services, getService } from "@/content/services";
 import { scenarios, SCENARIO_LABEL } from "@/content/scenarios";
 import { getPublishedCaseStudies } from "@/content/case-studies";
+import { isImageId } from "@/lib/images";
 
 type ServicePageProps = {
   params: Promise<{ slug: string }>;
@@ -57,17 +59,14 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
       />
 
       {/* 1. Service-specific hero */}
-      <Section surface="paper" spacing="tight" ariaLabelledby="service-hero">
-        <Container>
-          <div className="max-w-[46rem] py-4">
-            <p className="eyebrow mb-4">{service.name}</p>
-            <h1 id="service-hero" className="text-h1 font-semibold">
-              {service.hero.headline}
-            </h1>
-            <p className="mt-6 text-lead text-muted">{service.hero.copy}</p>
-          </div>
-        </Container>
-      </Section>
+      <PageHero
+        headingId="service-hero"
+        variant={isImageId(service.heroImageId) ? "split" : "text"}
+        image={isImageId(service.heroImageId) ? service.heroImageId : undefined}
+        eyebrow={service.name}
+        title={service.hero.headline}
+        lead={service.hero.copy}
+      />
 
       {/* 2. Where this helps */}
       <Section surface="canvas" ariaLabelledby="situations-heading">
@@ -96,14 +95,14 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
           </h2>
           <div className="mt-10 grid gap-10 md:grid-cols-3">
             {service.capabilityGroups.map((group) => (
-              <div key={group.title} className="border-t-2 border-clay/50 pt-5">
+              <div key={group.title} className="border-t-2 border-accent/50 pt-5">
                 <h3 className="text-lg font-bold">{group.title}</h3>
                 <ul className="mt-4 space-y-2.5">
                   {group.items.map((item) => (
                     <li key={item} className="flex gap-2.5 text-[0.9375rem] text-ink/85">
                       <span
                         aria-hidden="true"
-                        className="mt-[0.55em] h-1 w-3 shrink-0 rounded-full bg-clay/70"
+                        className="mt-[0.55em] h-1 w-3 shrink-0 rounded-full bg-accent/70"
                       />
                       {item}
                     </li>
@@ -116,7 +115,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
       </Section>
 
       {/* 4. Delivery approach */}
-      <Section surface="espresso" ariaLabelledby="approach-heading">
+      <Section surface="navy" ariaLabelledby="approach-heading">
         <Container>
           <h2 id="approach-heading" className="text-h2 font-semibold">
             How we deliver it
@@ -126,7 +125,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
               <li key={step} className="flex gap-4">
                 <span
                   aria-hidden="true"
-                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-clay text-sm font-bold text-clay"
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-accent text-sm font-bold text-accent"
                 >
                   {index + 1}
                 </span>
@@ -153,7 +152,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
                   >
                     <span
                       aria-hidden="true"
-                      className="mt-[0.55em] h-1 w-3 shrink-0 rounded-full bg-olive/80"
+                      className="mt-[0.55em] h-1 w-3 shrink-0 rounded-full bg-teal/80"
                     />
                     {consideration}
                   </li>
@@ -184,7 +183,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
             <p className="mt-4 max-w-[46rem] text-lead text-muted">{caseStudy.context}</p>
             <Link
               href={`/work/`}
-              className="mt-6 inline-block font-semibold text-clay-dark hover:underline"
+              className="mt-6 inline-block font-semibold text-accent-dark hover:underline"
             >
               View this work <span aria-hidden="true">→</span>
             </Link>
@@ -193,7 +192,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
       ) : scenario ? (
         <Section surface="canvas" ariaLabelledby="scenario-heading">
           <Container>
-            <p className="mb-4 inline-flex items-center rounded-full border border-olive/40 bg-olive/10 px-3 py-1 text-xs font-semibold text-olive-dark">
+            <p className="mb-4 inline-flex items-center rounded-full border border-teal/40 bg-teal/10 px-3 py-1 text-xs font-semibold text-teal-dark">
               {SCENARIO_LABEL}
             </p>
             <h2 id="scenario-heading" className="text-h2 font-semibold">
@@ -204,7 +203,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
             </p>
             <Link
               href={`/work/#${scenario.slug}`}
-              className="mt-6 inline-block font-semibold text-clay-dark hover:underline"
+              className="mt-6 inline-block font-semibold text-accent-dark hover:underline"
             >
               View representative work <span aria-hidden="true">→</span>
             </Link>
@@ -223,7 +222,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
               <li key={relatedService.slug}>
                 <Link
                   href={`/services/${relatedService.slug}/`}
-                  className="inline-block rounded-[10px] border border-stone bg-white/50 px-5 py-3 text-[0.9375rem] font-semibold text-ink transition-colors hover:border-clay/60 hover:text-clay-dark"
+                  className="inline-block rounded-[10px] border border-stone bg-surface-card px-5 py-3 text-[0.9375rem] font-semibold text-ink transition-colors hover:border-accent hover:text-accent-dark"
                 >
                   {relatedService.name}
                 </Link>

@@ -10,6 +10,8 @@ import type { Service } from "@/lib/schemas";
 export const services: Service[] = [
   {
     slug: "cloud-platform-engineering",
+    cardImageId: "card-service-cloud",
+    heroImageId: "hero-service-cloud-platform-engineering",
     name: "Cloud and Platform Engineering",
     stripLabel: "Cloud & Platform",
     clientNeed:
@@ -84,6 +86,8 @@ export const services: Service[] = [
   },
   {
     slug: "ai-data-automation",
+    cardImageId: "card-service-ai",
+    heroImageId: "hero-service-ai-data-automation",
     name: "AI, Data, and Automation",
     stripLabel: "AI & Automation",
     clientNeed:
@@ -159,6 +163,8 @@ export const services: Service[] = [
   },
   {
     slug: "software-engineering-modernization",
+    cardImageId: "card-service-software",
+    heroImageId: "hero-service-software-engineering-modernization",
     name: "Software Engineering and Modernization",
     stripLabel: "Software Engineering",
     clientNeed:
@@ -231,6 +237,8 @@ export const services: Service[] = [
   },
   {
     slug: "quality-engineering",
+    cardImageId: "card-service-quality",
+    heroImageId: "hero-service-quality-engineering",
     name: "Quality Engineering and Test Automation",
     stripLabel: "Quality Engineering",
     clientNeed:
@@ -301,6 +309,8 @@ export const services: Service[] = [
   },
   {
     slug: "application-maintenance-support",
+    cardImageId: "card-service-support",
+    heroImageId: "hero-service-application-maintenance-support",
     name: "Application Maintenance and Managed Support",
     stripLabel: "Maintenance & Support",
     clientNeed:
@@ -366,6 +376,8 @@ export const services: Service[] = [
   },
   {
     slug: "flexible-delivery-teams",
+    cardImageId: "card-service-teams",
+    heroImageId: "hero-service-flexible-delivery-teams",
     name: "Flexible Delivery Teams",
     stripLabel: "Flexible Teams",
     clientNeed:

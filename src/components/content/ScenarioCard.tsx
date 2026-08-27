@@ -10,11 +10,11 @@ import { SCENARIO_LABEL } from "@/content/scenarios";
 export function ScenarioCard({ scenario }: { scenario: Scenario }) {
   return (
     <article className="flex h-full flex-col rounded-[12px] border border-stone bg-paper p-6 lg:p-8">
-      <p className="mb-4 inline-flex w-fit items-center rounded-full border border-olive/40 bg-olive/10 px-3 py-1 text-xs font-semibold text-olive-dark">
+      <p className="mb-4 inline-flex w-fit items-center rounded-full border border-teal/40 bg-teal/10 px-3 py-1 text-xs font-semibold text-teal-dark">
         Example engagement scenario
       </p>
       <h3 className="text-h3 font-semibold">
-        <Link href={`/work/#${scenario.slug}`} className="hover:text-clay-dark">
+        <Link href={`/work/#${scenario.slug}`} className="hover:text-accent-dark">
           {scenario.title}
         </Link>
       </h3>
@@ -26,7 +26,7 @@ export function ScenarioCard({ scenario }: { scenario: Scenario }) {
       </p>
       <Link
         href={`/work/#${scenario.slug}`}
-        className="text-sm font-semibold text-clay-dark hover:underline"
+        className="text-sm font-semibold text-accent-dark hover:underline"
       >
         View representative work <span aria-hidden="true">→</span>
       </Link>

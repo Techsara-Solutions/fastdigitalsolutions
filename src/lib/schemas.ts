@@ -69,6 +69,9 @@ export const serviceSchema = z.object({
   notPromised: z.array(z.string().min(1)).min(1),
   relatedSlugs: z.array(slugSchema).min(1),
   scenarioSlug: slugSchema.optional(),
+  /** Manifest ids (src/content/image-manifest.ts) for the home card and the detail hero. */
+  cardImageId: slugSchema.optional(),
+  heroImageId: slugSchema.optional(),
 });
 export type Service = z.infer<typeof serviceSchema>;
 
@@ -84,6 +87,8 @@ export const industrySchema = z.object({
   summary: z.string().min(1),
   commonNeeds: z.array(z.string().min(1)).min(4),
   relevantServiceSlugs: z.array(slugSchema).min(2),
+  /** Manifest id for the home-page photo tile. */
+  tileImageId: slugSchema.optional(),
 });
 export type Industry = z.infer<typeof industrySchema>;
 
@@ -215,5 +220,7 @@ export const insightFrontmatterSchema = z.object({
   publishStatus: publishStatusSchema,
   verified: z.boolean(),
   relatedServiceSlugs: z.array(slugSchema).min(1),
+  /** Manifest id for the card/article cover photo. */
+  coverImageId: slugSchema.optional(),
 });
 export type InsightFrontmatter = z.infer<typeof insightFrontmatterSchema>;

@@ -7,163 +7,103 @@ Legend: ✅ built and verified · 🚧 built, needs external input to finish ·
 
 ## Summary
 
-Version 1 of the website is **fully built and now hosted**: all 22 routes, the
-design system, the contact form with every specified state, the
-content-credibility gate, the test suite (41 unit + 45 E2E/accessibility tests,
-all passing), the CI pipeline, and the EC2 deployment pipeline.
+**V2 of the website is built** on top of the V1 foundation: a cool corporate
+palette, photography on every page (32 licensed photos through a build-time
+pipeline), a Robert Half–style mega-menu header, the finalised legal name
+(Fast Digital Solutions LLC), the live domain baked in, and the contact form
+rewired to the production API (seven fields, verified with a live POST).
 
-**The site is live at https://fastdigitalsolutions.com/** — Amazon Linux 2023 +
-nginx behind Cloudflare, serving all routes over HTTPS with security headers,
-compression, and asset caching verified from the public internet. Crawlers are
-still deliberately blocked until `NEXT_PUBLIC_SITE_URL` is set (see below).
+The site is live at **https://fastdigitalsolutions.com** (Cloudflare → nginx on
+EC2). Quality gates on this branch: 45 unit tests, the Playwright E2E +
+axe-core suite (desktop + mobile), typecheck, lint, format, and the content
+gate all pass.
 
-What stands between this and a public production launch is **not code** — it
-is the owner-supplied inputs and verifications listed under
-[Production blockers](#production-blockers-prd-321).
+**Two server-side actions are needed before the enquiry form works in a
+browser** — see [Production blockers](#production-blockers).
 
-## Foundation and tooling
+## V2 upgrade (2026-08-27)
 
-| Item                                                                       | Status | Notes                                                        |
-| -------------------------------------------------------------------------- | ------ | ------------------------------------------------------------ |
-| Next.js 16 static export (no server runtime)                               | ✅     | `next.config.ts` per PRD §20.2                               |
-| TypeScript strict, ESLint, Prettier                                        | ✅     | all clean                                                    |
-| Tailwind 4 design tokens (Warm Precision palette, type scale, breakpoints) | ✅     | PRD §15.3–15.5; added `olive-dark` for AA contrast           |
-| Self-hosted variable fonts (Manrope, Source Serif 4)                       | ✅     | latin subsets, `font-display: swap`, no third-party requests |
-| Content schemas + build-blocking validation gate                           | ✅     | `scripts/validate-content.ts`; runs on every build           |
-| Placeholder warning system                                                 | ✅     | build prints every unresolved production placeholder         |
+| Item                                                                                 | Status | Notes                                                                                                                             |
+| ------------------------------------------------------------------------------------ | ------ | --------------------------------------------------------------------------------------------------------------------------------- |
+| Cool corporate palette (`navy`, `accent`, `teal`, `surface-card`)                    | ✅     | tokens in `globals.css`; all pairs AA; axe clean on 11 pages + open menu                                                          |
+| Image pipeline (`npm run images`, sharp → AVIF/WebP, hashed, committed)              | ✅     | 32 photos → 206 files, 5.2 MB; largest card 87 KB; build gate checks drift/size/uniqueness                                        |
+| Every photo used exactly once; blur/crop/flip retouching                             | ✅     | HP badges, ticker names, flipchart text, branded can removed; hero mirrored for copy space                                        |
+| `PageHero` (full-bleed / split / text) replacing 9 inline heroes                     | ✅     | one `priority` + preloaded image per page; rest lazy with explicit dimensions                                                     |
+| Photo cards (services), photo tiles (industries), photo CTA band, insight covers     | ✅     |                                                                                                                                   |
+| Mega-menu header (Services / Industries / Company) + mobile accordions               | ✅     | disclosure pattern, Escape/outside/focus-out close; E2E + unit + axe                                                              |
+| Deeper footer (Services · Industries · Company · Contact), LLC copyright             | ✅     |                                                                                                                                   |
+| Subtle motion (CSS-only scroll reveal, card lift), reduced-motion honoured           | ✅     | no client JS for motion; disabled for print                                                                                       |
+| "Serving clients since 2023" removed everywhere; `foundingDate` dropped from JSON-LD | ✅     |                                                                                                                                   |
+| Legal name in footer ©, legal pages, consent text, JSON-LD `legalName`               | ✅     | brand name unchanged in wordmark/nav/titles                                                                                       |
+| Domain + email baked into `site.ts` → indexable, sitemap, canonicals, JSON-LD        | ✅     | `NEXT_PUBLIC_SITE_URL` is now only an override                                                                                    |
+| Contact form → 7-field API, `text/plain` body (no preflight), `contactId` reference  | ✅     | live POST 2026-08-27 returned `200 {success, contactId, …}`; internal and user emails reported `sent`                             |
+| nginx: `/images/` immutable cache + AVIF type; CSP `connect-src` includes the API    | 🚧     | **files updated in repo; must be installed on the server** (`deploy/setup-ec2.sh` or copy the two conf files, `nginx -t`, reload) |
+| Docs: ARCHITECTURE, CONTENT-GUIDE, README, DEPLOYMENT, IMAGE-LICENSES                | ✅     |                                                                                                                                   |
 
-## Pages (PRD §12.3 launch gates)
+## Pages
 
-| Route                           | Status | Notes                                                                                   |
-| ------------------------------- | ------ | --------------------------------------------------------------------------------------- |
-| Home (10 sections A–J)          | ✅     | Insights preview auto-appears at ≥3 approved articles                                   |
-| Services index                  | ✅     |                                                                                         |
-| 6 service detail pages          | ✅     | full §14.3 template incl. "what we don't promise"                                       |
-| Industries                      | ✅     | 4 industries, challenge-led copy                                                        |
-| Work                            | ✅     | State A: 3 labelled representative scenarios; case-study rendering ready for States B/C |
-| How We Work                     | ✅     | 5 stages, commitments, engagement models, after-enquiry sequence                        |
-| About                           | ✅     | leadership section auto-appears when real profiles exist                                |
-| Contact                         | ✅     | form + fallback state (fallback currently active — no API URL)                          |
-| Careers                         | ✅     | honest no-open-roles state; role rendering built                                        |
-| Insights index                  | ✅     | out of primary nav until 3 approved articles (gate automated)                           |
-| 3 Insights articles             | 🚧     | fully drafted (900+ words each); need real authors + owner approval                     |
-| Privacy / Terms / Accessibility | 🚧     | drafted with visible draft banner; **need legal review**                                |
-| Custom 404                      | ✅     |                                                                                         |
-| robots.txt / sitemap.xml        | ✅     | noindex/empty until real domain is configured                                           |
+| Route                           | Status | Notes                                                                              |
+| ------------------------------- | ------ | ---------------------------------------------------------------------------------- |
+| Home                            | ✅     | full-bleed hero, photo service cards, dark method band, industry tiles, photo CTA  |
+| Services index                  | ✅     | dark photo hero (server rack), detailed text cards                                 |
+| 6 service detail pages          | ✅     | split hero with each service's second photo                                        |
+| Industries                      | ✅     | split hero; text panels (photos live on the home tiles)                            |
+| Work                            | ✅     | split hero; scenarios unchanged, case-study rendering ready                        |
+| How We Work                     | ✅     | split hero + stages split photo                                                    |
+| About                           | ✅     | split hero; leadership section auto-appears when real profiles exist               |
+| Contact                         | ✅     | split hero; new form; fallback state only if the endpoint is overridden to PENDING |
+| Careers                         | ✅     | split hero; honest no-open-roles state                                             |
+| Insights index + 3 articles     | 🚧     | covers wired; articles still `draft` — need real authors + owner approval          |
+| Privacy / Terms / Accessibility | 🚧     | now name the LLC; **still need legal review**                                      |
+| Custom 404                      | ✅     |                                                                                    |
 
-## Contact experience (PRD §22)
+## Quality
 
-| Item                                                                           | Status | Notes                                                  |
-| ------------------------------------------------------------------------------ | ------ | ------------------------------------------------------ |
-| Full field spec incl. honeypot + consent                                       | ✅     |                                                        |
-| All 7 states (idle/validation/submitting/202/422/429/timeout/5xx)              | ✅     | unit + E2E tested against mocked API                   |
-| Accessibility behavior (error summary focus, live regions, value preservation) | ✅     |                                                        |
-| No-backend fallback state                                                      | ✅     | active until the API URL is provided                   |
-| Real backend (API Gateway → Lambda → SES)                                      | ⏳     | **separate developer**; frontend contract in PRD §22.3 |
-| End-to-end test against the real endpoint                                      | ⏳     | after backend exists                                   |
+| Item                                                                        | Status | Notes                                                                       |
+| --------------------------------------------------------------------------- | ------ | --------------------------------------------------------------------------- |
+| Unit tests (45)                                                             | ✅     | schemas, gating, content, form payload/states, mega-menu, env fallbacks     |
+| Playwright E2E (desktop + mobile)                                           | ✅     | nav + mega-menu + mobile accordions, all form states, images, 404, overflow |
+| Automated a11y: axe WCAG 2.2 AA on 11 pages + open mega-menu                | ✅     | zero violations                                                             |
+| Manual a11y pass (screen reader, zoom, forced colors, contrast over photos) | ⏳     | required before sign-off — axe cannot judge text over photo scrims          |
+| Cross-browser smoke (Chrome/Edge/Firefox/Safari)                            | ⏳     | manual                                                                      |
+| Lighthouse ≥90 on the deployed site                                         | ⏳     | run after the nginx config is installed                                     |
 
-## Quality (PRD §28–29)
+## Production blockers
 
-| Item                                                            | Status | Notes                                                       |
-| --------------------------------------------------------------- | ------ | ----------------------------------------------------------- |
-| Unit tests (41)                                                 | ✅     | schemas, gating, content integrity, form logic, env config  |
-| Playwright E2E (45, desktop + mobile)                           | ✅     | nav, mobile menu focus/Escape, form states, 404, overflow   |
-| Automated a11y: axe WCAG 2.2 AA on 11 pages                     | ✅     | zero violations; enforced in CI                             |
-| Manual a11y pass (screen reader, 200%/400% zoom, forced colors) | ⏳     | required before launch (PRD §28.7) — automated ≠ sufficient |
-| Cross-browser smoke (Chrome/Edge/Firefox/Safari)                | ⏳     | manual, before launch (PRD §28.5)                           |
-| Lighthouse ≥90 on representative pages                          | ⏳     | run against the deployed site before launch                 |
-| Content QA sweep (PRD §28.3)                                    | ⏳     | after placeholders are resolved                             |
+Do these first — without them the enquiry form cannot submit from a browser:
 
-## CI/CD and operations
+- [ ] **Install the updated nginx config on the EC2 host** (`deploy/nginx/security-headers.conf` adds the API origin to CSP `connect-src`; `site-locations.conf` adds the `/images/` block). Run `deploy/setup-ec2.sh` or copy both files, then `sudo nginx -t && sudo systemctl reload nginx`.
+- [ ] **Backend: enable CORS on API Gateway** (OPTIONS route / CORS config with `https://fastdigitalsolutions.com`, methods POST, headers `Content-Type`). Today the preflight returns 404; the site works around it by posting `text/plain`, but a proper CORS setup is the durable fix and also lets the IP-hosted origin be added for testing if wanted.
 
-| Item                                                | Status | Notes                                                                                                                      |
-| --------------------------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------- |
-| CI workflow (format/lint/typecheck/tests/build/E2E) | ✅     | reusable (`workflow_call`); same env vars as deploy, so they cannot diverge                                                |
-| Deploy gated on CI passing                          | ✅     | `deploy` declares `needs: ci`; nothing ships until every check is green                                                    |
-| Build once, deploy the tested artifact              | ✅     | CI publishes `site-build`; deploy ships that exact artifact, no rebuild                                                    |
-| Automatic rollback on failed health check           | ✅     | **rehearsed 2026-08-27** — prior release restored, `post-rollback HTTP 200`                                                |
-| Deploy workflow (main → EC2, atomic releases)       | ✅     | proven end to end; deploy job now completes in ~10s                                                                        |
-| EC2 server provisioned (Amazon Linux 2023 + nginx)  | ✅     | `44.197.228.225`; setup script re-runnable                                                                                 |
-| Nginx config (security headers, caching, gzip, 404) | ✅     | verified over the public internet                                                                                          |
-| GitHub secrets (EC2_HOST / EC2_USER / EC2_SSH_KEY)  | ✅     | set via `gh secret set`, key read from disk                                                                                |
-| EC2 setup script + runbook                          | ✅     | `deploy/setup-ec2.sh`, `docs/DEPLOYMENT.md`                                                                                |
-| Dependabot (npm + actions)                          | ✅     | Actions bumped to v7; two npm majors blocked upstream (below)                                                              |
-| Domain + HTTPS via Cloudflare                       | ✅     | live 2026-08-27; Origin Certificate valid to 2041, covers apex + `*.` wildcard                                             |
-| **Elastic IP**                                      | ⏳     | **urgent now** — a stop/start changes the IP, breaking DNS _and_ deploys                                                   |
-| Restrict origin to Cloudflare IPs                   | ⏳     | `http://44.197.228.225/` is still reachable directly, bypassing Cloudflare                                                 |
-| Cloudflare "Always Use HTTPS"                       | ⏳     | dashboard toggle; HTTP currently serves instead of redirecting                                                             |
-| HSTS                                                | ⏳     | enable a few days after TLS proves stable (`setup-ec2.sh --enable-hsts`)                                                   |
-| Canonical host redirect (apex vs `www`)             | ⏳     | both currently return 200 (PRD §23.4)                                                                                      |
-| Real visitor IPs in nginx logs (`realip`)           | ⏳     | logs currently show Cloudflare IPs, not visitors                                                                           |
-| `NEXT_PUBLIC_SITE_URL` set → indexing on            | ⏳     | site is still `noindex`; set when you are ready to be found by Google                                                      |
-| Restrict SSH (port 22) to trusted IPs               | ⏳     | hard while GitHub-hosted runners deploy over SSH; OIDC + SSM is the real fix                                               |
-| Branch protection on `main`                         | ❌     | **not available on this GitHub plan** (private repo, free tier) — the workflow-level `needs: ci` gate covers the same risk |
-| CloudFront in front of EC2                          | ❌     | no longer needed — Cloudflare now provides the CDN layer                                                                   |
-| Replace SSH key with GitHub OIDC + SSM              | ⏳     | optional hardening; removes the long-lived key and closes port 22                                                          |
+Then, before public sign-off:
 
-### Blocked dependency updates (no action available)
+- [ ] Confirm the `hello@fastdigitalsolutions.com` mailbox exists (it is now shown in the footer, contact page, and JSON-LD)
+- [ ] Legal review of Privacy / Terms / Accessibility → flip `reviewStatus` to `approved`
+- [ ] Final logo + favicon + social-share image → `public/images/logo.svg` etc. (the pipeline can emit a 1200×630 OG image once the logo is final)
+- [ ] Elastic IP for the instance; restrict origin ports 80/443 to Cloudflare ranges; HSTS; canonical host redirect (see DEPLOYMENT.md)
+- [ ] Branch protection on `main`
 
-Dependabot has two open PRs that CI correctly rejects. Both are upstream
-ecosystem gaps, not defects in this project — leave them open until the
-upstream packages catch up, then merge.
+## Content still wanted (site launches fine without)
 
-| PR               | Blocker                                                                                                                                            |
-| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| eslint 9 → 10    | `eslint-plugin-react` (pulled in by `eslint-config-next`) calls a rule API removed in ESLint 10: `contextOrFilename.getFilename is not a function` |
-| typescript 6 → 7 | `typescript-eslint` reports `does not support TS 7.0`                                                                                              |
+- [ ] A dedicated hero photo (the current one is the mirrored office shot); real photos for retail, logistics, professional services, and the office/contact page — drop them in `images/`, update `src/content/image-manifest.ts`, run `npm run images`
+- [ ] Real authors + approval for the 3 Insights articles (Insights then enters navigation automatically)
+- [ ] Leadership names, bios, headshots
+- [ ] Verified stats / testimonials / client logos / certifications (all rendering exists and activates when verified records are added)
+- [ ] Delete `images/_rejected/` once the owner confirms the 26 rejects are not wanted (folder is local-only and gitignored)
 
-## Production blockers (PRD §32.1)
+## Follow-ups (nice to have)
 
-Every item below must be resolved before public launch. None can be invented.
+- Arrow-key roving inside open mega-menu panels (Tab order is correct today)
+- OG image generation in the pipeline once the logo/hero are final
 
-- [ ] Exact legal company name and entity type → `src/content/site.ts`
-- [ ] Formation evidence + confirmation of the "Serving clients since 2023" wording
-- [ ] Purchased production domain → `NEXT_PUBLIC_SITE_URL` variable + site.ts
-- [ ] Domain-based email addresses → site.ts (footer/contact email appear automatically)
-- [ ] Internal enquiry-recipient inbox (backend side)
-- [ ] Contact API production endpoint → `NEXT_PUBLIC_CONTACT_API_URL` variable
-- [ ] Final logo + favicon + social-share image → `public/` (wordmark used meanwhile)
-- [ ] Legal review of Privacy / Terms / Accessibility (drafts ready) → flip `reviewStatus`
-- [ ] Confirmed form-data retention and deletion process (provisional: 12 months)
-- [ ] Business hours decision (only shown if operationally accurate)
-- [ ] AWS / domain / GitHub / billing ownership documented
-- [ ] Real authors assigned + approval for the 3 Insights articles (optional for launch; Insights stays out of nav otherwise)
+## Deviations from the PRD (recorded in ARCHITECTURE.md)
 
-## Optional trust content (PRD §32.2 — site launches fine without)
-
-- [ ] Client names + written logo permissions
-- [ ] Approved testimonials (real people, roles, permission archived)
-- [ ] Case-study facts and approved outcomes
-- [ ] Certifications / partner statuses with verification
-- [ ] Leadership names, bios, headshots, profile URLs
-
-All rendering for these already exists and activates automatically when
-verified records are added — see docs/CONTENT-GUIDE.md.
-
-## Hosting — done (2026-08-27)
-
-EC2 provisioning, nginx configuration, the first deployment, and the GitHub
-secrets are all complete. See [DEPLOYMENT.md](DEPLOYMENT.md) for the
-environment details and the manual runbook.
-
-Remaining infrastructure actions, in priority order:
-
-1. **Allocate an Elastic IP** and update the `EC2_HOST` secret — without it the
-   address changes if the instance is ever stopped.
-2. **Restrict port 22** in the security group to trusted IPs.
-3. Later: the purchased **domain** (then TLS via certbot) and the **contact API
-   URL** from the backend developer.
-
-Branch protection on `main` is **not available on the current GitHub plan** —
-the API returns `403: Upgrade to GitHub Pro or make this repository public`.
-The `needs: ci` gate in `deploy.yml` covers the same risk (nothing deploys
-without passing checks); what it cannot enforce is a required review before a
-merge. Upgrading the plan would add that.
-
-## Deviations from the PRD (agreed)
-
-| PRD                     | Deviation                                                                                                          | Recorded        |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------ | --------------- |
-| §23 AWS Amplify Hosting | EC2 + Nginx via GitHub Actions, at owner request (2026-08-26)                                                      | ARCHITECTURE.md |
-| §15.3 palette           | Added `olive-dark` token — base olive failed WCAG AA for small badge text (a possibility §15.3 itself anticipated) | ARCHITECTURE.md |
-| §12.2 route file layout | Insights implemented as one optional catch-all route (static-export constraint); public URLs unchanged             | ARCHITECTURE.md |
+| PRD                              | Deviation                                                       |
+| -------------------------------- | --------------------------------------------------------------- |
+| §23 AWS Amplify Hosting          | EC2 + nginx via GitHub Actions, behind Cloudflare               |
+| §15 "Warm Precision" palette     | Replaced by the cool corporate palette (owner, 2026-08-27)      |
+| §13.1 "no mega-menu in V1"       | Mega-menu header shipped (owner, 2026-08-27)                    |
+| §15.7 photography order          | Licensed stock workplace photography, honestly described in alt |
+| §20.6 JPEG fallback              | AVIF + WebP only                                                |
+| §22 contact contract (11 fields) | Seven-field API, any 2xx = success, `text/plain` body           |
+| §12.2 route file layout          | Insights as one optional catch-all route (static export)        |

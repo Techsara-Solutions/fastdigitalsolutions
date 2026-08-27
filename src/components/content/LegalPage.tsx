@@ -22,7 +22,7 @@ export function LegalPage({ doc }: { doc: LegalDoc }) {
           </h1>
           <p className="mt-4 text-sm text-muted">Last reviewed: {formatDate(doc.lastReviewed)}</p>
           {doc.reviewStatus === "draft-pending-legal-review" ? (
-            <p className="mt-6 rounded-[10px] border border-clay/50 bg-clay/10 px-4 py-3 text-sm font-medium text-clay-dark">
+            <p className="mt-6 rounded-[10px] border border-accent/50 bg-accent/10 px-4 py-3 text-sm font-medium text-accent-dark">
               Draft — this document is pending legal review and may change before final publication.
             </p>
           ) : null}

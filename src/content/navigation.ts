@@ -1,38 +1,146 @@
 import { getPublishedInsights } from "@/lib/insights";
+import { services } from "@/content/services";
+import { industries } from "@/content/industries";
+import { images, type GeneratedImage } from "@/lib/images";
 
-export type NavItem = {
+export type NavLink = {
   label: string;
   href: string;
+  /** One-line description shown under the label inside a menu panel. */
+  description?: string;
+};
+
+export type NavGroup = {
+  heading?: string;
+  items: NavLink[];
+};
+
+export type NavFeatured = {
+  image: GeneratedImage;
+  title: string;
+  copy: string;
+  href: string;
+  cta: string;
+};
+
+export type NavMenu = {
+  groups: NavGroup[];
+  /** "View all" link shown at the foot of the panel. */
+  all?: NavLink;
+  featured?: NavFeatured;
+};
+
+export type NavItem = NavLink & {
+  /** Stable key for DOM ids and open-state tracking. */
+  key: string;
+  menu?: NavMenu;
 };
 
 /**
- * Primary navigation (PRD §12.1).
+ * Primary navigation. Menus are built from the content collections so labels
+ * never drift from the pages they point at; the header is a client component,
+ * so everything here must be serialisable (featured images are resolved to
+ * their generated records at build time).
  *
- * Launch gates applied here:
- * - Insights appears only when at least three approved articles exist (PRD §14.8).
- * - Careers lives in the footer and About page, not primary navigation.
+ * Launch gates:
+ * - Insights appears only when at least three approved articles exist.
+ * - Careers lives under Company and in the footer, not at the top level.
  */
-const baseNavigation: NavItem[] = [
-  { label: "Services", href: "/services/" },
-  { label: "Industries", href: "/industries/" },
-  { label: "Work", href: "/work/" },
-  { label: "How we work", href: "/how-we-work/" },
-  { label: "About", href: "/about/" },
-];
-
 export const INSIGHTS_NAV_MINIMUM = 3;
 
+function serviceLinks(): NavLink[] {
+  return services.map((service) => ({
+    label: service.name,
+    href: `/services/${service.slug}/`,
+    description: service.clientNeed,
+  }));
+}
+
+function industryLinks(): NavLink[] {
+  return industries.map((industry) => ({
+    label: industry.name,
+    href: "/industries/",
+    description: industry.challenge,
+  }));
+}
+
 export function getPrimaryNavigation(): NavItem[] {
-  const items = [...baseNavigation];
+  const serviceItems = serviceLinks();
+  const items: NavItem[] = [
+    {
+      key: "services",
+      label: "Services",
+      href: "/services/",
+      menu: {
+        groups: [
+          { heading: "Build and modernise", items: serviceItems.slice(0, 3) },
+          { heading: "Assure and sustain", items: serviceItems.slice(3) },
+        ],
+        all: { label: "All services", href: "/services/" },
+        featured: {
+          image: images["nav-services"],
+          title: "How we work",
+          copy: "Five stages, visible outputs, and documented decisions — the method behind every engagement.",
+          href: "/how-we-work/",
+          cta: "See the method",
+        },
+      },
+    },
+    {
+      key: "industries",
+      label: "Industries",
+      href: "/industries/",
+      menu: {
+        groups: [{ heading: "Operating contexts we understand", items: industryLinks() }],
+        all: { label: "All industries", href: "/industries/" },
+      },
+    },
+    { key: "work", label: "Work", href: "/work/" },
+    { key: "how-we-work", label: "How we work", href: "/how-we-work/" },
+    {
+      key: "company",
+      label: "Company",
+      href: "/about/",
+      menu: {
+        groups: [
+          {
+            items: [
+              {
+                label: "About",
+                href: "/about/",
+                description: "Who we are and the principles behind our delivery.",
+              },
+              {
+                label: "Careers",
+                href: "/careers/",
+                description: "Open roles, posted only when they are real.",
+              },
+              {
+                label: "Contact",
+                href: "/contact/",
+                description: "Tell us what needs to move forward.",
+              },
+            ],
+          },
+        ],
+        featured: {
+          image: images["nav-company"],
+          title: "Discuss your project",
+          copy: "A considered reply within two business days — an introduction, a next step, or an honest “not the right fit.”",
+          href: "/contact/",
+          cta: "Get in touch",
+        },
+      },
+    },
+  ];
+
   if (getPublishedInsights().length >= INSIGHTS_NAV_MINIMUM) {
-    items.splice(4, 0, { label: "Insights", href: "/insights/" });
+    items.splice(4, 0, { key: "insights", label: "Insights", href: "/insights/" });
   }
   return items;
 }
 
-export const footerServiceLinksHeading = "Services";
-
-export const footerCompanyLinks: NavItem[] = [
+export const footerCompanyLinks: NavLink[] = [
   { label: "About", href: "/about/" },
   { label: "How we work", href: "/how-we-work/" },
   { label: "Work", href: "/work/" },
@@ -40,7 +148,7 @@ export const footerCompanyLinks: NavItem[] = [
   { label: "Contact", href: "/contact/" },
 ];
 
-export const footerLegalLinks: NavItem[] = [
+export const footerLegalLinks: NavLink[] = [
   { label: "Privacy Policy", href: "/privacy/" },
   { label: "Terms of Use", href: "/terms/" },
   { label: "Accessibility", href: "/accessibility/" },

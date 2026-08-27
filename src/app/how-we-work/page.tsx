@@ -3,6 +3,9 @@ import { buildMetadata } from "@/lib/metadata";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { SectionIntro } from "@/components/ui/SectionIntro";
+import { Picture } from "@/components/ui/Picture";
+import { SIZES } from "@/lib/images";
+import { PageHero } from "@/components/content/PageHero";
 import { PullStatement } from "@/components/content/PullStatement";
 import { CtaPanel } from "@/components/content/CtaPanel";
 import { afterEnquirySteps, deliveryStages, workingCommitments } from "@/content/delivery-method";
@@ -18,21 +21,14 @@ export const metadata: Metadata = buildMetadata({
 export default function HowWeWorkPage() {
   return (
     <>
-      <Section surface="paper" spacing="tight" ariaLabelledby="hww-hero">
-        <Container>
-          <div className="max-w-[46rem] py-6">
-            <p className="eyebrow mb-4">How we work</p>
-            <h1 id="hww-hero" className="text-h1 font-semibold">
-              Delivery you can see, question, and steer.
-            </h1>
-            <p className="mt-6 text-lead text-muted">
-              Most delivery risk comes from working in the dark: progress you cannot verify,
-              decisions you were not part of, problems raised too late to fix cheaply. Our method is
-              designed to remove that darkness.
-            </p>
-          </div>
-        </Container>
-      </Section>
+      <PageHero
+        headingId="hww-hero"
+        variant="split"
+        image="hero-how-we-work"
+        eyebrow="How we work"
+        title="Delivery you can see, question, and steer."
+        lead="Most delivery risk comes from working in the dark: progress you cannot verify, decisions you were not part of, problems raised too late to fix cheaply. Our method is designed to remove that darkness."
+      />
 
       <Section surface="canvas" spacing="tight" ariaLabelledby="philosophy-heading">
         <Container>
@@ -52,21 +48,30 @@ export default function HowWeWorkPage() {
       {/* Five-stage method, in full */}
       <Section surface="paper" ariaLabelledby="stages-heading">
         <Container>
-          <SectionIntro
-            id="stages-heading"
-            eyebrow="The method"
-            title="Five stages, each with visible outputs."
-          />
+          <div className="grid items-center gap-10 lg:grid-cols-[7fr_5fr] lg:gap-16">
+            <SectionIntro
+              id="stages-heading"
+              eyebrow="The method"
+              title="Five stages, each with visible outputs."
+              lead="Each stage ends with something you can see and check — a plan, a running increment, a test result, a handover document — so progress is never a matter of trust alone."
+            />
+            <Picture
+              id="feature-how-we-work-stages"
+              sizes={SIZES.feature}
+              pictureClassName="block overflow-hidden rounded-[20px] bg-canvas"
+              className="aspect-[4/3] object-cover"
+            />
+          </div>
           <div className="mt-12 space-y-10">
             {deliveryStages.map((stage) => (
               <article
                 key={stage.name}
-                className="grid gap-6 rounded-[12px] border border-stone bg-white/40 p-6 md:grid-cols-[auto_1fr_1fr] md:gap-10 md:p-8"
+                className="grid gap-6 rounded-[12px] border border-stone bg-surface-card p-6 md:grid-cols-[auto_1fr_1fr] md:gap-10 md:p-8"
               >
                 <div className="flex items-start gap-4 md:w-44">
                   <span
                     aria-hidden="true"
-                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-clay text-base font-bold text-clay-dark"
+                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-accent text-base font-bold text-accent-dark"
                   >
                     {stage.number}
                   </span>
@@ -84,7 +89,7 @@ export default function HowWeWorkPage() {
                       >
                         <span
                           aria-hidden="true"
-                          className="mt-[0.55em] h-1 w-3 shrink-0 rounded-full bg-clay/70"
+                          className="mt-[0.55em] h-1 w-3 shrink-0 rounded-full bg-accent/70"
                         />
                         {point}
                       </li>
@@ -103,7 +108,7 @@ export default function HowWeWorkPage() {
                       >
                         <span
                           aria-hidden="true"
-                          className="mt-[0.55em] h-1 w-3 shrink-0 rounded-full bg-olive/70"
+                          className="mt-[0.55em] h-1 w-3 shrink-0 rounded-full bg-teal/70"
                         />
                         {output}
                       </li>
@@ -117,7 +122,7 @@ export default function HowWeWorkPage() {
       </Section>
 
       {/* Communication, governance, quality, documentation */}
-      <Section surface="espresso" ariaLabelledby="commitments-heading">
+      <Section surface="navy" ariaLabelledby="commitments-heading">
         <Container>
           <SectionIntro
             id="commitments-heading"
@@ -133,7 +138,7 @@ export default function HowWeWorkPage() {
               >
                 <span
                   aria-hidden="true"
-                  className="mt-[0.55em] h-1 w-3 shrink-0 rounded-full bg-clay"
+                  className="mt-[0.55em] h-1 w-3 shrink-0 rounded-full bg-accent"
                 />
                 {commitment}
               </li>
@@ -154,10 +159,12 @@ export default function HowWeWorkPage() {
             {engagementModels.map((model) => (
               <article
                 key={model.slug}
-                className="rounded-[12px] border border-stone bg-white/40 p-6 lg:p-8"
+                className="rounded-[12px] border border-stone bg-surface-card p-6 lg:p-8"
               >
                 <h3 className="text-h3 font-semibold">{model.name}</h3>
-                <p className="mt-2 text-sm font-medium text-clay-dark">Best for: {model.bestFor}</p>
+                <p className="mt-2 text-sm font-medium text-accent-dark">
+                  Best for: {model.bestFor}
+                </p>
                 <p className="mt-3 text-[0.9375rem] leading-relaxed text-muted">
                   {model.explanation}
                 </p>
@@ -181,7 +188,7 @@ export default function HowWeWorkPage() {
               <li key={step.title} className="relative">
                 <span
                   aria-hidden="true"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-clay bg-paper text-sm font-bold text-clay-dark"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-accent bg-paper text-sm font-bold text-accent-dark"
                 >
                   {index + 1}
                 </span>

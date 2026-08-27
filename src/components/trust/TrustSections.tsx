@@ -76,7 +76,7 @@ export function MetricStrip() {
         <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {metrics.map((metric) => (
             <li key={metric.label}>
-              <p className="text-h2 font-semibold text-clay-dark">{metric.value}</p>
+              <p className="text-h2 font-semibold text-accent-dark">{metric.value}</p>
               <p className="mt-1 text-sm text-muted">{metric.label}</p>
             </li>
           ))}
@@ -120,7 +120,10 @@ export function LeadershipGrid() {
         />
         <ul className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {leaders.map((person) => (
-            <li key={person.name} className="rounded-[12px] border border-stone bg-white/40 p-6">
+            <li
+              key={person.name}
+              className="rounded-[12px] border border-stone bg-surface-card p-6"
+            >
               {person.headshotSrc ? (
                 // eslint-disable-next-line @next/next/no-img-element -- static export uses pre-optimized assets
                 <img
@@ -133,7 +136,7 @@ export function LeadershipGrid() {
                 />
               ) : null}
               <h3 className="mt-4 text-lg font-bold">{person.name}</h3>
-              <p className="text-sm font-medium text-clay-dark">{person.role}</p>
+              <p className="text-sm font-medium text-accent-dark">{person.role}</p>
               <p className="mt-3 text-sm leading-relaxed text-muted">{person.bio}</p>
             </li>
           ))}

@@ -15,7 +15,8 @@ export default defineConfig({
     trace: "on-first-retry",
   },
   webServer: {
-    command: "npx serve out -l 4173 --no-clipboard",
+    // serve's bundled MIME table predates AVIF; serve.json fixes the type.
+    command: "npx serve out -l 4173 --no-clipboard -c ../serve.json",
     port: 4173,
     reuseExistingServer: !process.env.CI,
     timeout: 30_000,

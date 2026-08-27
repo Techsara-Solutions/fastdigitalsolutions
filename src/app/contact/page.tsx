@@ -3,6 +3,7 @@ import Link from "next/link";
 import { buildMetadata } from "@/lib/metadata";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
+import { PageHero } from "@/components/content/PageHero";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { siteConfig, isPlaceholder, getContactApiUrl } from "@/content/site";
 
@@ -29,20 +30,14 @@ export default function ContactPage() {
 
   return (
     <>
-      <Section surface="paper" spacing="tight" ariaLabelledby="contact-hero">
-        <Container>
-          <div className="max-w-[46rem] py-6">
-            <p className="eyebrow mb-4">Contact</p>
-            <h1 id="contact-hero" className="text-h1 font-semibold">
-              Let&rsquo;s understand what you need to move forward.
-            </h1>
-            <p className="mt-6 text-lead text-muted">
-              Share the business goal, current challenge, or delivery gap. We will review the
-              details and respond {siteConfig.responseCommitment} with an appropriate next step.
-            </p>
-          </div>
-        </Container>
-      </Section>
+      <PageHero
+        headingId="contact-hero"
+        variant="split"
+        image="hero-contact"
+        eyebrow="Contact"
+        title={<>Let&rsquo;s understand what you need to move forward.</>}
+        lead={`Share the business goal, current challenge, or delivery gap. We will review the details and respond ${siteConfig.responseCommitment} with an appropriate next step.`}
+      />
 
       <Section surface="canvas" spacing="tight" ariaLabelledby="contact-form-heading">
         <Container>
@@ -66,7 +61,7 @@ export default function ContactPage() {
                     <p className="mt-5 text-lg font-semibold">
                       <a
                         href={siteConfig.phoneHref}
-                        className="text-clay-dark underline underline-offset-4"
+                        className="text-accent-dark underline underline-offset-4"
                       >
                         {siteConfig.phoneDisplay}
                       </a>
@@ -83,7 +78,7 @@ export default function ContactPage() {
                 <p className="mt-2 text-[0.9375rem] text-muted">
                   <a
                     href={siteConfig.phoneHref}
-                    className="font-semibold text-clay-dark hover:underline"
+                    className="font-semibold text-accent-dark hover:underline"
                   >
                     {siteConfig.phoneDisplay}
                   </a>
@@ -97,7 +92,7 @@ export default function ContactPage() {
                   <p className="mt-2 text-[0.9375rem] text-muted">
                     <a
                       href={`mailto:${siteConfig.email}`}
-                      className="font-semibold text-clay-dark hover:underline"
+                      className="font-semibold text-accent-dark hover:underline"
                     >
                       {siteConfig.email}
                     </a>
@@ -122,7 +117,7 @@ export default function ContactPage() {
                   See{" "}
                   <Link
                     href="/how-we-work/"
-                    className="font-semibold text-clay-dark hover:underline"
+                    className="font-semibold text-accent-dark hover:underline"
                   >
                     what happens after you enquire
                   </Link>
@@ -136,7 +131,7 @@ export default function ContactPage() {
                   it. Our{" "}
                   <Link
                     href="/accessibility/"
-                    className="font-semibold text-clay-dark hover:underline"
+                    className="font-semibold text-accent-dark hover:underline"
                   >
                     accessibility statement
                   </Link>{" "}
@@ -146,7 +141,7 @@ export default function ContactPage() {
               <div>
                 <p className="text-sm text-muted">
                   Your information is used only to respond to your enquiry. Read the{" "}
-                  <Link href="/privacy/" className="font-semibold text-clay-dark hover:underline">
+                  <Link href="/privacy/" className="font-semibold text-accent-dark hover:underline">
                     Privacy Policy
                   </Link>
                   .

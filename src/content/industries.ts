@@ -9,6 +9,7 @@ import type { Industry } from "@/lib/schemas";
 export const industries: Industry[] = [
   {
     slug: "technology-saas",
+    tileImageId: "tile-industry-technology-saas",
     name: "Technology and SaaS",
     challenge:
       "Scaling a product and platform without letting reliability, release quality, or engineering pace slip.",
@@ -31,6 +32,7 @@ export const industries: Industry[] = [
   },
   {
     slug: "retail-digital-commerce",
+    tileImageId: "tile-industry-retail",
     name: "Retail and Digital Commerce",
     challenge:
       "Keeping customer-facing systems fast, integrated, and dependable — especially when peak traffic arrives.",
@@ -53,6 +55,7 @@ export const industries: Industry[] = [
   },
   {
     slug: "professional-services",
+    tileImageId: "tile-industry-professional-services",
     name: "Professional Services and Business Operations",
     challenge:
       "Freeing skilled people from manual, document-heavy processes that spreadsheets and email were never meant to run.",
@@ -74,6 +77,7 @@ export const industries: Industry[] = [
   },
   {
     slug: "logistics-supply-chain",
+    tileImageId: "tile-industry-logistics",
     name: "Logistics and Supply Chain",
     challenge:
       "Getting operational systems, partners, and data to move as reliably as the goods they track.",

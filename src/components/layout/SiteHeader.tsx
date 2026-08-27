@@ -1,30 +1,37 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { NavItem } from "@/content/navigation";
-import { siteConfig } from "@/content/site";
 import { Button } from "@/components/ui/Button";
 import { Wordmark } from "@/components/layout/Wordmark";
-
-const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+import { DesktopNav } from "@/components/layout/DesktopNav";
+import { MobileNav } from "@/components/layout/MobileNav";
 
 type SiteHeaderProps = {
   items: NavItem[];
 };
 
 /**
- * Sticky site header with desktop navigation and an accessible mobile
- * navigation dialog (PRD §13.1): focus trap while open, Escape closes,
- * body scrolling disabled, focus returned to the trigger on close.
+ * Sticky site header: desktop navigation with disclosure mega-menus and an
+ * accessible mobile navigation dialog (focus trap, Escape, scroll lock,
+ * focus returned to the trigger on close).
  */
 export function SiteHeader({ items }: SiteHeaderProps) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const dialogRef = useRef<HTMLDivElement>(null);
+  const [openKey, setOpenKey] = useState<string | null>(null);
+  const [lastPathname, setLastPathname] = useState(pathname);
+  const headerRef = useRef<HTMLElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+
+  /* Any navigation closes whatever is open (state adjusted during render). */
+  if (lastPathname !== pathname) {
+    setLastPathname(pathname);
+    setOpenKey(null);
+    setOpen(false);
+  }
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -33,81 +40,37 @@ export function SiteHeader({ items }: SiteHeaderProps) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const close = useCallback(() => {
+  /* Outside click closes the desktop panel. */
+  useEffect(() => {
+    if (!openKey) return;
+    const onPointerDown = (event: PointerEvent) => {
+      if (!headerRef.current?.contains(event.target as Node)) setOpenKey(null);
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [openKey]);
+
+  const closeMobile = useCallback(() => {
     setOpen(false);
     triggerRef.current?.focus();
   }, []);
-
-  /* Focus trap + Escape + scroll lock while the mobile menu is open. */
-  useEffect(() => {
-    if (!open) return;
-    const dialog = dialogRef.current;
-    if (!dialog) return;
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    const focusables = dialog.querySelectorAll<HTMLElement>(FOCUSABLE);
-    focusables[0]?.focus();
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        close();
-        return;
-      }
-      if (event.key !== "Tab") return;
-      const nodes = Array.from(dialog.querySelectorAll<HTMLElement>(FOCUSABLE));
-      if (nodes.length === 0) return;
-      const first = nodes[0]!;
-      const last = nodes[nodes.length - 1]!;
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    };
-
-    document.addEventListener("keydown", onKeyDown);
-    return () => {
-      document.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = previousOverflow;
-    };
-  }, [open, close]);
 
   const isCurrent = (href: string) =>
     href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(href);
 
   return (
     <header
+      ref={headerRef}
+      // No backdrop-filter here: it would become the containing block for the
+      // fixed-position mobile dialog and clip it to the header bar.
       className={`sticky top-0 z-40 bg-paper transition-shadow ${
-        scrolled ? "border-b border-stone" : "border-b border-transparent"
+        scrolled || openKey ? "border-b border-stone" : "border-b border-transparent"
       }`}
     >
       <div className="mx-auto flex h-16 w-full max-w-[1280px] items-center justify-between gap-6 px-5 sm:px-8 lg:h-[4.5rem] lg:px-12">
         <Wordmark />
 
-        {/* Desktop navigation */}
-        <nav aria-label="Primary" className="hidden md:block">
-          <ul className="flex items-center gap-6 lg:gap-8">
-            {items.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  aria-current={isCurrent(item.href) ? "page" : undefined}
-                  className={`text-[0.9375rem] font-medium transition-colors hover:text-clay-dark ${
-                    isCurrent(item.href)
-                      ? "text-clay-dark underline decoration-clay decoration-2 underline-offset-8"
-                      : "text-ink"
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        <DesktopNav items={items} openKey={openKey} setOpenKey={setOpenKey} isCurrent={isCurrent} />
 
         <div className="hidden md:block">
           <Button href="/contact/">Discuss your project</Button>
@@ -134,65 +97,7 @@ export function SiteHeader({ items }: SiteHeaderProps) {
         </button>
       </div>
 
-      {/* Mobile navigation dialog */}
-      {open ? (
-        <div
-          ref={dialogRef}
-          id="mobile-navigation"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Site navigation"
-          className="fixed inset-0 z-50 flex flex-col bg-paper md:hidden"
-        >
-          <div className="flex h-16 items-center justify-between px-5 sm:px-8">
-            <Wordmark />
-            <button
-              type="button"
-              className="inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-md border border-ink/20 px-3 py-2 text-sm font-semibold"
-              onClick={close}
-            >
-              <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path
-                  d="M3 3l10 10M13 3L3 13"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                />
-              </svg>
-              Close
-            </button>
-          </div>
-          <nav aria-label="Primary" className="flex-1 overflow-y-auto px-5 py-6 sm:px-8">
-            <ul className="flex flex-col gap-1">
-              {items.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    aria-current={isCurrent(item.href) ? "page" : undefined}
-                    onClick={() => setOpen(false)}
-                    className={`block rounded-md px-3 py-3 text-lg font-medium ${
-                      isCurrent(item.href) ? "bg-canvas text-clay-dark" : "text-ink"
-                    }`}
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <div className="mt-8 flex flex-col gap-4 border-t border-stone pt-8">
-              <Button href="/contact/" onClick={() => setOpen(false)}>
-                Discuss your project
-              </Button>
-              <a
-                href={siteConfig.phoneHref}
-                className="px-3 text-base font-medium text-clay-dark underline underline-offset-4"
-              >
-                {siteConfig.phoneDisplay}
-              </a>
-            </div>
-          </nav>
-        </div>
-      ) : null}
+      {open ? <MobileNav items={items} isCurrent={isCurrent} onClose={closeMobile} /> : null}
     </header>
   );
 }

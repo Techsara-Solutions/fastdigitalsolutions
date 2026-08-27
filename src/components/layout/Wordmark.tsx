@@ -15,7 +15,7 @@ export function Wordmark({ className = "" }: { className?: string }) {
     >
       <span
         aria-hidden="true"
-        className="inline-block h-2.5 w-2.5 translate-y-[-1px] rounded-[2px] bg-clay"
+        className="inline-block h-2.5 w-2.5 translate-y-[-1px] rounded-[2px] bg-accent"
       />
       <span className="text-[1.0625rem] leading-none">
         Fast<span className="font-normal">&nbsp;Digital Solutions</span>

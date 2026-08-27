@@ -6,7 +6,7 @@ import type { ReactNode } from "react";
  */
 export function PullStatement({ children }: { children: ReactNode }) {
   return (
-    <blockquote className="border-l-2 border-clay pl-6 font-serif text-[1.5rem] leading-snug text-ink md:text-[1.75rem]">
+    <blockquote className="border-l-2 border-accent pl-6 font-serif text-[1.5rem] leading-snug text-ink md:text-[1.75rem]">
       {children}
     </blockquote>
   );

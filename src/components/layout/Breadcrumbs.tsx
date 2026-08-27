@@ -29,7 +29,7 @@ export function Breadcrumbs({ crumbs }: { crumbs: Crumb[] }) {
                     {crumb.label}
                   </span>
                 ) : (
-                  <Link href={crumb.href} className="hover:text-clay-dark hover:underline">
+                  <Link href={crumb.href} className="hover:text-accent-dark hover:underline">
                     {crumb.label}
                   </Link>
                 )}

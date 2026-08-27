@@ -3,6 +3,7 @@ import Link from "next/link";
 import { buildMetadata } from "@/lib/metadata";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
+import { PageHero } from "@/components/content/PageHero";
 import { CtaPanel } from "@/components/content/CtaPanel";
 import { scenarios, SCENARIO_LABEL } from "@/content/scenarios";
 import { getPublishedCaseStudies } from "@/content/case-studies";
@@ -25,20 +26,14 @@ export default function WorkPage() {
 
   return (
     <>
-      <Section surface="paper" spacing="tight" ariaLabelledby="work-hero">
-        <Container>
-          <div className="max-w-[46rem] py-6">
-            <p className="eyebrow mb-4">Work</p>
-            <h1 id="work-hero" className="text-h1 font-semibold">
-              Capabilities in practice
-            </h1>
-            <p className="mt-6 text-lead text-muted">
-              These representative scenarios show how our services can be combined around common
-              client needs. Named client work will be published only with permission.
-            </p>
-          </div>
-        </Container>
-      </Section>
+      <PageHero
+        headingId="work-hero"
+        variant="split"
+        image="hero-work"
+        eyebrow="Work"
+        title="Capabilities in practice"
+        lead="These representative scenarios show how our services can be combined around common client needs. Named client work will be published only with permission."
+      />
 
       {caseStudies.length > 0 ? (
         <Section surface="canvas" ariaLabelledby="case-studies-heading">
@@ -52,7 +47,7 @@ export default function WorkPage() {
                   key={study.slug}
                   className="rounded-[12px] border border-stone bg-paper p-6 lg:p-8"
                 >
-                  <p className="text-sm font-semibold text-clay-dark">{study.clientDescriptor}</p>
+                  <p className="text-sm font-semibold text-accent-dark">{study.clientDescriptor}</p>
                   <h3 className="mt-2 text-h3 font-semibold">{study.title}</h3>
                   <p className="mt-3 text-[0.9375rem] leading-relaxed text-muted">
                     {study.context}
@@ -76,7 +71,7 @@ export default function WorkPage() {
                 id={scenario.slug}
                 className="scroll-mt-24 rounded-[12px] border border-stone bg-paper p-6 md:p-10"
               >
-                <p className="mb-5 inline-flex items-center rounded-full border border-olive/40 bg-olive/10 px-3 py-1 text-xs font-semibold text-olive-dark">
+                <p className="mb-5 inline-flex items-center rounded-full border border-teal/40 bg-teal/10 px-3 py-1 text-xs font-semibold text-teal-dark">
                   {SCENARIO_LABEL}
                 </p>
                 <h3 className="text-h3 font-semibold">{scenario.title}</h3>
@@ -99,7 +94,7 @@ export default function WorkPage() {
                           key={step}
                           className="flex gap-3 text-[0.9375rem] leading-relaxed text-ink/85"
                         >
-                          <span aria-hidden="true" className="font-bold text-clay-dark">
+                          <span aria-hidden="true" className="font-bold text-accent-dark">
                             {index + 1}.
                           </span>
                           {step}
@@ -119,7 +114,7 @@ export default function WorkPage() {
                         >
                           <span
                             aria-hidden="true"
-                            className="mt-[0.55em] h-1 w-3 shrink-0 rounded-full bg-clay/70"
+                            className="mt-[0.55em] h-1 w-3 shrink-0 rounded-full bg-accent/70"
                           />
                           {outcome}
                         </li>
@@ -137,7 +132,7 @@ export default function WorkPage() {
                         {index > 0 ? " · " : ""}
                         <Link
                           href={`/services/${slug}/`}
-                          className="font-semibold text-clay-dark hover:underline"
+                          className="font-semibold text-accent-dark hover:underline"
                         >
                           {service.name}
                         </Link>

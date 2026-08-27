@@ -11,6 +11,8 @@ const eslintConfig = [
       "playwright-report/**",
       "test-results/**",
       "next-env.d.ts",
+      "src/generated/**",
+      "public/images/**",
     ],
   },
   ...coreWebVitals,

@@ -6,21 +6,22 @@ and §17 (content model).
 
 ## Where content lives
 
-| File                               | Contains                                                                     |
-| ---------------------------------- | ---------------------------------------------------------------------------- |
-| `src/content/site.ts`              | Brand identity: name, phone, address, placeholders (domain/email/legal name) |
-| `src/content/navigation.ts`        | Primary nav, footer links, the Insights nav gate                             |
-| `src/content/services.ts`          | The six service groups (cards + full detail pages)                           |
-| `src/content/industries.ts`        | The four focus industries                                                    |
-| `src/content/engagement-models.ts` | The four engagement models                                                   |
-| `src/content/scenarios.ts`         | Representative scenarios (always labelled illustrative)                      |
-| `src/content/case-studies.ts`      | Real client work — **empty until permissions exist**                         |
-| `src/content/people.ts`            | Leadership — **empty until real, approved profiles exist**                   |
-| `src/content/proof.ts`             | Testimonials, logos, metrics, certifications — **empty until verified**      |
-| `src/content/careers.ts`           | Open roles (empty = honest no-open-roles state)                              |
-| `src/content/insights/*.mdx`       | Articles (frontmatter + MDX body)                                            |
-| `src/content/legal/*.mdx`          | Privacy, Terms, Accessibility (draft-marked until legal review)              |
-| `src/content/delivery-method.ts`   | The five delivery stages and working commitments                             |
+| File                               | Contains                                                                      |
+| ---------------------------------- | ----------------------------------------------------------------------------- |
+| `src/content/site.ts`              | Brand identity: brand/legal name, domain, email, phone, address, API endpoint |
+| `src/content/navigation.ts`        | Primary nav + mega-menu groups, footer links, the Insights nav gate           |
+| `src/content/image-manifest.ts`    | Every photograph on the site: source file, crop, retouch ops, alt text        |
+| `src/content/services.ts`          | The six service groups (cards + full detail pages)                            |
+| `src/content/industries.ts`        | The four focus industries                                                     |
+| `src/content/engagement-models.ts` | The four engagement models                                                    |
+| `src/content/scenarios.ts`         | Representative scenarios (always labelled illustrative)                       |
+| `src/content/case-studies.ts`      | Real client work — **empty until permissions exist**                          |
+| `src/content/people.ts`            | Leadership — **empty until real, approved profiles exist**                    |
+| `src/content/proof.ts`             | Testimonials, logos, metrics, certifications — **empty until verified**       |
+| `src/content/careers.ts`           | Open roles (empty = honest no-open-roles state)                               |
+| `src/content/insights/*.mdx`       | Articles (frontmatter + MDX body)                                             |
+| `src/content/legal/*.mdx`          | Privacy, Terms, Accessibility (draft-marked until legal review)               |
+| `src/content/delivery-method.ts`   | The five delivery stages and working commitments                              |
 
 After any edit, run `npm run validate:content` (or just `npm run build` —
 validation runs automatically and **blocks the build** on violations).
@@ -47,11 +48,12 @@ where the permission is archived), or the build fails.
 
 ### Update identity data (domain, email, legal name, logo)
 
-Edit `src/content/site.ts`. Replace the `[DOMAIN-PENDING]` values, set
-`legalName` when formation documents confirm it, and add the final logo as
-`public/images/logo.svg` (the build warning disappears when each is resolved).
-Also set the `NEXT_PUBLIC_SITE_URL` repository variable for deploys
-(see DEPLOYMENT.md) — that is what turns off `noindex`.
+Edit `src/content/site.ts`. The domain (`https://fastdigitalsolutions.com`),
+email, and legal name (`Fast Digital Solutions LLC`) are set. `brandName` is
+the short name used in the wordmark, navigation, and titles; `legalName` is
+used only in legal contexts (footer copyright, legal pages, consent text,
+structured data). Add the final logo as `public/images/logo.svg` to clear the
+last identity warning.
 
 ### Publish an Insights article
 
@@ -120,10 +122,41 @@ tools. Banned phrases (do not reintroduce them): "unlock limitless potential",
 "harness the power of", "game-changing", "one-stop solution", "world-class",
 "best-in-class". Sentence case headings; uppercase only for eyebrow labels.
 
-## Images (PRD §15.7, §20.6)
+## Images
 
-Pre-optimize before committing (static export does no runtime optimization):
-correct dimensions, AVIF/WebP where possible, under ~200 KB below the fold.
-Every informative image needs real alt text; decorative images get `alt=""`.
-Never use stock photos presented as the team, AI-generated people, or fake
-product screenshots.
+Photography goes through a build-time pipeline; nothing is optimized at
+runtime. The raw originals live in the gitignored repo-root `images/` folder
+(keep a copy outside the repo too — see `docs/IMAGE-LICENSES.md` for the
+licence log). What is committed is generated.
+
+### Add or replace a photo
+
+1. Put the original (highest resolution, no watermark, licence recorded in
+   `docs/IMAGE-LICENSES.md`) under `images/<slot-folder>/`.
+2. Add or edit its entry in `src/content/image-manifest.ts`:
+   - `id` — kebab-case; becomes the filename prefix and the `<Picture id>`.
+   - `source` — path under `images/`. **Each source may be used once** on the
+     whole site; the build fails otherwise.
+   - `class` (`hero | band | feature | card | tile | cover | thumb`) picks the
+     output widths and quality; `aspect` picks the crop shape.
+   - `focus` `{x, y}` in 0–1 chooses what the crop keeps; `ops.zoom` tightens
+     it; `ops.flip` mirrors; `ops.blurRegions` (source pixels) hide logos or
+     readable third-party text; `ops.saturation` grades warm shots toward
+     neutral. All coordinates are measured on the original file **before** any
+     flip.
+   - `alt` — describe what is actually shown. These are licensed workplace
+     photos, never "our team" or "our client". Backgrounds under a scrim are
+     `decorative: true` with `alt: ""`.
+3. Run `npm run images` (a few minutes; `--only <id>` for one slot) and check
+   the size table it prints. Derivatives land in `public/images/`, the typed
+   record in `src/generated/images.ts`.
+4. Reference the id from content (`cardImageId`/`heroImageId` on a service,
+   `tileImageId` on an industry, `coverImageId` in an insight's frontmatter)
+   or a page (`<PageHero image="…">`, `<Picture id="…">`).
+5. Commit `public/images/` and `src/generated/images.ts` together with the
+   manifest. `npm run build` fails if they have drifted apart.
+
+Budgets: card/tile/cover/feature derivatives must stay under 200 KB, hero and
+band under 260 KB — the pipeline refuses to emit larger files. Never use
+photos presented as the team, AI-generated people, or fake product
+screenshots.

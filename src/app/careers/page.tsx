@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/metadata";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
+import { PageHero } from "@/components/content/PageHero";
 import { CtaPanel } from "@/components/content/CtaPanel";
 import { getPublishedRoles, noOpenRolesCopy } from "@/content/careers";
 import { workingCommitments } from "@/content/delivery-method";
@@ -22,21 +23,14 @@ export default function CareersPage() {
 
   return (
     <>
-      <Section surface="paper" spacing="tight" ariaLabelledby="careers-hero">
-        <Container>
-          <div className="max-w-[46rem] py-6">
-            <p className="eyebrow mb-4">Careers</p>
-            <h1 id="careers-hero" className="text-h1 font-semibold">
-              Work that treats craft and honesty as defaults.
-            </h1>
-            <p className="mt-6 text-lead text-muted">
-              We are a focused digital engineering team. When we hire, we look for people who care
-              about maintainable work, direct communication, and leaving clients genuinely better
-              off.
-            </p>
-          </div>
-        </Container>
-      </Section>
+      <PageHero
+        headingId="careers-hero"
+        variant="split"
+        image="hero-careers"
+        eyebrow="Careers"
+        title="Work that treats craft and honesty as defaults."
+        lead="We are a focused digital engineering team. When we hire, we look for people who care about maintainable work, direct communication, and leaving clients genuinely better off."
+      />
 
       <Section surface="canvas" ariaLabelledby="openings-heading">
         <Container>
@@ -68,7 +62,7 @@ export default function CareersPage() {
                           <li key={item} className="flex gap-2.5 text-[0.9375rem] text-ink/85">
                             <span
                               aria-hidden="true"
-                              className="mt-[0.55em] h-1 w-3 shrink-0 rounded-full bg-clay/70"
+                              className="mt-[0.55em] h-1 w-3 shrink-0 rounded-full bg-accent/70"
                             />
                             {item}
                           </li>
@@ -84,7 +78,7 @@ export default function CareersPage() {
                           <li key={item} className="flex gap-2.5 text-[0.9375rem] text-ink/85">
                             <span
                               aria-hidden="true"
-                              className="mt-[0.55em] h-1 w-3 shrink-0 rounded-full bg-olive/70"
+                              className="mt-[0.55em] h-1 w-3 shrink-0 rounded-full bg-teal/70"
                             />
                             {item}
                           </li>
@@ -112,7 +106,7 @@ export default function CareersPage() {
               <li key={commitment} className="flex gap-3 text-[0.9375rem] text-ink/85">
                 <span
                   aria-hidden="true"
-                  className="mt-[0.55em] h-1 w-3 shrink-0 rounded-full bg-clay/70"
+                  className="mt-[0.55em] h-1 w-3 shrink-0 rounded-full bg-accent/70"
                 />
                 {commitment}
               </li>
