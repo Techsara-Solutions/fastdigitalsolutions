@@ -18,8 +18,8 @@ const PRIORITY_PAGES = [
   "/about/",
   "/careers/",
   "/contact/",
-  "/privacy/",
-  "/accessibility/",
+  "/insights/",
+  "/insights/aws-migration-readiness-checklist/",
 ];
 
 test.describe("axe-core scans", () => {
@@ -40,6 +40,16 @@ test.describe("axe-core scans", () => {
       ).toEqual([]);
     });
   }
+
+  test("no automated WCAG violations with the Services mega-menu open", async ({ page }) => {
+    await page.goto("/");
+    await page.getByRole("button", { name: "Services menu" }).click();
+    await expect(page.locator("#nav-panel-services")).toBeVisible();
+    const results = await new AxeBuilder({ page })
+      .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
+      .analyze();
+    expect(results.violations.map((violation) => violation.id)).toEqual([]);
+  });
 });
 
 test.describe("responsive behavior (PRD §18.2)", () => {

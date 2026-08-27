@@ -87,9 +87,30 @@ sudo install -m 644 "${SCRIPT_DIR}/nginx/nginx.conf" /etc/nginx/nginx.conf
 sudo sed -i "s/^user nginx;/user ${NGINX_USER};/" /etc/nginx/nginx.conf
 
 sudo install -m 644 "${SCRIPT_DIR}/nginx/security-headers.conf" /etc/nginx/security-headers.conf
+sudo install -m 644 "${SCRIPT_DIR}/nginx/site-locations.conf" /etc/nginx/site-locations.conf
+
+# nginx.conf includes this unconditionally, so a missing file would stop nginx
+# from starting at all. Refuse to continue rather than take the site down.
+if [ ! -f "${SCRIPT_DIR}/nginx/cloudflare-origin-lock.conf" ]; then
+  echo "Missing nginx/cloudflare-origin-lock.conf." >&2
+  echo "Generate it first: bash deploy/nginx/refresh-cloudflare-ips.sh" >&2
+  exit 1
+fi
+sudo install -m 644 "${SCRIPT_DIR}/nginx/cloudflare-origin-lock.conf" \
+  /etc/nginx/cloudflare-origin-lock.conf
 sudo mkdir -p /etc/nginx/conf.d
 sudo install -m 644 "${SCRIPT_DIR}/nginx/fastdigitalsolutions.conf" \
   /etc/nginx/conf.d/fastdigitalsolutions.conf
+
+# The HTTPS server block references the Cloudflare Origin Certificate. If it is
+# not installed yet, nginx would fail to start and take the site down with it —
+# so fall back to an HTTP-only config and say so plainly.
+if ! sudo test -f /etc/ssl/certs/fastdigitalsolutions.origin.pem ||
+  ! sudo test -f /etc/ssl/private/fastdigitalsolutions.origin.key; then
+  echo "    TLS certificate not found — installing HTTP-only config."
+  echo "    (see docs/DEPLOYMENT.md → 'TLS via Cloudflare Origin Certificate')"
+  sudo sed -i '/^# ---* HTTPS (443)/,$d' /etc/nginx/conf.d/fastdigitalsolutions.conf
+fi
 
 # Remove Debian/Ubuntu's default site, which would otherwise also claim port 80.
 sudo rm -f /etc/nginx/sites-enabled/default

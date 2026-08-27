@@ -1,14 +1,13 @@
 import type { Scenario } from "@/lib/schemas";
 
 /**
- * Representative engagement scenarios (PRD §2.3, §14.1G, §14.5 State A).
+ * Representative engagement scenarios.
  *
  * HARD RULES: every scenario is explicitly illustrative. No fabricated
  * organization names, logos, testimonials, people, headshots, or metrics.
- * The UI must always render the "Example engagement scenario — not a named
- * client case study" label.
+ * The UI always renders SCENARIO_LABEL on each scenario.
  */
-export const SCENARIO_LABEL = "Example engagement scenario — not a named client case study";
+export const SCENARIO_LABEL = "Illustrative scenario";
 
 export const scenarios: Scenario[] = [
   {
@@ -21,14 +20,14 @@ export const scenarios: Scenario[] = [
       "Assess the current architecture, deployment practices, and cost drivers with the internal team.",
       "Design a target AWS architecture the team can operate, with environments defined entirely as code.",
       "Migrate workloads in verified increments, keeping rollback available at every step.",
-      "Introduce CI/CD, monitoring, and alerting as part of the migration rather than after it.",
+      "Introduce CI/CD, monitoring, and alerting as part of the migration, not after it.",
       "Hand over runbooks and documentation, and coach the team on operating the new platform.",
     ],
     typicalOutcomes: [
-      "Environments that can be rebuilt from code instead of repaired by memory.",
+      "Environments that can be rebuilt from code instead of repaired from memory.",
       "Releases that happen during working hours through an automated pipeline.",
-      "Monitoring the team trusts, with alerts tied to what users actually experience.",
-      "Cloud spend that is visible and attributable rather than a monthly surprise.",
+      "Monitoring the team trusts, with alerts tied to what users experience.",
+      "Cloud spend that is visible and attributable instead of a monthly surprise.",
     ],
     serviceSlugs: ["cloud-platform-engineering", "software-engineering-modernization"],
   },
@@ -37,13 +36,13 @@ export const scenarios: Scenario[] = [
     title: "Workflow automation for document-heavy operations",
     illustrative: true,
     situation:
-      "An operations-led business processes a steady stream of inbound documents — orders, applications, supplier paperwork. Skilled staff spend hours re-keying data between systems, and errors surface downstream where they are expensive to fix.",
+      "An operations-led business processes a steady stream of inbound documents such as orders, applications, and supplier paperwork. Skilled staff spend hours re-keying data between systems, and errors surface downstream where they are expensive to fix.",
     approach: [
-      "Map the workflow end to end with the people who run it, and agree where automation would genuinely help.",
+      "Map the workflow end to end with the people who run it, and agree where automation would help most.",
       "Prove extraction and routing on a bounded pilot using real documents, including the messy ones.",
       "Build the automated workflow with human review at the decision points that matter.",
-      "Integrate results into the existing systems of record rather than adding another silo.",
-      "Establish monitoring so accuracy is measured continuously, not assumed.",
+      "Integrate results into the existing systems of record instead of adding another silo.",
+      "Set up monitoring so accuracy is measured continuously, not assumed.",
     ],
     typicalOutcomes: [
       "Routine documents processed without manual re-keying, with exceptions routed to people.",
@@ -64,13 +63,13 @@ export const scenarios: Scenario[] = [
       "Stabilize or retire the flaky tests so a red build means something again.",
       "Automate the highest-risk regression paths first and wire them into CI on every change.",
       "Add API-level and integration coverage where UI tests are the wrong tool.",
-      "Define a release-readiness checklist the team can run in minutes rather than days.",
+      "Define a release-readiness checklist the team can run in minutes instead of days.",
     ],
     typicalOutcomes: [
       "Regression confidence available on every change instead of once per release.",
       "A test suite the team trusts enough to act on.",
       "Shorter, calmer release cycles with fewer production surprises.",
-      "Quality reporting the business can read: risk and trends, not raw counts.",
+      "Quality reporting the business can read, covering risk and trends instead of raw counts.",
     ],
     serviceSlugs: ["quality-engineering", "software-engineering-modernization"],
   },

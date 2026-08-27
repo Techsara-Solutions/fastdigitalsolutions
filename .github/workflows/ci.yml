@@ -1,13 +1,24 @@
 name: CI
 
+# Runs standalone on feature branches and pull requests, and is also called by
+# deploy.yml as a required gate before anything reaches production.
+#
+# `push: main` is deliberately absent: deploy.yml calls this workflow for main,
+# so listing it here as well would run every check twice for the same commit.
 on:
   push:
-    branches: [main, dev, hd-dev]
+    branches: [dev, hd-dev]
   pull_request:
+  workflow_call:
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+
+env:
+  # The production build published by the `quality` job. deploy.yml downloads
+  # this exact artifact instead of rebuilding, so what ships is what was tested.
+  BUILD_ARTIFACT_NAME: site-build
 
 jobs:
   quality:
@@ -46,6 +57,14 @@ jobs:
           NEXT_PUBLIC_CONTACT_API_TIMEOUT_MS: ${{ vars.NEXT_PUBLIC_CONTACT_API_TIMEOUT_MS }}
         run: npm run build
 
+      - name: Publish the tested build
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ env.BUILD_ARTIFACT_NAME }}
+          path: out/
+          retention-days: 7
+          if-no-files-found: error
+
   e2e:
     name: End-to-end tests
     runs-on: ubuntu-latest
@@ -63,6 +82,8 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
+      # Built separately from the published artifact: this build deliberately
+      # bakes in a mock contact endpoint, so it must never be deployed.
       - name: Build with mocked contact API (e2e)
         run: npm run build:e2e
 

@@ -17,6 +17,11 @@
 # production
 /build
 
+# raw photography originals (~110 MB). Derivatives are generated into
+# public/images by `npm run images` and committed; the licence record lives in
+# docs/IMAGE-LICENSES.md and the dimension record in src/content/image-sources.json.
+/images/
+
 # misc
 .DS_Store
 *.pem

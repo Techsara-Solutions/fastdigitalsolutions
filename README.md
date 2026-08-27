@@ -39,6 +39,8 @@ npm run dev        # local dev server at http://localhost:3000
 | `npm run test:e2e`                        | Playwright E2E + axe-core accessibility scans (build first)    |
 | `npm run format` / `npm run format:check` | Prettier                                                       |
 | `npm run validate:content`                | Run the content gate on its own                                |
+| `npm run images`                          | Regenerate photo derivatives from `images/` (local only)       |
+| `npm run brand`                           | Regenerate logo paths, favicons, and the social image          |
 | `npm run check`                           | Everything CI runs: format, lint, typecheck, unit tests, build |
 
 The static build output lands in **`out/`** — plain HTML/CSS/JS, servable by
@@ -49,11 +51,11 @@ any static host. There is no runtime Next.js server dependency.
 Copy `.env.example` to `.env.local` for local overrides. All variables are
 **build-time** (embedded in the static output — never put secrets in them):
 
-| Variable                             | Purpose                                                                                                                                                                           |
-| ------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `NEXT_PUBLIC_SITE_URL`               | Canonical origin. While it contains `PENDING`, every page is `noindex`, the sitemap is empty, and Organization JSON-LD is withheld.                                               |
-| `NEXT_PUBLIC_CONTACT_API_URL`        | Contact form endpoint (built by a separate backend developer). When unset, the contact page shows a documented fallback (form unavailable, phone shown) instead of a broken form. |
-| `NEXT_PUBLIC_CONTACT_API_TIMEOUT_MS` | Contact request timeout (default 12000).                                                                                                                                          |
+| Variable                             | Purpose                                                                                                                                                                                                        |
+| ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL`               | Canonical origin override. Defaults to `https://fastdigitalsolutions.com` from `src/content/site.ts`; a value containing `PENDING` turns on `noindex` and empties the sitemap.                                 |
+| `NEXT_PUBLIC_CONTACT_API_URL`        | Contact form endpoint override. Defaults to the production API Gateway URL in `src/content/site.ts`; the E2E build points it at a mock host, and a `PENDING` value shows the documented fallback (phone only). |
+| `NEXT_PUBLIC_CONTACT_API_TIMEOUT_MS` | Contact request timeout (default 12000).                                                                                                                                                                       |
 
 ## Content editing
 
@@ -67,11 +69,13 @@ metrics, people) from ever publishing, per PRD §2.
 
 - `hd-dev` — active implementation branch
 - `dev` — integration (PR from `hd-dev`, created manually)
-- `main` — production; **pushes to `main` deploy to EC2** (once secrets are configured)
+- `main` — production; **pushes to `main` deploy to EC2**
 
-CI (lint, typecheck, tests, build, E2E) runs on every PR and on pushes to all
-three branches. Enable branch protection on `main` (require the CI checks and
-a PR review) in the GitHub repository settings.
+CI (lint, typecheck, tests, build, E2E) runs standalone on every pull request
+and on pushes to `dev` and `hd-dev`. On `main` it runs as the **CI gate** job
+inside the deploy workflow: the deploy job declares `needs: ci`, so a commit
+that fails any check cannot reach production. That gate lives in the workflow
+because repository branch protection requires a paid plan for private repos.
 
 ## Deployment
 
@@ -80,26 +84,42 @@ running Nginx (atomic release switch, last 5 releases kept for rollback).
 Full runbook, required secrets, server setup, and TLS steps:
 [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
-## Placeholder and proof-approval rules
+## Photography
 
-The company's domain, email, legal name, and logo are **pending**. The build
-prints a warning block listing every unresolved placeholder; all of them are
-production launch blockers (PRD §32.1). Nothing may be invented to fill them —
-see [docs/CONTENT-GUIDE.md](docs/CONTENT-GUIDE.md).
+Raw originals live in the gitignored `images/` folder; what ships is generated
+by `npm run images` into `public/images/` (AVIF + WebP, hashed filenames) plus
+a typed record in `src/generated/images.ts`, both committed. The build fails if
+the manifest and the derivatives drift apart or if any photo is used twice.
+How to add or replace a photo: [docs/CONTENT-GUIDE.md](docs/CONTENT-GUIDE.md).
+
+## Brand assets
+
+The logo source is `brand/fds-logo.source.svg`; `npm run brand` derives the
+header/footer mark, favicons, and the social-share image from it. Outputs are
+committed and the build fails if the icons are missing.
+
+## Proof-approval rules
+
+Nothing may be invented to fill trust content (clients, testimonials,
+metrics, people); see [docs/CONTENT-GUIDE.md](docs/CONTENT-GUIDE.md), which
+also carries the writing rules (no em dashes, no machine-sounding patterns).
 
 ## Contact-form integration contract
 
-The frontend POSTs JSON to `NEXT_PUBLIC_CONTACT_API_URL` and handles
-`202 / 422 / 429 / 5xx / timeout` exactly as specified in PRD §22.3. The
-backend (API Gateway → Lambda → SES) is owned by a separate developer; the
-frontend never sends trusted fields (timestamp, IP, verification status).
+The frontend POSTs the seven documented fields (`firstName, lastName, email,
+company, phoneNumber, discussionTopic, notes`) to the API Gateway endpoint in
+`src/content/site.ts` and treats any 2xx as success, a 4xx `fieldErrors` body
+as field errors, 429 as throttling, and everything else (or a timeout) as the
+generic failure. The body is sent as `text/plain` to avoid a CORS preflight the
+gateway does not answer — see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## Troubleshooting
 
 | Symptom                                                           | Cause / fix                                                                                                                                                 |
 | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Build fails with `CONTENT VALIDATION FAILED`                      | A content rule was violated (duplicate slug, unverified proof marked approved, missing field). The message names the record; fix the content, not the gate. |
-| Contact page shows "Online enquiries are temporarily unavailable" | `NEXT_PUBLIC_CONTACT_API_URL` is unset — intended fallback per PRD §22.6.                                                                                   |
+| Contact page shows "Online enquiries are temporarily unavailable" | `NEXT_PUBLIC_CONTACT_API_URL` was set to a `PENDING` placeholder — intended fallback.                                                                       |
+| Build fails with `images/<id>: … run npm run images`              | The photo manifest changed (or a derivative is missing). Run `npm run images` locally and commit `public/images` + `src/generated/images.ts`.               |
 | `npm run test:e2e` fails immediately                              | The E2E suite serves `out/`; run `npm run build:e2e` first.                                                                                                 |
-| Every page is `noindex`                                           | `NEXT_PUBLIC_SITE_URL` still contains `PENDING` — intended until the real domain exists.                                                                    |
+| Every page is `noindex`                                           | `NEXT_PUBLIC_SITE_URL` was overridden with a `PENDING` value.                                                                                               |
 | Windows: Prettier check fails on line endings                     | `.gitattributes` forces LF; re-clone or run `git add --renormalize .`                                                                                       |

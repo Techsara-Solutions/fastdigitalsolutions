@@ -1,21 +1,31 @@
 name: Deploy to EC2
 
-# Production deployment (main branch only). The workflow is inert until the
-# repository secrets below are configured — see docs/DEPLOYMENT.md.
+# Production deployment (main branch only).
+#
+# Ordering guarantee: the `ci` job below runs the full check suite and MUST
+# pass before `deploy` starts. Nothing reaches production without lint, types,
+# unit tests, the content gate, and the Playwright/axe suite going green first.
+# This gate lives in the workflow because repository branch protection is not
+# available on the current GitHub plan.
 #
 # Required secrets:
 #   EC2_HOST      — public IP or DNS of the EC2 instance
-#   EC2_USER      — SSH user (e.g. "ubuntu")
+#   EC2_USER      — SSH user (e.g. "ec2-user")
 #   EC2_SSH_KEY   — private key for that user (PEM contents)
 # Optional secret:
 #   EC2_PORT      — SSH port (defaults to 22)
-# Optional repository variables (Settings → Variables) used at build time:
+# Optional repository variables (Settings → Variables), consumed at build time:
 #   NEXT_PUBLIC_SITE_URL, NEXT_PUBLIC_CONTACT_API_URL, NEXT_PUBLIC_CONTACT_API_TIMEOUT_MS
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      simulate_health_check_failure:
+        description: "Rehearse rollback: force the health check to fail and confirm the previous release is restored."
+        type: boolean
+        default: false
 
 concurrency:
   group: deploy-production
@@ -26,30 +36,31 @@ env:
   KEEP_RELEASES: "5"
 
 jobs:
+  # Gate: the full CI suite. `deploy` cannot start unless every job here passes.
+  ci:
+    name: CI gate
+    uses: ./.github/workflows/ci.yml
+    secrets: inherit
+
   deploy:
-    name: Build and deploy static export
+    name: Deploy static export
+    needs: ci
     runs-on: ubuntu-latest
     environment: production
     steps:
-      - uses: actions/checkout@v7
-
-      - uses: actions/setup-node@v7
+      # No checkout or npm install: this job ships the artifact CI already built
+      # and tested, rather than producing a second, separately-built copy.
+      - name: Download the exact build that passed CI
+        uses: actions/download-artifact@v7
         with:
-          node-version-file: .nvmrc
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build static export
-        env:
-          NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}
-          NEXT_PUBLIC_CONTACT_API_URL: ${{ vars.NEXT_PUBLIC_CONTACT_API_URL }}
-          NEXT_PUBLIC_CONTACT_API_TIMEOUT_MS: ${{ vars.NEXT_PUBLIC_CONTACT_API_TIMEOUT_MS }}
-        run: npm run build
+          name: site-build
+          path: out
 
       - name: Package release
-        run: tar czf site.tar.gz -C out .
+        run: |
+          test -f out/index.html || { echo "Downloaded artifact has no index.html"; exit 1; }
+          tar czf site.tar.gz -C out .
+          echo "Packaged $(find out -type f | wc -l) files"
 
       - name: Configure SSH
         env:
@@ -69,10 +80,19 @@ jobs:
             echo "  StrictHostKeyChecking accept-new"
           } > ~/.ssh/config
 
+      # Captured before the swap so a failed health check can restore it.
+      - name: Record the currently live release
+        id: previous
+        run: |
+          PREVIOUS=$(ssh ec2 "readlink ${{ env.DEPLOY_ROOT }}/current 2>/dev/null || true")
+          echo "path=$PREVIOUS" >> "$GITHUB_OUTPUT"
+          echo "Currently live: ${PREVIOUS:-<none>}"
+
       - name: Upload release
         run: scp site.tar.gz ec2:/tmp/site.tar.gz
 
       - name: Activate release (atomic symlink swap, keep last ${{ env.KEEP_RELEASES }})
+        id: activate
         run: |
           ssh ec2 "set -euo pipefail
             RELEASE=\$(date -u +%Y%m%d%H%M%S)-${GITHUB_SHA::7}
@@ -87,4 +107,27 @@ jobs:
 
       - name: Health check
         run: |
-          ssh ec2 "curl -fsS -o /dev/null -w 'HTTP %{http_code}\n' http://127.0.0.1/ && curl -fsS -o /dev/null -w 'HTTP %{http_code} (404 page)\n' http://127.0.0.1/404.html"
+          if [ "${{ github.event.inputs.simulate_health_check_failure }}" = "true" ]; then
+            echo "simulate_health_check_failure was requested — failing deliberately to rehearse rollback."
+            exit 1
+          fi
+          ssh ec2 "curl -fsS -o /dev/null -w 'home HTTP %{http_code}\n' http://127.0.0.1/ && curl -fsS -o /dev/null -w '404 page HTTP %{http_code}\n' http://127.0.0.1/404.html"
+
+      # Runs only when the swap already happened and something after it failed,
+      # so production is never left serving a release that failed its check.
+      - name: Roll back to the previous release
+        if: failure() && steps.activate.outcome == 'success' && steps.previous.outputs.path != ''
+        run: |
+          echo "Restoring ${{ steps.previous.outputs.path }}"
+          ssh ec2 "set -euo pipefail
+            DEPLOY_ROOT='${{ env.DEPLOY_ROOT }}'
+            PREVIOUS='${{ steps.previous.outputs.path }}'
+            test -d \"\$PREVIOUS\" || { echo \"Previous release \$PREVIOUS no longer exists; cannot roll back\"; exit 1; }
+            ln -sfn \"\$PREVIOUS\" \"\$DEPLOY_ROOT/current.new\"
+            mv -Tf \"\$DEPLOY_ROOT/current.new\" \"\$DEPLOY_ROOT/current\"
+            echo \"Rolled back to \$(readlink \$DEPLOY_ROOT/current)\"
+            curl -fsS -o /dev/null -w 'post-rollback HTTP %{http_code}\n' http://127.0.0.1/"
+
+      - name: Warn when rollback is impossible
+        if: failure() && steps.activate.outcome == 'success' && steps.previous.outputs.path == ''
+        run: echo "::warning::Deployment failed its health check and there was no previous release to roll back to."

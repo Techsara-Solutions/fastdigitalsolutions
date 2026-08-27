@@ -8,11 +8,11 @@ import { buildMetadata } from "@/lib/metadata";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
+import { PageHero } from "@/components/content/PageHero";
 import { InsightCard } from "@/components/content/InsightCard";
 import { CtaPanel } from "@/components/content/CtaPanel";
 import { getPublishedInsight, getPublishedInsights, type Insight } from "@/lib/insights";
 import { getService } from "@/content/services";
-import { siteConfig } from "@/content/site";
 import { formatDate } from "@/lib/format";
 
 /**
@@ -68,50 +68,31 @@ function InsightsIndex() {
 
   return (
     <>
-      <Section surface="paper" spacing="tight" ariaLabelledby="insights-hero">
-        <Container>
-          <div className="max-w-[46rem] py-6">
-            <p className="eyebrow mb-4">Insights</p>
-            <h1 id="insights-hero" className="text-h1 font-semibold">
-              Thinking you can use before you talk to us.
-            </h1>
-            <p className="mt-6 text-lead text-muted">
-              Practical writing on cloud, AI and automation, software delivery, and quality
-              engineering — written to be useful whether or not we ever work together.
-            </p>
-          </div>
-        </Container>
-      </Section>
+      <PageHero
+        headingId="insights-hero"
+        variant="split"
+        image="hero-insights"
+        eyebrow="Insights"
+        title="Thinking you can use before you talk to us."
+        lead="Writing on cloud, AI and automation, software delivery, and quality engineering, meant to be useful whether or not we ever work together."
+      />
 
       <Section surface="canvas" ariaLabelledby="articles-heading">
         <Container>
           <h2 id="articles-heading" className="sr-only">
             Articles
           </h2>
-          {insights.length > 0 ? (
-            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-              {insights.map((insight) => (
-                <InsightCard key={insight.frontmatter.slug} insight={insight} />
-              ))}
-            </div>
-          ) : (
-            <div className="max-w-[40rem] rounded-[12px] border border-stone bg-paper p-8">
-              <p className="text-[1.0625rem] leading-relaxed text-ink/85">
-                Our first articles are being prepared and reviewed. In the meantime, if there is a
-                topic you would like to talk through directly, call us at{" "}
-                <a href={siteConfig.phoneHref} className="font-semibold text-clay-dark underline">
-                  {siteConfig.phoneDisplay}
-                </a>{" "}
-                or use the contact page.
-              </p>
-            </div>
-          )}
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {insights.map((insight) => (
+              <InsightCard key={insight.frontmatter.slug} insight={insight} />
+            ))}
+          </div>
         </Container>
       </Section>
 
       <CtaPanel
         heading="Have a question an article hasn't answered?"
-        copy="Tell us what you are weighing up — we are glad to share an honest view, even when the answer is 'you don't need us for that.'"
+        copy="Tell us what you are weighing up. We are glad to share a view, even when the answer is that you do not need us for it."
         ctaLabel="Talk through the challenge"
       />
     </>
@@ -181,7 +162,7 @@ function InsightArticle({ insight }: { insight: Insight }) {
                   <li key={item.id}>
                     <a
                       href={`#${item.id}`}
-                      className="text-[0.9375rem] font-medium text-clay-dark hover:underline"
+                      className="text-[0.9375rem] font-medium text-accent-dark hover:underline"
                     >
                       {item.text}
                     </a>
@@ -202,7 +183,7 @@ function InsightArticle({ insight }: { insight: Insight }) {
                   <li key={service.slug}>
                     <Link
                       href={`/services/${service.slug}/`}
-                      className="font-semibold text-clay-dark hover:underline"
+                      className="font-semibold text-accent-dark hover:underline"
                     >
                       {service.name}
                     </Link>
@@ -216,7 +197,7 @@ function InsightArticle({ insight }: { insight: Insight }) {
 
       <CtaPanel
         heading="Talk this through with us."
-        copy="If this article touches something you are working on, we are glad to share an honest view of your situation."
+        copy="If this article touches something you are working on, we are glad to share our view of your situation."
         ctaLabel="Talk through the challenge"
       />
     </>

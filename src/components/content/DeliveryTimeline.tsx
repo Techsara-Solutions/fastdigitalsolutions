@@ -30,7 +30,9 @@ export function DeliveryTimeline({ variant = "preview", onDark = false }: Delive
           <span
             aria-hidden="true"
             className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full border text-sm font-bold ${
-              onDark ? "border-clay bg-espresso text-clay" : "border-clay bg-paper text-clay-dark"
+              onDark
+                ? "border-accent bg-espresso text-accent"
+                : "border-accent bg-paper text-accent-dark"
             }`}
           >
             {stage.number}
@@ -44,7 +46,7 @@ export function DeliveryTimeline({ variant = "preview", onDark = false }: Delive
                   <li key={point} className="flex gap-2">
                     <span
                       aria-hidden="true"
-                      className="mt-[0.55em] h-1 w-2.5 shrink-0 rounded-full bg-clay/70"
+                      className="mt-[0.55em] h-1 w-2.5 shrink-0 rounded-full bg-accent/70"
                     />
                     {point}
                   </li>

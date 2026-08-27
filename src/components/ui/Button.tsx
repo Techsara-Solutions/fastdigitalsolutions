@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ButtonHTMLAttributes, MouseEventHandler, ReactNode } from "react";
 
-type Variant = "primary" | "secondary" | "onDark";
+type Variant = "primary" | "secondary" | "onDark" | "outlineOnDark";
 
 type CommonProps = {
   children: ReactNode;
@@ -26,9 +26,10 @@ const base =
   "inline-flex min-h-11 items-center justify-center gap-2 rounded-[10px] px-6 py-2.5 text-[0.9375rem] font-semibold transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-50";
 
 const variants: Record<Variant, string> = {
-  primary: "bg-clay-dark text-white hover:bg-clay focus-visible:bg-clay",
+  primary: "bg-accent-dark text-white hover:bg-accent focus-visible:bg-accent",
   secondary: "border border-ink/25 bg-transparent text-ink hover:border-ink hover:bg-canvas",
   onDark: "bg-paper text-espresso hover:bg-stone",
+  outlineOnDark: "border border-paper/60 bg-transparent text-paper hover:bg-paper/10",
 };
 
 export function Button(props: ButtonProps) {

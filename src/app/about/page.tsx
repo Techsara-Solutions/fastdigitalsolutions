@@ -5,6 +5,7 @@ import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { SectionIntro } from "@/components/ui/SectionIntro";
 import { DeliveryTimeline } from "@/components/content/DeliveryTimeline";
+import { PageHero } from "@/components/content/PageHero";
 import { LeadershipGrid } from "@/components/trust/TrustSections";
 import { CtaPanel } from "@/components/content/CtaPanel";
 import { siteConfig, isPlaceholder } from "@/content/site";
@@ -20,7 +21,7 @@ const principles = [
   {
     title: "Client context first",
     detail:
-      "We begin with your business problem, constraints, users, and operating environment — not with a solution looking for a home.",
+      "We begin with your business problem, constraints, users, and operating environment, not with a solution looking for a home.",
   },
   {
     title: "Outcomes before tools",
@@ -35,7 +36,7 @@ const principles = [
   {
     title: "Visible delivery",
     detail:
-      "Work is planned, reviewed, tested, documented, and demonstrated in the open — including the risks.",
+      "Work is planned, reviewed, tested, documented, and demonstrated in the open, risks included.",
   },
   {
     title: "Maintainable by you",
@@ -43,9 +44,8 @@ const principles = [
       "Documentation and knowledge transfer are deliverables. Systems should not depend on us to stay healthy.",
   },
   {
-    title: "Honest scale",
-    detail:
-      "We are a focused team, and we say so. What we commit to, we can actually staff and deliver.",
+    title: "Realistic scale",
+    detail: "We are a focused team, and we say so. What we commit to, we can staff and deliver.",
   },
 ];
 
@@ -54,22 +54,19 @@ export default function AboutPage() {
 
   return (
     <>
-      <Section surface="paper" spacing="tight" ariaLabelledby="about-hero">
-        <Container>
-          <div className="max-w-[46rem] py-6">
-            <p className="eyebrow mb-4">About</p>
-            <h1 id="about-hero" className="text-h1 font-semibold">
-              Built to be a practical technology partner.
-            </h1>
-            <p className="mt-6 text-lead text-muted">{siteConfig.categoryStatement}</p>
-            <p className="mt-4 text-[1.0625rem] text-muted">
-              {siteConfig.sinceStatement}, we work with growing organizations that need experienced
-              technology capacity, clear communication, and a delivery approach shaped around their
-              business.
-            </p>
-          </div>
-        </Container>
-      </Section>
+      <PageHero
+        headingId="about-hero"
+        variant="split"
+        image="hero-about"
+        eyebrow="About"
+        title="Built to be a practical technology partner."
+        lead={siteConfig.categoryStatement}
+      >
+        <p className="mt-4 text-[1.0625rem] text-muted">
+          We work with growing organizations that need experienced technology capacity, clear
+          communication, and a delivery approach shaped around their business.
+        </p>
+      </PageHero>
 
       <Section surface="canvas" ariaLabelledby="mission-heading">
         <Container>
@@ -78,11 +75,11 @@ export default function AboutPage() {
               id="mission-heading"
               eyebrow="Why we exist"
               title="Experienced delivery, without the overhead of a giant firm."
-              lead="Growing organizations often face a gap: too complex for a generalist agency, too pragmatic for a global consultancy. We exist for that gap — meaningful cloud, software, AI, and quality work delivered by a team that stays close to the client."
+              lead="Growing organizations often fall into a gap. Their needs are too complex for a generalist agency and too pragmatic for a global consultancy. That gap is where we work, delivering meaningful cloud, software, AI, and quality work with a team that stays close to the client."
             />
             <ul className="grid gap-x-8 gap-y-8 sm:grid-cols-2">
               {principles.map((principle) => (
-                <li key={principle.title} className="border-t-2 border-clay/50 pt-4">
+                <li key={principle.title} className="border-t-2 border-accent/50 pt-4">
                   <h3 className="text-base font-bold">{principle.title}</h3>
                   <p className="mt-2 text-[0.9375rem] leading-relaxed text-muted">
                     {principle.detail}
@@ -105,7 +102,7 @@ export default function AboutPage() {
             <DeliveryTimeline variant="preview" />
           </div>
           <p className="mt-10">
-            <Link href="/how-we-work/" className="font-semibold text-clay-dark hover:underline">
+            <Link href="/how-we-work/" className="font-semibold text-accent-dark hover:underline">
               See how we work in detail <span aria-hidden="true">→</span>
             </Link>
           </p>
@@ -126,7 +123,7 @@ export default function AboutPage() {
               <p className="mt-4 text-[0.9375rem] text-muted">
                 <a
                   href={siteConfig.phoneHref}
-                  className="font-semibold text-clay-dark hover:underline"
+                  className="font-semibold text-accent-dark hover:underline"
                 >
                   {siteConfig.phoneDisplay}
                 </a>
@@ -137,7 +134,7 @@ export default function AboutPage() {
                     <br />
                     <a
                       href={`mailto:${siteConfig.email}`}
-                      className="font-semibold text-clay-dark hover:underline"
+                      className="font-semibold text-accent-dark hover:underline"
                     >
                       {siteConfig.email}
                     </a>
@@ -159,7 +156,7 @@ export default function AboutPage() {
               <h2 className="text-h3 font-semibold">Careers</h2>
               <p className="mt-4 text-[0.9375rem] leading-relaxed text-muted">
                 Interested in working with us?{" "}
-                <Link href="/careers/" className="font-semibold text-clay-dark hover:underline">
+                <Link href="/careers/" className="font-semibold text-accent-dark hover:underline">
                   See our careers page
                 </Link>
                 .

@@ -6,4 +6,8 @@ package-lock.json
 playwright-report
 test-results
 public/fonts
+public/images
+src/generated
+src/components/layout/logo-paths.ts
 docs/prd
+images

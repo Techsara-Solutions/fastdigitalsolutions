@@ -3,6 +3,7 @@ import Link from "next/link";
 import { buildMetadata } from "@/lib/metadata";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
+import { PageHero } from "@/components/content/PageHero";
 import { CtaPanel } from "@/components/content/CtaPanel";
 import { scenarios, SCENARIO_LABEL } from "@/content/scenarios";
 import { getPublishedCaseStudies } from "@/content/case-studies";
@@ -11,34 +12,27 @@ import { getService } from "@/content/services";
 export const metadata: Metadata = buildMetadata({
   title: "Capabilities in practice",
   description:
-    "Representative engagement scenarios showing how Fast Digital Solutions' services combine around common client needs. Named client work is published only with permission.",
+    "Representative engagement scenarios showing how Fast Digital Solutions' services combine around common client needs.",
   path: "/work/",
 });
 
 /**
- * Work page (PRD §14.5). State A: no verified named work yet, so the page
- * presents clearly labelled representative scenarios. Published case studies
- * automatically appear here when approved and verified records exist.
+ * Work page. Presents clearly labelled illustrative scenarios; published case
+ * studies appear above them once approved and verified records exist.
  */
 export default function WorkPage() {
   const caseStudies = getPublishedCaseStudies();
 
   return (
     <>
-      <Section surface="paper" spacing="tight" ariaLabelledby="work-hero">
-        <Container>
-          <div className="max-w-[46rem] py-6">
-            <p className="eyebrow mb-4">Work</p>
-            <h1 id="work-hero" className="text-h1 font-semibold">
-              Capabilities in practice
-            </h1>
-            <p className="mt-6 text-lead text-muted">
-              These representative scenarios show how our services can be combined around common
-              client needs. Named client work will be published only with permission.
-            </p>
-          </div>
-        </Container>
-      </Section>
+      <PageHero
+        headingId="work-hero"
+        variant="split"
+        image="hero-work"
+        eyebrow="Work"
+        title="Capabilities in practice"
+        lead="These scenarios show how our services combine around the kinds of situations we work on. Each one is illustrative, so you can see the approach without reading a sales pitch."
+      />
 
       {caseStudies.length > 0 ? (
         <Section surface="canvas" ariaLabelledby="case-studies-heading">
@@ -52,7 +46,7 @@ export default function WorkPage() {
                   key={study.slug}
                   className="rounded-[12px] border border-stone bg-paper p-6 lg:p-8"
                 >
-                  <p className="text-sm font-semibold text-clay-dark">{study.clientDescriptor}</p>
+                  <p className="text-sm font-semibold text-accent-dark">{study.clientDescriptor}</p>
                   <h3 className="mt-2 text-h3 font-semibold">{study.title}</h3>
                   <p className="mt-3 text-[0.9375rem] leading-relaxed text-muted">
                     {study.context}
@@ -99,7 +93,7 @@ export default function WorkPage() {
                           key={step}
                           className="flex gap-3 text-[0.9375rem] leading-relaxed text-ink/85"
                         >
-                          <span aria-hidden="true" className="font-bold text-clay-dark">
+                          <span aria-hidden="true" className="font-bold text-accent-dark">
                             {index + 1}.
                           </span>
                           {step}
@@ -119,7 +113,7 @@ export default function WorkPage() {
                         >
                           <span
                             aria-hidden="true"
-                            className="mt-[0.55em] h-1 w-3 shrink-0 rounded-full bg-clay/70"
+                            className="mt-[0.55em] h-1 w-3 shrink-0 rounded-full bg-accent/70"
                           />
                           {outcome}
                         </li>
@@ -137,7 +131,7 @@ export default function WorkPage() {
                         {index > 0 ? " · " : ""}
                         <Link
                           href={`/services/${slug}/`}
-                          className="font-semibold text-clay-dark hover:underline"
+                          className="font-semibold text-accent-dark hover:underline"
                         >
                           {service.name}
                         </Link>
@@ -153,7 +147,7 @@ export default function WorkPage() {
 
       <CtaPanel
         heading="Facing something similar?"
-        copy="Describe your situation and we will tell you honestly how we would approach it — and whether we are the right team for it."
+        copy="Describe your situation and we will tell you plainly how we would approach it, and whether we are the right team for it."
       />
     </>
   );

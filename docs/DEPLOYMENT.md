@@ -11,6 +11,7 @@ request** — the deviation is recorded in [ARCHITECTURE.md](ARCHITECTURE.md).
 
 | Item             | Value                                                                                                                    |
 | ---------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Public URL       | **https://fastdigitalsolutions.com** (and `www`), via Cloudflare                                                         |
 | EC2 instance     | `i-00719a511f891b6d8` ("fastdigitalsolutions.com")                                                                       |
 | Region           | `us-east-1`                                                                                                              |
 | Instance type    | `t2.small` (2 GB RAM, 8 GB disk)                                                                                         |
@@ -33,21 +34,68 @@ request** — the deviation is recorded in [ARCHITECTURE.md](ARCHITECTURE.md).
 ```
 push to main
   → GitHub Actions (.github/workflows/deploy.yml)
-      npm ci → npm run build          (content gate + static export into out/)
-      tar out/ → scp to EC2:/tmp/site.tar.gz
-      ssh: unpack to /var/www/fastdigitalsolutions/releases/<timestamp>-<sha>
-           atomically re-point the `current` symlink at it
-           prune to the 5 newest releases
-      health check (curl on the instance)
+      job 1 "CI gate"  — calls ci.yml as a reusable workflow
+          quality: format, lint, typecheck, unit tests, content gate, build
+                   → publishes out/ as the "site-build" artifact
+          e2e:     Playwright + axe-core (built separately with a mock API)
+      job 2 "Deploy"   — needs: ci   (cannot start until every check passes)
+          download the "site-build" artifact  (no rebuild)
+          tar → scp to EC2:/tmp/site.tar.gz
+          record the currently live release   (for rollback)
+          ssh: unpack to releases/<timestamp>-<sha>
+               atomically re-point the `current` symlink at it
+               prune to the 5 newest releases
+          health check (curl on the instance)
+          on failure: restore the previously live release
   → nginx serves /var/www/fastdigitalsolutions/current
 ```
 
-The **symlink swap** is the important trick. Rather than overwriting the live
-directory (during which visitors would see a half-written site), each
+Three properties are deliberate:
+
+**Deploy is gated on CI.** The two used to run in parallel on push to main,
+which meant a commit with failing tests or type errors would deploy while CI
+turned red beside it. `deploy` now declares `needs: ci`, so nothing reaches
+production until every check is green. The gate lives in the workflow because
+repository branch protection is not available on the current GitHub plan.
+
+**Build once, deploy what was tested.** CI publishes the production build as an
+artifact and the deploy job downloads that exact artifact. Previously each
+workflow built the site independently, so the bytes that shipped were never
+literally the bytes that passed the tests. As a side effect the deploy job needs
+neither a checkout nor Node, and finishes in about ten seconds.
+
+**The symlink swap makes releases atomic.** Rather than overwriting the live
+directory — during which visitors would see a half-written site — each
 deployment unpacks into a brand-new directory and then moves a symlink. `mv -T`
 is atomic on Linux, so every request is served either entirely by the old
-release or entirely by the new one — never a mixture. It also makes rollback
+release or entirely by the new one, never a mixture. It also makes rollback
 instant, because the previous release is still sitting on disk untouched.
+
+### Automatic rollback
+
+The symlink is swapped before the health check runs, so a failed check would
+otherwise leave a broken release live. The workflow therefore records what was
+live beforehand and restores it if anything after the swap fails. A rollback
+still reports the run as failed — it prevents a bad release from serving, it
+does not pretend the deployment succeeded.
+
+Rehearse it any time without risk, from _Actions → Deploy to EC2 → Run
+workflow_, ticking **simulate_health_check_failure**:
+
+```bash
+gh workflow run deploy.yml -f simulate_health_check_failure=true
+```
+
+That deploys a perfectly good build, forces the health check to fail, and
+confirms the previous release is restored — so the rollback path is exercised
+on a normal day rather than for the first time during an incident. Verified
+2026-08-27: restored the prior release and returned `post-rollback HTTP 200`.
+
+Afterwards, run the workflow again normally to move back to the newest release.
+
+> Because deploy.yml calls ci.yml for main, **CI no longer triggers separately
+> on push to main** — it appears as the "CI gate" job inside the deploy run.
+> It still runs standalone for `dev`, `hd-dev`, and every pull request.
 
 ## Server directory layout
 
@@ -146,39 +194,115 @@ gh secret set EC2_USER --body "ec2-user"
 gh secret set EC2_SSH_KEY < fastdigitalsolutions.com.pem
 ```
 
-Variables (build-time page values, not secret) — **set these when known**:
+Variables (build-time page values, not secret) — all **optional overrides**
+since 2026-08-27; the production values are the defaults in
+`src/content/site.ts`:
 
-| Variable                             | Value                               |
-| ------------------------------------ | ----------------------------------- |
-| `NEXT_PUBLIC_SITE_URL`               | `https://<the purchased domain>`    |
-| `NEXT_PUBLIC_CONTACT_API_URL`        | endpoint from the backend developer |
-| `NEXT_PUBLIC_CONTACT_API_TIMEOUT_MS` | optional; default 12000             |
+| Variable                             | Default / purpose                                                         |
+| ------------------------------------ | ------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL`               | `https://fastdigitalsolutions.com`; a `PENDING` value re-enables noindex  |
+| `NEXT_PUBLIC_CONTACT_API_URL`        | the production API Gateway endpoint; a `PENDING` value shows the fallback |
+| `NEXT_PUBLIC_CONTACT_API_TIMEOUT_MS` | optional; default 12000                                                   |
 
-Until `NEXT_PUBLIC_SITE_URL` is set, every page ships `noindex` and
-`robots.txt` disallows all crawlers. That is intentional: it stops search
-engines indexing the site at its raw IP address before the real domain exists.
+Because the domain is baked in, every build is indexable with canonical URLs,
+a populated sitemap, and Organization JSON-LD. The nginx CSP
+(`deploy/nginx/security-headers.conf`) lists the API origin in `connect-src`;
+re-run `deploy/setup-ec2.sh` (or copy the file) whenever it changes.
 
-## Domain and TLS (when the domain is purchased)
+## Domain and TLS — live since 2026-08-27
 
-1. Allocate an **Elastic IP** first (see the warning above), then point the
-   domain's A record at it.
-2. On the server, edit `/etc/nginx/conf.d/fastdigitalsolutions.conf` and set
-   `server_name fastdigitalsolutions.com www.fastdigitalsolutions.com;`, then
-   `sudo nginx -t && sudo systemctl reload nginx`.
-3. Install certbot and issue the certificate:
-   ```bash
-   sudo dnf install -y certbot python3-certbot-nginx
-   sudo certbot --nginx
-   ```
-   Certbot adds the 443 listener and the HTTP→HTTPS redirect, and installs a
-   renewal timer.
-4. Enable HSTS **only now that TLS works**:
-   `bash /tmp/deploy/setup-ec2.sh --enable-hsts`
-5. Pick one canonical host (apex or `www`) and redirect the other (PRD §23.4).
-6. Set the `NEXT_PUBLIC_SITE_URL` variable and redeploy — this switches on
-   indexing, canonical URLs, the sitemap, and the Organization structured data.
-7. Add the contact API origin to `connect-src` and `form-action` in
-   `/etc/nginx/security-headers.conf` once that endpoint exists.
+`fastdigitalsolutions.com` is served through **Cloudflare**, which terminates
+TLS for visitors and proxies to this origin.
+
+```
+visitor ──HTTPS──> Cloudflare edge ──HTTPS──> nginx on EC2 :443
+                   (public cert)              (Cloudflare Origin Certificate)
+```
+
+| Setting            | Value                                                                                                           |
+| ------------------ | --------------------------------------------------------------------------------------------------------------- |
+| Nameservers        | `abby.ns.cloudflare.com`, `odin.ns.cloudflare.com`                                                              |
+| Proxy              | Enabled (orange cloud) — visitors resolve to Cloudflare IPs                                                     |
+| Origin certificate | Cloudflare Origin CA, covers `fastdigitalsolutions.com` + `*.fastdigitalsolutions.com`, **expires 23 Aug 2041** |
+| Cert path          | `/etc/ssl/certs/fastdigitalsolutions.origin.pem` (`644` root)                                                   |
+| Key path           | `/etc/ssl/private/fastdigitalsolutions.origin.key` (`600` root)                                                 |
+
+### Why an Origin Certificate rather than Let's Encrypt
+
+A Cloudflare Origin Certificate is trusted **only by Cloudflare**, not by
+browsers — which is exactly right here, because Cloudflare is the only client
+that ever connects to this origin. Visitors see Cloudflare's own
+publicly-trusted certificate. It is valid for 15 years, so there is no 90-day
+renewal timer to fail silently, and no HTTP-01 challenge to arrange around the
+proxy.
+
+### If the certificate ever needs replacing
+
+Generate a new one at _Cloudflare → SSL/TLS → Origin Server → Create
+Certificate_, then install it (the private key is shown **once** — keep a copy
+in a password manager):
+
+```bash
+sudo install -m 600 -o root -g root /dev/null /etc/ssl/private/fastdigitalsolutions.origin.key
+sudo tee /etc/ssl/private/fastdigitalsolutions.origin.key > /dev/null <<'EOF'
+...paste key...
+EOF
+sudo install -m 644 -o root -g root /dev/null /etc/ssl/certs/fastdigitalsolutions.origin.pem
+sudo tee /etc/ssl/certs/fastdigitalsolutions.origin.pem > /dev/null <<'EOF'
+...paste certificate...
+EOF
+
+# The two MUST produce identical hashes, or nginx will refuse to start:
+sudo openssl x509 -in /etc/ssl/certs/fastdigitalsolutions.origin.pem -noout -pubkey | openssl sha256
+sudo openssl pkey -in /etc/ssl/private/fastdigitalsolutions.origin.key -pubout | openssl sha256
+
+sudo nginx -t && sudo systemctl reload nginx
+```
+
+### Why port 80 still serves the site instead of redirecting
+
+Two reasons: the deployment health check runs `curl http://127.0.0.1/` on the
+instance, and in a CDN setup the visitor-facing HTTP→HTTPS redirect belongs at
+the edge (_Cloudflare → SSL/TLS → Edge Certificates → Always Use HTTPS_) rather
+than at the origin.
+
+### Remaining hardening
+
+1. **Restrict the origin to Cloudflare.** `http://44.197.228.225/` is still
+   reachable directly, which bypasses Cloudflare's protection and exposes the
+   origin. Fix at the security group (strongest) by allowing 80/443 only from
+   [Cloudflare's ranges](https://www.cloudflare.com/ips/), or at nginx with an
+   allowlist. **Leave port 22 open** — GitHub Actions runners deploy over SSH
+   from a wide dynamic range.
+2. **Enable HSTS** once HTTPS has been stable for a few days:
+   `bash /tmp/deploy/setup-ec2.sh --enable-hsts`. Browsers cache it
+   aggressively, so it is painful to reverse.
+3. **Pick one canonical host** (apex or `www`) and redirect the other.
+4. **Restore real visitor IPs** in nginx logs with the `realip` module and
+   Cloudflare's ranges — otherwise every log line shows a Cloudflare IP.
+5. **Install the updated nginx config** — `security-headers.conf` now lists the
+   contact API origin in `connect-src` and `site-locations.conf` adds the
+   `/images/` cache block. Until the files on the server match the repo, the
+   browser blocks the enquiry POST under the old CSP.
+
+### Troubleshooting: Cloudflare Error 521
+
+"Web server is down" means Cloudflare could not open a TCP connection to the
+origin. It is almost never an actual outage. Diagnose from outside:
+
+```bash
+curl -I http://<origin-ip>/          # origin alive on 80?
+curl -kI https://<origin-ip>/        # origin answering TLS on 443?
+```
+
+If port 80 works but 443 is refused, Cloudflare's SSL/TLS mode is **Full** or
+**Full (Strict)** — both connect to the origin over HTTPS — while nginx has no
+443 listener. That was the cause on 2026-08-27, fixed by installing the Origin
+Certificate above.
+
+A quick way to tell a firewall block from a missing listener: a **refused**
+connection (fast) means the security group allows the port but nothing is
+listening; a **timeout** (slow) means the traffic is being dropped upstream.
 
 ## Rollback
 

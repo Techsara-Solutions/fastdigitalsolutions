@@ -3,6 +3,7 @@ import { buildMetadata } from "@/lib/metadata";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { SectionIntro } from "@/components/ui/SectionIntro";
+import { PageHero } from "@/components/content/PageHero";
 import { ServiceCard } from "@/components/content/ServiceCard";
 import { CtaPanel } from "@/components/content/CtaPanel";
 import { services } from "@/content/services";
@@ -12,28 +13,21 @@ import { workingCommitments } from "@/content/delivery-method";
 export const metadata: Metadata = buildMetadata({
   title: "Services",
   description:
-    "Six connected capability areas — cloud and platform engineering, AI and automation, software engineering, quality engineering, application support, and flexible delivery teams.",
+    "Six connected capability areas covering cloud and platform engineering, AI and automation, software engineering, quality engineering, application support, and flexible delivery teams.",
   path: "/services/",
 });
 
 export default function ServicesIndexPage() {
   return (
     <>
-      <Section surface="paper" spacing="tight" ariaLabelledby="services-hero">
-        <Container>
-          <div className="max-w-[46rem] py-6">
-            <p className="eyebrow mb-4">Services</p>
-            <h1 id="services-hero" className="text-h1 font-semibold">
-              Start from the problem you need to solve.
-            </h1>
-            <p className="mt-6 text-lead text-muted">
-              Six connected capability areas cover the delivery needs we see most often in growing
-              organizations. Each one begins with your situation — the systems, constraints, and
-              outcomes involved — before any technology choice is made.
-            </p>
-          </div>
-        </Container>
-      </Section>
+      <PageHero
+        headingId="services-hero"
+        variant="full-bleed"
+        image="hero-services"
+        eyebrow="Services"
+        title="Start from the problem you need to solve."
+        lead="Six connected capability areas cover the delivery needs we see most often in growing organizations. Each one begins with your situation, meaning the systems, constraints, and outcomes involved, before any technology choice is made."
+      />
 
       <Section surface="canvas" ariaLabelledby="service-groups-heading">
         <Container>
@@ -42,7 +36,12 @@ export default function ServicesIndexPage() {
           </h2>
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {services.map((service) => (
-              <ServiceCard key={service.slug} service={service} variant="detailed" />
+              <ServiceCard
+                key={service.slug}
+                service={service}
+                variant="detailed"
+                className="reveal"
+              />
             ))}
           </div>
         </Container>
@@ -63,7 +62,7 @@ export default function ServicesIndexPage() {
                   <li key={commitment} className="flex gap-3 text-[0.9375rem] text-ink/85">
                     <span
                       aria-hidden="true"
-                      className="mt-[0.55em] h-1 w-3 shrink-0 rounded-full bg-clay/70"
+                      className="mt-[0.55em] h-1 w-3 shrink-0 rounded-full bg-accent/70"
                     />
                     {commitment}
                   </li>
@@ -74,7 +73,7 @@ export default function ServicesIndexPage() {
               <h3 className="text-h3 font-semibold">Ways to engage</h3>
               <dl className="mt-6 space-y-6">
                 {engagementModels.map((model) => (
-                  <div key={model.slug} className="border-l border-stone pl-5">
+                  <div key={model.slug} className="border-l-2 border-accent/40 pl-5">
                     <dt className="font-bold">{model.name}</dt>
                     <dd className="mt-1 text-[0.9375rem] text-muted">{model.explanation}</dd>
                   </div>
@@ -87,7 +86,7 @@ export default function ServicesIndexPage() {
 
       <CtaPanel
         heading="Not sure which capability fits?"
-        copy="Describe the situation and we will recommend a practical starting point — which may be smaller than you expect."
+        copy="Describe the situation and we will recommend a starting point, which may be smaller than you expect."
         ctaLabel="Talk through the challenge"
       />
     </>
