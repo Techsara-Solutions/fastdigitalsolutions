@@ -13,7 +13,7 @@ import { workingCommitments } from "@/content/delivery-method";
 export const metadata: Metadata = buildMetadata({
   title: "Services",
   description:
-    "Six connected capability areas — cloud and platform engineering, AI and automation, software engineering, quality engineering, application support, and flexible delivery teams.",
+    "Six connected capability areas covering cloud and platform engineering, AI and automation, software engineering, quality engineering, application support, and flexible delivery teams.",
   path: "/services/",
 });
 
@@ -26,7 +26,7 @@ export default function ServicesIndexPage() {
         image="hero-services"
         eyebrow="Services"
         title="Start from the problem you need to solve."
-        lead="Six connected capability areas cover the delivery needs we see most often in growing organizations. Each one begins with your situation — the systems, constraints, and outcomes involved — before any technology choice is made."
+        lead="Six connected capability areas cover the delivery needs we see most often in growing organizations. Each one begins with your situation, meaning the systems, constraints, and outcomes involved, before any technology choice is made."
       />
 
       <Section surface="canvas" ariaLabelledby="service-groups-heading">
@@ -86,7 +86,7 @@ export default function ServicesIndexPage() {
 
       <CtaPanel
         heading="Not sure which capability fits?"
-        copy="Describe the situation and we will recommend a practical starting point — which may be smaller than you expect."
+        copy="Describe the situation and we will recommend a starting point, which may be smaller than you expect."
         ctaLabel="Talk through the challenge"
       />
     </>

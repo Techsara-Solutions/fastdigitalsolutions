@@ -1,25 +1,28 @@
 @import "tailwindcss";
 
 /*
- * Design tokens — V2 "cool corporate" palette (docs/ARCHITECTURE.md).
- * Ratio target: ~70% paper/canvas/white space, ~20% ink/navy, ~10% accent/teal.
- * Every text/background pair used at body size is WCAG AA (≥4.5:1):
- *   ink/paper 17.4:1 · muted/paper 7.6:1 · accent/paper 4.9:1 · white/accent-dark 8.7:1
- *   paper/navy 16.1:1 · stone/navy 12.9:1 · white/teal 5.5:1 · teal-dark/canvas 6.6:1
+ * Design tokens: warm graphite + terracotta (docs/ARCHITECTURE.md). The accent
+ * is the logo's own terracotta; text and dark surfaces are warm charcoals.
+ * Ratio target: ~70% paper/canvas/white space, ~20% ink/espresso, ~10% accent/olive.
+ * Text/background pairs used at body size are WCAG AA (at least 4.5:1):
+ *   ink/paper 16:1, muted/paper 7.4:1, accent-dark/paper 5.8:1, white/accent-dark 6.1:1,
+ *   paper/espresso 14:1, eyebrow-dark/espresso 7.3:1, white/olive 5.2:1, olive-dark/paper 7.7:1.
+ * `accent` itself (2.9:1 on paper) is reserved for icons, rules, badges and hover
+ * tints, never for small text on light surfaces.
  */
 @theme {
   /* Core palette */
-  --color-paper: #f8f9fb;
-  --color-canvas: #eef2f6;
-  --color-stone: #d5dce6;
-  --color-ink: #0f172a;
-  --color-navy: #0b1f3f;
-  --color-muted: #4a5568;
-  --color-accent: #2563eb;
-  --color-accent-dark: #1e40af;
-  --color-teal: #0f766e;
-  --color-teal-dark: #115e59;
-  /* Card fill — pure white on the off-white page so cards lift without shadows. */
+  --color-paper: #faf8f5;
+  --color-canvas: #f3efe9;
+  --color-stone: #ddd5ca;
+  --color-ink: #1f1a17;
+  --color-espresso: #2a211c;
+  --color-muted: #5c5049;
+  --color-accent: #d57b47;
+  --color-accent-dark: #9c4a22;
+  --color-olive: #6b7048;
+  --color-olive-dark: #4d5232;
+  /* Card fill: pure white on the off-white page so cards lift without shadows. */
   --color-surface-card: #ffffff;
 
   /* Typography */
@@ -52,8 +55,8 @@
   --radius-panel: 20px;
 
   /* Diffuse elevation for hovered cards and the open mega-menu panel. */
-  --shadow-lift: 0 12px 32px -12px rgb(15 23 42 / 0.18);
-  --shadow-panel: 0 24px 48px -16px rgb(15 23 42 / 0.22);
+  --shadow-lift: 0 12px 32px -12px rgb(31 26 23 / 0.18);
+  --shadow-panel: 0 24px 48px -16px rgb(31 26 23 / 0.22);
 }
 
 @layer base {
@@ -213,7 +216,7 @@
   }
 
   [data-surface="dark"] .eyebrow {
-    color: #93c5fd;
+    color: #e8a27a;
   }
 
   /*
@@ -225,22 +228,22 @@
     inset: 0;
     background: linear-gradient(
       90deg,
-      rgb(11 31 63 / 0.9) 0%,
-      rgb(11 31 63 / 0.8) 45%,
-      rgb(11 31 63 / 0.35) 100%
+      rgb(42 33 28 / 0.9) 0%,
+      rgb(42 33 28 / 0.8) 45%,
+      rgb(42 33 28 / 0.35) 100%
     );
   }
 
   .photo-scrim--full {
     position: absolute;
     inset: 0;
-    background: rgb(11 31 63 / 0.82);
+    background: rgb(42 33 28 / 0.82);
   }
 
   .photo-scrim--bottom {
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgb(11 31 63 / 0.05) 20%, rgb(11 31 63 / 0.9) 100%);
+    background: linear-gradient(180deg, rgb(42 33 28 / 0.05) 20%, rgb(42 33 28 / 0.9) 100%);
   }
 
   /* Card hover: border tint + a small lift, colour/transform only. */

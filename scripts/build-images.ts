@@ -32,6 +32,11 @@ const SOURCE_DIR = path.join(ROOT, "images");
 const OUTPUT_DIR = path.join(ROOT, "public", "images");
 const GENERATED_FILE = path.join(ROOT, "src", "generated", "images.ts");
 const DERIVATIVE_PATTERN = /^[a-z0-9-]+-\d+\.[0-9a-f]{8}\.(avif|webp)$/;
+const WARM_GRADE: [[number, number, number], [number, number, number], [number, number, number]] = [
+  [1.04, 0, 0],
+  [0, 1, 0],
+  [0, 0, 0.94],
+];
 
 const args = process.argv.slice(2);
 const dryRun = args.includes("--dry");
@@ -154,6 +159,10 @@ async function processSlot(
       }),
     );
   }
+
+  // Site-wide warm grade: the licensed set is cool daylight, the palette is warm
+  // graphite and terracotta. A gentle red-up/blue-down recomb reconciles them.
+  master = await materialise(open(master).recomb(WARM_GRADE));
 
   const rect = cropRect(slot, master.width, master.height);
   const widths = slot.widths ?? CLASS_WIDTHS[slot.class];

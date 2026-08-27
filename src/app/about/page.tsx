@@ -21,7 +21,7 @@ const principles = [
   {
     title: "Client context first",
     detail:
-      "We begin with your business problem, constraints, users, and operating environment — not with a solution looking for a home.",
+      "We begin with your business problem, constraints, users, and operating environment, not with a solution looking for a home.",
   },
   {
     title: "Outcomes before tools",
@@ -36,7 +36,7 @@ const principles = [
   {
     title: "Visible delivery",
     detail:
-      "Work is planned, reviewed, tested, documented, and demonstrated in the open — including the risks.",
+      "Work is planned, reviewed, tested, documented, and demonstrated in the open, risks included.",
   },
   {
     title: "Maintainable by you",
@@ -44,9 +44,8 @@ const principles = [
       "Documentation and knowledge transfer are deliverables. Systems should not depend on us to stay healthy.",
   },
   {
-    title: "Honest scale",
-    detail:
-      "We are a focused team, and we say so. What we commit to, we can actually staff and deliver.",
+    title: "Realistic scale",
+    detail: "We are a focused team, and we say so. What we commit to, we can staff and deliver.",
   },
 ];
 
@@ -76,7 +75,7 @@ export default function AboutPage() {
               id="mission-heading"
               eyebrow="Why we exist"
               title="Experienced delivery, without the overhead of a giant firm."
-              lead="Growing organizations often face a gap: too complex for a generalist agency, too pragmatic for a global consultancy. We exist for that gap — meaningful cloud, software, AI, and quality work delivered by a team that stays close to the client."
+              lead="Growing organizations often fall into a gap. Their needs are too complex for a generalist agency and too pragmatic for a global consultancy. That gap is where we work, delivering meaningful cloud, software, AI, and quality work with a team that stays close to the client."
             />
             <ul className="grid gap-x-8 gap-y-8 sm:grid-cols-2">
               {principles.map((principle) => (

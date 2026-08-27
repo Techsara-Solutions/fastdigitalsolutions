@@ -80,7 +80,7 @@ export function getPrimaryNavigation(): NavItem[] {
         featured: {
           image: images["nav-services"],
           title: "How we work",
-          copy: "Five stages, visible outputs, and documented decisions — the method behind every engagement.",
+          copy: "Five stages, visible outputs, and documented decisions. The method behind every engagement.",
           href: "/how-we-work/",
           cta: "See the method",
         },
@@ -113,7 +113,7 @@ export function getPrimaryNavigation(): NavItem[] {
               {
                 label: "Careers",
                 href: "/careers/",
-                description: "Open roles, posted only when they are real.",
+                description: "How we work and how to get in touch about joining.",
               },
               {
                 label: "Contact",
@@ -126,7 +126,7 @@ export function getPrimaryNavigation(): NavItem[] {
         featured: {
           image: images["nav-company"],
           title: "Discuss your project",
-          copy: "A considered reply within two business days — an introduction, a next step, or an honest “not the right fit.”",
+          copy: "A reply from a person within two business days, whether that is an introduction, a next step, or a clear answer that we are not the right fit.",
           href: "/contact/",
           cta: "Get in touch",
         },
@@ -144,12 +144,7 @@ export const footerCompanyLinks: NavLink[] = [
   { label: "About", href: "/about/" },
   { label: "How we work", href: "/how-we-work/" },
   { label: "Work", href: "/work/" },
+  { label: "Insights", href: "/insights/" },
   { label: "Careers", href: "/careers/" },
   { label: "Contact", href: "/contact/" },
-];
-
-export const footerLegalLinks: NavLink[] = [
-  { label: "Privacy Policy", href: "/privacy/" },
-  { label: "Terms of Use", href: "/terms/" },
-  { label: "Accessibility", href: "/accessibility/" },
 ];

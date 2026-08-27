@@ -31,7 +31,7 @@ describe("ScenarioCard", () => {
   it("always shows the illustrative label", () => {
     const scenario = scenarios[0]!;
     render(<ScenarioCard scenario={scenario} />);
-    expect(screen.getByText("Example engagement scenario")).toBeInTheDocument();
+    expect(screen.getByText("Illustrative scenario")).toBeInTheDocument();
   });
 });
 
@@ -64,7 +64,6 @@ async function fillValidForm(user: ReturnType<typeof userEvent.setup>) {
     screen.getByLabelText(/^Notes/),
     "We need to assess and modernize a customer-facing application on legacy infrastructure.",
   );
-  await user.click(screen.getByLabelText(/I have read the/));
 }
 
 describe("ContactForm", () => {

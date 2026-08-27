@@ -14,17 +14,17 @@ export const images = /*__JSON__*/ {
     ],
     "width": 1920,
     "height": 800,
-    "src": "/images/band-cta-1280.c5875447.webp",
+    "src": "/images/band-cta-1280.b9daf544.webp",
     "sources": {
-      "avif": "/images/band-cta-768.b49059ee.avif 768w, /images/band-cta-1280.96e8cce8.avif 1280w, /images/band-cta-1920.5839fdf7.avif 1920w",
-      "webp": "/images/band-cta-768.2f7330fc.webp 768w, /images/band-cta-1280.c5875447.webp 1280w, /images/band-cta-1920.447fe236.webp 1920w"
+      "avif": "/images/band-cta-768.6e48c6bd.avif 768w, /images/band-cta-1280.1e9f08b0.avif 1280w, /images/band-cta-1920.50358ffd.avif 1920w",
+      "webp": "/images/band-cta-768.6725f995.webp 768w, /images/band-cta-1280.b9daf544.webp 1280w, /images/band-cta-1920.91defe97.webp 1920w"
     },
     "widths": [
       768,
       1280,
       1920
     ],
-    "manifestHash": "8ee3844e5572"
+    "manifestHash": "2b994e6bd016"
   },
   "card-service-ai": {
     "id": "card-service-ai",
@@ -37,10 +37,10 @@ export const images = /*__JSON__*/ {
     ],
     "width": 1200,
     "height": 800,
-    "src": "/images/card-service-ai-640.3306dcbe.webp",
+    "src": "/images/card-service-ai-640.4ef78be2.webp",
     "sources": {
-      "avif": "/images/card-service-ai-400.4f11e50d.avif 400w, /images/card-service-ai-640.4dc8da00.avif 640w, /images/card-service-ai-960.9ff2c3c4.avif 960w, /images/card-service-ai-1200.9befbf3a.avif 1200w",
-      "webp": "/images/card-service-ai-400.b0674689.webp 400w, /images/card-service-ai-640.3306dcbe.webp 640w, /images/card-service-ai-960.c26debdd.webp 960w, /images/card-service-ai-1200.f1a33ea5.webp 1200w"
+      "avif": "/images/card-service-ai-400.c10ba5f4.avif 400w, /images/card-service-ai-640.13f13b3d.avif 640w, /images/card-service-ai-960.39ea5638.avif 960w, /images/card-service-ai-1200.5242eabc.avif 1200w",
+      "webp": "/images/card-service-ai-400.b2cc9bbc.webp 400w, /images/card-service-ai-640.4ef78be2.webp 640w, /images/card-service-ai-960.51a65702.webp 960w, /images/card-service-ai-1200.26afd0cb.webp 1200w"
     },
     "widths": [
       400,
@@ -48,7 +48,7 @@ export const images = /*__JSON__*/ {
       960,
       1200
     ],
-    "manifestHash": "5f144bec1f86"
+    "manifestHash": "974f95bea9b8"
   },
   "card-service-cloud": {
     "id": "card-service-cloud",
@@ -61,10 +61,10 @@ export const images = /*__JSON__*/ {
     ],
     "width": 1200,
     "height": 800,
-    "src": "/images/card-service-cloud-640.5f1f786c.webp",
+    "src": "/images/card-service-cloud-640.49a2e190.webp",
     "sources": {
-      "avif": "/images/card-service-cloud-400.7b4122e7.avif 400w, /images/card-service-cloud-640.4298bd36.avif 640w, /images/card-service-cloud-960.d815caa4.avif 960w, /images/card-service-cloud-1200.b2490100.avif 1200w",
-      "webp": "/images/card-service-cloud-400.2e1bd31f.webp 400w, /images/card-service-cloud-640.5f1f786c.webp 640w, /images/card-service-cloud-960.2ae581de.webp 960w, /images/card-service-cloud-1200.db3a7f52.webp 1200w"
+      "avif": "/images/card-service-cloud-400.8fc802ff.avif 400w, /images/card-service-cloud-640.9aa51ab2.avif 640w, /images/card-service-cloud-960.59f080aa.avif 960w, /images/card-service-cloud-1200.bf815efb.avif 1200w",
+      "webp": "/images/card-service-cloud-400.0195326a.webp 400w, /images/card-service-cloud-640.49a2e190.webp 640w, /images/card-service-cloud-960.be8ee5da.webp 960w, /images/card-service-cloud-1200.9c233d90.webp 1200w"
     },
     "widths": [
       400,
@@ -72,7 +72,7 @@ export const images = /*__JSON__*/ {
       960,
       1200
     ],
-    "manifestHash": "1cd108e0a497"
+    "manifestHash": "4f63ff1b0404"
   },
   "card-service-quality": {
     "id": "card-service-quality",
@@ -85,10 +85,10 @@ export const images = /*__JSON__*/ {
     ],
     "width": 1200,
     "height": 800,
-    "src": "/images/card-service-quality-640.0aaf0b76.webp",
+    "src": "/images/card-service-quality-640.de369c3c.webp",
     "sources": {
-      "avif": "/images/card-service-quality-400.0a1abe8e.avif 400w, /images/card-service-quality-640.67c7faae.avif 640w, /images/card-service-quality-960.3bd4444c.avif 960w, /images/card-service-quality-1200.6d887b75.avif 1200w",
-      "webp": "/images/card-service-quality-400.a3473a0e.webp 400w, /images/card-service-quality-640.0aaf0b76.webp 640w, /images/card-service-quality-960.bacdbb83.webp 960w, /images/card-service-quality-1200.38d3a4a0.webp 1200w"
+      "avif": "/images/card-service-quality-400.e6e191d9.avif 400w, /images/card-service-quality-640.af8f1dc1.avif 640w, /images/card-service-quality-960.deff8a15.avif 960w, /images/card-service-quality-1200.bd17ca10.avif 1200w",
+      "webp": "/images/card-service-quality-400.3ee163ea.webp 400w, /images/card-service-quality-640.de369c3c.webp 640w, /images/card-service-quality-960.29929fe0.webp 960w, /images/card-service-quality-1200.264584bf.webp 1200w"
     },
     "widths": [
       400,
@@ -96,7 +96,7 @@ export const images = /*__JSON__*/ {
       960,
       1200
     ],
-    "manifestHash": "adf71b5767bd"
+    "manifestHash": "34ea10a8a5b5"
   },
   "card-service-software": {
     "id": "card-service-software",
@@ -109,10 +109,10 @@ export const images = /*__JSON__*/ {
     ],
     "width": 1200,
     "height": 800,
-    "src": "/images/card-service-software-640.809e038d.webp",
+    "src": "/images/card-service-software-640.ed5d7508.webp",
     "sources": {
-      "avif": "/images/card-service-software-400.d19aeecb.avif 400w, /images/card-service-software-640.344ef1ba.avif 640w, /images/card-service-software-960.5b7c385a.avif 960w, /images/card-service-software-1200.38a68fca.avif 1200w",
-      "webp": "/images/card-service-software-400.d9720ccd.webp 400w, /images/card-service-software-640.809e038d.webp 640w, /images/card-service-software-960.8ff0647e.webp 960w, /images/card-service-software-1200.6f257ff0.webp 1200w"
+      "avif": "/images/card-service-software-400.c755333f.avif 400w, /images/card-service-software-640.4d9da68b.avif 640w, /images/card-service-software-960.8b7f1a40.avif 960w, /images/card-service-software-1200.1d9605a1.avif 1200w",
+      "webp": "/images/card-service-software-400.343e1024.webp 400w, /images/card-service-software-640.ed5d7508.webp 640w, /images/card-service-software-960.73b34620.webp 960w, /images/card-service-software-1200.6e10cf82.webp 1200w"
     },
     "widths": [
       400,
@@ -120,7 +120,7 @@ export const images = /*__JSON__*/ {
       960,
       1200
     ],
-    "manifestHash": "100b928c5bc5"
+    "manifestHash": "26144c1df53a"
   },
   "card-service-support": {
     "id": "card-service-support",
@@ -133,10 +133,10 @@ export const images = /*__JSON__*/ {
     ],
     "width": 1200,
     "height": 800,
-    "src": "/images/card-service-support-640.23bcdbad.webp",
+    "src": "/images/card-service-support-640.64f846b4.webp",
     "sources": {
-      "avif": "/images/card-service-support-400.747b307f.avif 400w, /images/card-service-support-640.ad858831.avif 640w, /images/card-service-support-960.4029cd33.avif 960w, /images/card-service-support-1200.56f95519.avif 1200w",
-      "webp": "/images/card-service-support-400.293d82a7.webp 400w, /images/card-service-support-640.23bcdbad.webp 640w, /images/card-service-support-960.9c35e629.webp 960w, /images/card-service-support-1200.d4c01e46.webp 1200w"
+      "avif": "/images/card-service-support-400.1b01a0a3.avif 400w, /images/card-service-support-640.f994b3f9.avif 640w, /images/card-service-support-960.175a0805.avif 960w, /images/card-service-support-1200.8ce40a85.avif 1200w",
+      "webp": "/images/card-service-support-400.b901e207.webp 400w, /images/card-service-support-640.64f846b4.webp 640w, /images/card-service-support-960.00921fd5.webp 960w, /images/card-service-support-1200.80afb1b0.webp 1200w"
     },
     "widths": [
       400,
@@ -144,7 +144,7 @@ export const images = /*__JSON__*/ {
       960,
       1200
     ],
-    "manifestHash": "482d5038f2d9"
+    "manifestHash": "db55da79698d"
   },
   "card-service-teams": {
     "id": "card-service-teams",
@@ -157,10 +157,10 @@ export const images = /*__JSON__*/ {
     ],
     "width": 1200,
     "height": 800,
-    "src": "/images/card-service-teams-640.b57b140c.webp",
+    "src": "/images/card-service-teams-640.e5a5d0cd.webp",
     "sources": {
-      "avif": "/images/card-service-teams-400.77196175.avif 400w, /images/card-service-teams-640.b5852499.avif 640w, /images/card-service-teams-960.5a24ac5b.avif 960w, /images/card-service-teams-1200.6faef557.avif 1200w",
-      "webp": "/images/card-service-teams-400.ee1e977a.webp 400w, /images/card-service-teams-640.b57b140c.webp 640w, /images/card-service-teams-960.42076a3b.webp 960w, /images/card-service-teams-1200.a722b49e.webp 1200w"
+      "avif": "/images/card-service-teams-400.d5b538e9.avif 400w, /images/card-service-teams-640.0b44abc9.avif 640w, /images/card-service-teams-960.94c780f7.avif 960w, /images/card-service-teams-1200.26006682.avif 1200w",
+      "webp": "/images/card-service-teams-400.e8e09c09.webp 400w, /images/card-service-teams-640.e5a5d0cd.webp 640w, /images/card-service-teams-960.c10176ae.webp 960w, /images/card-service-teams-1200.412f9a82.webp 1200w"
     },
     "widths": [
       400,
@@ -168,7 +168,7 @@ export const images = /*__JSON__*/ {
       960,
       1200
     ],
-    "manifestHash": "a2fba58b2a46"
+    "manifestHash": "426d375ece45"
   },
   "cover-insight-aws-migration-readiness-checklist": {
     "id": "cover-insight-aws-migration-readiness-checklist",
@@ -181,10 +181,10 @@ export const images = /*__JSON__*/ {
     ],
     "width": 1520,
     "height": 855,
-    "src": "/images/cover-insight-aws-migration-readiness-checklist-760.7e23d8fd.webp",
+    "src": "/images/cover-insight-aws-migration-readiness-checklist-760.72a834c4.webp",
     "sources": {
-      "avif": "/images/cover-insight-aws-migration-readiness-checklist-480.41e6f5b6.avif 480w, /images/cover-insight-aws-migration-readiness-checklist-760.a75fc326.avif 760w, /images/cover-insight-aws-migration-readiness-checklist-1140.9786dde4.avif 1140w, /images/cover-insight-aws-migration-readiness-checklist-1520.1b704fc4.avif 1520w",
-      "webp": "/images/cover-insight-aws-migration-readiness-checklist-480.e4b59a2c.webp 480w, /images/cover-insight-aws-migration-readiness-checklist-760.7e23d8fd.webp 760w, /images/cover-insight-aws-migration-readiness-checklist-1140.6e48a61f.webp 1140w, /images/cover-insight-aws-migration-readiness-checklist-1520.c502d5d7.webp 1520w"
+      "avif": "/images/cover-insight-aws-migration-readiness-checklist-480.dbe2733a.avif 480w, /images/cover-insight-aws-migration-readiness-checklist-760.5b009969.avif 760w, /images/cover-insight-aws-migration-readiness-checklist-1140.af09bc59.avif 1140w, /images/cover-insight-aws-migration-readiness-checklist-1520.910d5fad.avif 1520w",
+      "webp": "/images/cover-insight-aws-migration-readiness-checklist-480.4e8db795.webp 480w, /images/cover-insight-aws-migration-readiness-checklist-760.72a834c4.webp 760w, /images/cover-insight-aws-migration-readiness-checklist-1140.fea2afe0.webp 1140w, /images/cover-insight-aws-migration-readiness-checklist-1520.5dc8f6b6.webp 1520w"
     },
     "widths": [
       480,
@@ -192,7 +192,7 @@ export const images = /*__JSON__*/ {
       1140,
       1520
     ],
-    "manifestHash": "94017ba43ecb"
+    "manifestHash": "a49952f4d6a0"
   },
   "cover-insight-quality-engineering-in-delivery": {
     "id": "cover-insight-quality-engineering-in-delivery",
@@ -205,10 +205,10 @@ export const images = /*__JSON__*/ {
     ],
     "width": 1520,
     "height": 855,
-    "src": "/images/cover-insight-quality-engineering-in-delivery-760.b5848852.webp",
+    "src": "/images/cover-insight-quality-engineering-in-delivery-760.7d970e1c.webp",
     "sources": {
-      "avif": "/images/cover-insight-quality-engineering-in-delivery-480.b6273346.avif 480w, /images/cover-insight-quality-engineering-in-delivery-760.8008d2af.avif 760w, /images/cover-insight-quality-engineering-in-delivery-1140.c2cec483.avif 1140w, /images/cover-insight-quality-engineering-in-delivery-1520.5b4d3e3c.avif 1520w",
-      "webp": "/images/cover-insight-quality-engineering-in-delivery-480.42df7c22.webp 480w, /images/cover-insight-quality-engineering-in-delivery-760.b5848852.webp 760w, /images/cover-insight-quality-engineering-in-delivery-1140.a4fc7886.webp 1140w, /images/cover-insight-quality-engineering-in-delivery-1520.e74c08df.webp 1520w"
+      "avif": "/images/cover-insight-quality-engineering-in-delivery-480.b7cac77b.avif 480w, /images/cover-insight-quality-engineering-in-delivery-760.6d74c1c2.avif 760w, /images/cover-insight-quality-engineering-in-delivery-1140.64779a9e.avif 1140w, /images/cover-insight-quality-engineering-in-delivery-1520.de233d67.avif 1520w",
+      "webp": "/images/cover-insight-quality-engineering-in-delivery-480.8cb42bf1.webp 480w, /images/cover-insight-quality-engineering-in-delivery-760.7d970e1c.webp 760w, /images/cover-insight-quality-engineering-in-delivery-1140.7f1f6844.webp 1140w, /images/cover-insight-quality-engineering-in-delivery-1520.b84f7b9e.webp 1520w"
     },
     "widths": [
       480,
@@ -216,7 +216,7 @@ export const images = /*__JSON__*/ {
       1140,
       1520
     ],
-    "manifestHash": "bc688bbcff16"
+    "manifestHash": "12a4517cc7a3"
   },
   "cover-insight-where-ai-automation-creates-value": {
     "id": "cover-insight-where-ai-automation-creates-value",
@@ -229,10 +229,10 @@ export const images = /*__JSON__*/ {
     ],
     "width": 1520,
     "height": 855,
-    "src": "/images/cover-insight-where-ai-automation-creates-value-760.e4722d18.webp",
+    "src": "/images/cover-insight-where-ai-automation-creates-value-760.98f815ad.webp",
     "sources": {
-      "avif": "/images/cover-insight-where-ai-automation-creates-value-480.03c12abf.avif 480w, /images/cover-insight-where-ai-automation-creates-value-760.88e7b3b2.avif 760w, /images/cover-insight-where-ai-automation-creates-value-1140.f6bcfd78.avif 1140w, /images/cover-insight-where-ai-automation-creates-value-1520.6f65738a.avif 1520w",
-      "webp": "/images/cover-insight-where-ai-automation-creates-value-480.c689918d.webp 480w, /images/cover-insight-where-ai-automation-creates-value-760.e4722d18.webp 760w, /images/cover-insight-where-ai-automation-creates-value-1140.48003bc9.webp 1140w, /images/cover-insight-where-ai-automation-creates-value-1520.e3a2f3a1.webp 1520w"
+      "avif": "/images/cover-insight-where-ai-automation-creates-value-480.2a3b6031.avif 480w, /images/cover-insight-where-ai-automation-creates-value-760.63ad44cd.avif 760w, /images/cover-insight-where-ai-automation-creates-value-1140.2cbfdd3f.avif 1140w, /images/cover-insight-where-ai-automation-creates-value-1520.ac3e1e26.avif 1520w",
+      "webp": "/images/cover-insight-where-ai-automation-creates-value-480.349f0af9.webp 480w, /images/cover-insight-where-ai-automation-creates-value-760.98f815ad.webp 760w, /images/cover-insight-where-ai-automation-creates-value-1140.992a5ecb.webp 1140w, /images/cover-insight-where-ai-automation-creates-value-1520.3c83195c.webp 1520w"
     },
     "widths": [
       480,
@@ -240,7 +240,7 @@ export const images = /*__JSON__*/ {
       1140,
       1520
     ],
-    "manifestHash": "2471f8a4cdcc"
+    "manifestHash": "904855fd4628"
   },
   "feature-how-we-work-stages": {
     "id": "feature-how-we-work-stages",
@@ -253,17 +253,17 @@ export const images = /*__JSON__*/ {
     ],
     "width": 1080,
     "height": 810,
-    "src": "/images/feature-how-we-work-stages-720.8cd61b5d.webp",
+    "src": "/images/feature-how-we-work-stages-720.221ee6d6.webp",
     "sources": {
-      "avif": "/images/feature-how-we-work-stages-480.36a65eda.avif 480w, /images/feature-how-we-work-stages-720.bbcd4e1a.avif 720w, /images/feature-how-we-work-stages-1080.d33a558d.avif 1080w",
-      "webp": "/images/feature-how-we-work-stages-480.8648d0ef.webp 480w, /images/feature-how-we-work-stages-720.8cd61b5d.webp 720w, /images/feature-how-we-work-stages-1080.0e80ec19.webp 1080w"
+      "avif": "/images/feature-how-we-work-stages-480.02a5fce9.avif 480w, /images/feature-how-we-work-stages-720.be6f9603.avif 720w, /images/feature-how-we-work-stages-1080.e4c658c8.avif 1080w",
+      "webp": "/images/feature-how-we-work-stages-480.a7354491.webp 480w, /images/feature-how-we-work-stages-720.221ee6d6.webp 720w, /images/feature-how-we-work-stages-1080.22140572.webp 1080w"
     },
     "widths": [
       480,
       720,
       1080
     ],
-    "manifestHash": "75d1172341d1"
+    "manifestHash": "2a88f81917d2"
   },
   "hero-about": {
     "id": "hero-about",
@@ -276,17 +276,17 @@ export const images = /*__JSON__*/ {
     ],
     "width": 1080,
     "height": 810,
-    "src": "/images/hero-about-720.de947ab4.webp",
+    "src": "/images/hero-about-720.b40d2cef.webp",
     "sources": {
-      "avif": "/images/hero-about-480.ad74c237.avif 480w, /images/hero-about-720.695b7fd8.avif 720w, /images/hero-about-1080.060ac25f.avif 1080w",
-      "webp": "/images/hero-about-480.366af8b7.webp 480w, /images/hero-about-720.de947ab4.webp 720w, /images/hero-about-1080.2c86c683.webp 1080w"
+      "avif": "/images/hero-about-480.2aa32c3c.avif 480w, /images/hero-about-720.ff3f8b0a.avif 720w, /images/hero-about-1080.a182aa07.avif 1080w",
+      "webp": "/images/hero-about-480.d98e77ff.webp 480w, /images/hero-about-720.b40d2cef.webp 720w, /images/hero-about-1080.f5c945c3.webp 1080w"
     },
     "widths": [
       480,
       720,
       1080
     ],
-    "manifestHash": "41ca4577246e"
+    "manifestHash": "2f527cec13df"
   },
   "hero-careers": {
     "id": "hero-careers",
@@ -299,17 +299,17 @@ export const images = /*__JSON__*/ {
     ],
     "width": 1080,
     "height": 810,
-    "src": "/images/hero-careers-720.51852319.webp",
+    "src": "/images/hero-careers-720.de7de625.webp",
     "sources": {
-      "avif": "/images/hero-careers-480.5b0492ae.avif 480w, /images/hero-careers-720.d393fc70.avif 720w, /images/hero-careers-1080.179b2646.avif 1080w",
-      "webp": "/images/hero-careers-480.9cf57007.webp 480w, /images/hero-careers-720.51852319.webp 720w, /images/hero-careers-1080.9845740e.webp 1080w"
+      "avif": "/images/hero-careers-480.ef7b7275.avif 480w, /images/hero-careers-720.77699d21.avif 720w, /images/hero-careers-1080.482a4772.avif 1080w",
+      "webp": "/images/hero-careers-480.d36d7978.webp 480w, /images/hero-careers-720.de7de625.webp 720w, /images/hero-careers-1080.1623a34f.webp 1080w"
     },
     "widths": [
       480,
       720,
       1080
     ],
-    "manifestHash": "632ab9277536"
+    "manifestHash": "10cc96cd58f4"
   },
   "hero-contact": {
     "id": "hero-contact",
@@ -322,17 +322,17 @@ export const images = /*__JSON__*/ {
     ],
     "width": 1080,
     "height": 810,
-    "src": "/images/hero-contact-720.17ec1df6.webp",
+    "src": "/images/hero-contact-720.0c7e4d51.webp",
     "sources": {
-      "avif": "/images/hero-contact-480.1c08c142.avif 480w, /images/hero-contact-720.33b6d478.avif 720w, /images/hero-contact-1080.048fc5a1.avif 1080w",
-      "webp": "/images/hero-contact-480.143e6157.webp 480w, /images/hero-contact-720.17ec1df6.webp 720w, /images/hero-contact-1080.e2cabe3c.webp 1080w"
+      "avif": "/images/hero-contact-480.f7c2ade4.avif 480w, /images/hero-contact-720.74da9f82.avif 720w, /images/hero-contact-1080.5fdbcdee.avif 1080w",
+      "webp": "/images/hero-contact-480.e590543f.webp 480w, /images/hero-contact-720.0c7e4d51.webp 720w, /images/hero-contact-1080.1c792228.webp 1080w"
     },
     "widths": [
       480,
       720,
       1080
     ],
-    "manifestHash": "2df888384c5d"
+    "manifestHash": "2d68be5b3dc5"
   },
   "hero-home": {
     "id": "hero-home",
@@ -345,17 +345,17 @@ export const images = /*__JSON__*/ {
     ],
     "width": 1920,
     "height": 1080,
-    "src": "/images/hero-home-1280.fdf2899e.webp",
+    "src": "/images/hero-home-1280.ab65ebf2.webp",
     "sources": {
-      "avif": "/images/hero-home-768.e452ff3a.avif 768w, /images/hero-home-1280.678bab61.avif 1280w, /images/hero-home-1920.bc833a14.avif 1920w",
-      "webp": "/images/hero-home-768.e9541c5d.webp 768w, /images/hero-home-1280.fdf2899e.webp 1280w, /images/hero-home-1920.84b1c47d.webp 1920w"
+      "avif": "/images/hero-home-768.3ec918ff.avif 768w, /images/hero-home-1280.de228ad0.avif 1280w, /images/hero-home-1920.20c8ab77.avif 1920w",
+      "webp": "/images/hero-home-768.40a68e45.webp 768w, /images/hero-home-1280.ab65ebf2.webp 1280w, /images/hero-home-1920.2df31de4.webp 1920w"
     },
     "widths": [
       768,
       1280,
       1920
     ],
-    "manifestHash": "d8d650b0263a"
+    "manifestHash": "65bb15d551f8"
   },
   "hero-how-we-work": {
     "id": "hero-how-we-work",
@@ -368,17 +368,17 @@ export const images = /*__JSON__*/ {
     ],
     "width": 1080,
     "height": 810,
-    "src": "/images/hero-how-we-work-720.a78bb388.webp",
+    "src": "/images/hero-how-we-work-720.7dc6f3d5.webp",
     "sources": {
-      "avif": "/images/hero-how-we-work-480.def9cfda.avif 480w, /images/hero-how-we-work-720.f2631e12.avif 720w, /images/hero-how-we-work-1080.61707d15.avif 1080w",
-      "webp": "/images/hero-how-we-work-480.b5eae4b8.webp 480w, /images/hero-how-we-work-720.a78bb388.webp 720w, /images/hero-how-we-work-1080.19ecd58e.webp 1080w"
+      "avif": "/images/hero-how-we-work-480.3b844b6c.avif 480w, /images/hero-how-we-work-720.75d49acd.avif 720w, /images/hero-how-we-work-1080.039edce0.avif 1080w",
+      "webp": "/images/hero-how-we-work-480.2a9b1255.webp 480w, /images/hero-how-we-work-720.7dc6f3d5.webp 720w, /images/hero-how-we-work-1080.f81b86af.webp 1080w"
     },
     "widths": [
       480,
       720,
       1080
     ],
-    "manifestHash": "bb9be67dd786"
+    "manifestHash": "f89c82bddf21"
   },
   "hero-industries": {
     "id": "hero-industries",
@@ -391,17 +391,17 @@ export const images = /*__JSON__*/ {
     ],
     "width": 1080,
     "height": 810,
-    "src": "/images/hero-industries-720.a5c5aca8.webp",
+    "src": "/images/hero-industries-720.959bc4e9.webp",
     "sources": {
-      "avif": "/images/hero-industries-480.2c0b1cea.avif 480w, /images/hero-industries-720.3d937f55.avif 720w, /images/hero-industries-1080.f698b444.avif 1080w",
-      "webp": "/images/hero-industries-480.3d1dd873.webp 480w, /images/hero-industries-720.a5c5aca8.webp 720w, /images/hero-industries-1080.f3d4acb9.webp 1080w"
+      "avif": "/images/hero-industries-480.44d948d0.avif 480w, /images/hero-industries-720.e525aa70.avif 720w, /images/hero-industries-1080.988ed206.avif 1080w",
+      "webp": "/images/hero-industries-480.cd912a7e.webp 480w, /images/hero-industries-720.959bc4e9.webp 720w, /images/hero-industries-1080.4f17e9da.webp 1080w"
     },
     "widths": [
       480,
       720,
       1080
     ],
-    "manifestHash": "56df4431c632"
+    "manifestHash": "8e472e4842c0"
   },
   "hero-insights": {
     "id": "hero-insights",
@@ -414,17 +414,17 @@ export const images = /*__JSON__*/ {
     ],
     "width": 1080,
     "height": 810,
-    "src": "/images/hero-insights-720.6be3b418.webp",
+    "src": "/images/hero-insights-720.e594d1bc.webp",
     "sources": {
-      "avif": "/images/hero-insights-480.b9af3105.avif 480w, /images/hero-insights-720.98bf1f8f.avif 720w, /images/hero-insights-1080.79881d71.avif 1080w",
-      "webp": "/images/hero-insights-480.45ac63b1.webp 480w, /images/hero-insights-720.6be3b418.webp 720w, /images/hero-insights-1080.e90c9fbc.webp 1080w"
+      "avif": "/images/hero-insights-480.48b89953.avif 480w, /images/hero-insights-720.be9258e5.avif 720w, /images/hero-insights-1080.588f4105.avif 1080w",
+      "webp": "/images/hero-insights-480.b1f4a52f.webp 480w, /images/hero-insights-720.e594d1bc.webp 720w, /images/hero-insights-1080.00e0ca71.webp 1080w"
     },
     "widths": [
       480,
       720,
       1080
     ],
-    "manifestHash": "57e6d7f61cec"
+    "manifestHash": "367d7a4e878d"
   },
   "hero-service-ai-data-automation": {
     "id": "hero-service-ai-data-automation",
@@ -437,17 +437,17 @@ export const images = /*__JSON__*/ {
     ],
     "width": 1080,
     "height": 810,
-    "src": "/images/hero-service-ai-data-automation-720.04476f11.webp",
+    "src": "/images/hero-service-ai-data-automation-720.4ed075fe.webp",
     "sources": {
-      "avif": "/images/hero-service-ai-data-automation-480.2993dd2d.avif 480w, /images/hero-service-ai-data-automation-720.2d736892.avif 720w, /images/hero-service-ai-data-automation-1080.d51e4937.avif 1080w",
-      "webp": "/images/hero-service-ai-data-automation-480.95387854.webp 480w, /images/hero-service-ai-data-automation-720.04476f11.webp 720w, /images/hero-service-ai-data-automation-1080.e5f9f8c4.webp 1080w"
+      "avif": "/images/hero-service-ai-data-automation-480.23b14e30.avif 480w, /images/hero-service-ai-data-automation-720.a7f2facb.avif 720w, /images/hero-service-ai-data-automation-1080.acbfd694.avif 1080w",
+      "webp": "/images/hero-service-ai-data-automation-480.c58aa6db.webp 480w, /images/hero-service-ai-data-automation-720.4ed075fe.webp 720w, /images/hero-service-ai-data-automation-1080.1b635975.webp 1080w"
     },
     "widths": [
       480,
       720,
       1080
     ],
-    "manifestHash": "1c1a94350fe5"
+    "manifestHash": "242e97e01c25"
   },
   "hero-service-application-maintenance-support": {
     "id": "hero-service-application-maintenance-support",
@@ -460,17 +460,17 @@ export const images = /*__JSON__*/ {
     ],
     "width": 1080,
     "height": 810,
-    "src": "/images/hero-service-application-maintenance-support-720.27d563d8.webp",
+    "src": "/images/hero-service-application-maintenance-support-720.5028c520.webp",
     "sources": {
-      "avif": "/images/hero-service-application-maintenance-support-480.8bd50ee5.avif 480w, /images/hero-service-application-maintenance-support-720.385d0502.avif 720w, /images/hero-service-application-maintenance-support-1080.79c02676.avif 1080w",
-      "webp": "/images/hero-service-application-maintenance-support-480.2f00b221.webp 480w, /images/hero-service-application-maintenance-support-720.27d563d8.webp 720w, /images/hero-service-application-maintenance-support-1080.92279166.webp 1080w"
+      "avif": "/images/hero-service-application-maintenance-support-480.48811b90.avif 480w, /images/hero-service-application-maintenance-support-720.8681e185.avif 720w, /images/hero-service-application-maintenance-support-1080.10c84958.avif 1080w",
+      "webp": "/images/hero-service-application-maintenance-support-480.5708df40.webp 480w, /images/hero-service-application-maintenance-support-720.5028c520.webp 720w, /images/hero-service-application-maintenance-support-1080.e6042a82.webp 1080w"
     },
     "widths": [
       480,
       720,
       1080
     ],
-    "manifestHash": "ee85a5daf75f"
+    "manifestHash": "3507df39cf91"
   },
   "hero-service-cloud-platform-engineering": {
     "id": "hero-service-cloud-platform-engineering",
@@ -483,17 +483,17 @@ export const images = /*__JSON__*/ {
     ],
     "width": 1080,
     "height": 810,
-    "src": "/images/hero-service-cloud-platform-engineering-720.e6b92881.webp",
+    "src": "/images/hero-service-cloud-platform-engineering-720.bcd8c678.webp",
     "sources": {
-      "avif": "/images/hero-service-cloud-platform-engineering-480.56d775b1.avif 480w, /images/hero-service-cloud-platform-engineering-720.3918a7a5.avif 720w, /images/hero-service-cloud-platform-engineering-1080.a45aa816.avif 1080w",
-      "webp": "/images/hero-service-cloud-platform-engineering-480.4c77c1c5.webp 480w, /images/hero-service-cloud-platform-engineering-720.e6b92881.webp 720w, /images/hero-service-cloud-platform-engineering-1080.57160bb0.webp 1080w"
+      "avif": "/images/hero-service-cloud-platform-engineering-480.ca658e72.avif 480w, /images/hero-service-cloud-platform-engineering-720.79bdb9c4.avif 720w, /images/hero-service-cloud-platform-engineering-1080.4cb8888f.avif 1080w",
+      "webp": "/images/hero-service-cloud-platform-engineering-480.2162bd3a.webp 480w, /images/hero-service-cloud-platform-engineering-720.bcd8c678.webp 720w, /images/hero-service-cloud-platform-engineering-1080.973b217b.webp 1080w"
     },
     "widths": [
       480,
       720,
       1080
     ],
-    "manifestHash": "656561dc936b"
+    "manifestHash": "20782d43df8a"
   },
   "hero-service-flexible-delivery-teams": {
     "id": "hero-service-flexible-delivery-teams",
@@ -506,17 +506,17 @@ export const images = /*__JSON__*/ {
     ],
     "width": 1080,
     "height": 810,
-    "src": "/images/hero-service-flexible-delivery-teams-720.b81eae07.webp",
+    "src": "/images/hero-service-flexible-delivery-teams-720.9425ddb9.webp",
     "sources": {
-      "avif": "/images/hero-service-flexible-delivery-teams-480.ef0c3f31.avif 480w, /images/hero-service-flexible-delivery-teams-720.fd080602.avif 720w, /images/hero-service-flexible-delivery-teams-1080.89de9ae7.avif 1080w",
-      "webp": "/images/hero-service-flexible-delivery-teams-480.19d178df.webp 480w, /images/hero-service-flexible-delivery-teams-720.b81eae07.webp 720w, /images/hero-service-flexible-delivery-teams-1080.dcf82dec.webp 1080w"
+      "avif": "/images/hero-service-flexible-delivery-teams-480.467fa6de.avif 480w, /images/hero-service-flexible-delivery-teams-720.e72ba85a.avif 720w, /images/hero-service-flexible-delivery-teams-1080.c76a0feb.avif 1080w",
+      "webp": "/images/hero-service-flexible-delivery-teams-480.7429e255.webp 480w, /images/hero-service-flexible-delivery-teams-720.9425ddb9.webp 720w, /images/hero-service-flexible-delivery-teams-1080.0cc49442.webp 1080w"
     },
     "widths": [
       480,
       720,
       1080
     ],
-    "manifestHash": "aa5a27722195"
+    "manifestHash": "b0ceac9c7d62"
   },
   "hero-service-quality-engineering": {
     "id": "hero-service-quality-engineering",
@@ -529,17 +529,17 @@ export const images = /*__JSON__*/ {
     ],
     "width": 1080,
     "height": 810,
-    "src": "/images/hero-service-quality-engineering-720.5710f60a.webp",
+    "src": "/images/hero-service-quality-engineering-720.5424f942.webp",
     "sources": {
-      "avif": "/images/hero-service-quality-engineering-480.3747ee4c.avif 480w, /images/hero-service-quality-engineering-720.f61ef705.avif 720w, /images/hero-service-quality-engineering-1080.c2041dfc.avif 1080w",
-      "webp": "/images/hero-service-quality-engineering-480.1a090c3c.webp 480w, /images/hero-service-quality-engineering-720.5710f60a.webp 720w, /images/hero-service-quality-engineering-1080.dae33892.webp 1080w"
+      "avif": "/images/hero-service-quality-engineering-480.4832c194.avif 480w, /images/hero-service-quality-engineering-720.41641091.avif 720w, /images/hero-service-quality-engineering-1080.95fdda2c.avif 1080w",
+      "webp": "/images/hero-service-quality-engineering-480.66b6b539.webp 480w, /images/hero-service-quality-engineering-720.5424f942.webp 720w, /images/hero-service-quality-engineering-1080.58a19441.webp 1080w"
     },
     "widths": [
       480,
       720,
       1080
     ],
-    "manifestHash": "e91711b927ee"
+    "manifestHash": "0b04c79f0350"
   },
   "hero-service-software-engineering-modernization": {
     "id": "hero-service-software-engineering-modernization",
@@ -552,17 +552,17 @@ export const images = /*__JSON__*/ {
     ],
     "width": 1080,
     "height": 810,
-    "src": "/images/hero-service-software-engineering-modernization-720.c5c3a556.webp",
+    "src": "/images/hero-service-software-engineering-modernization-720.fd56a3e9.webp",
     "sources": {
-      "avif": "/images/hero-service-software-engineering-modernization-480.b25f7b0f.avif 480w, /images/hero-service-software-engineering-modernization-720.8c6c9751.avif 720w, /images/hero-service-software-engineering-modernization-1080.69cc4665.avif 1080w",
-      "webp": "/images/hero-service-software-engineering-modernization-480.8e6ac943.webp 480w, /images/hero-service-software-engineering-modernization-720.c5c3a556.webp 720w, /images/hero-service-software-engineering-modernization-1080.a7b93244.webp 1080w"
+      "avif": "/images/hero-service-software-engineering-modernization-480.6e445a8a.avif 480w, /images/hero-service-software-engineering-modernization-720.1cbfb50f.avif 720w, /images/hero-service-software-engineering-modernization-1080.ea9c8d6a.avif 1080w",
+      "webp": "/images/hero-service-software-engineering-modernization-480.d8c1c54a.webp 480w, /images/hero-service-software-engineering-modernization-720.fd56a3e9.webp 720w, /images/hero-service-software-engineering-modernization-1080.78457eb6.webp 1080w"
     },
     "widths": [
       480,
       720,
       1080
     ],
-    "manifestHash": "00ee7389dfa3"
+    "manifestHash": "9078349b9412"
   },
   "hero-services": {
     "id": "hero-services",
@@ -575,17 +575,17 @@ export const images = /*__JSON__*/ {
     ],
     "width": 1920,
     "height": 1080,
-    "src": "/images/hero-services-1280.f31bb424.webp",
+    "src": "/images/hero-services-1280.f8c27145.webp",
     "sources": {
-      "avif": "/images/hero-services-768.eb7c1316.avif 768w, /images/hero-services-1280.34d63878.avif 1280w, /images/hero-services-1920.9970662f.avif 1920w",
-      "webp": "/images/hero-services-768.a863bfbf.webp 768w, /images/hero-services-1280.f31bb424.webp 1280w, /images/hero-services-1920.6204bdfe.webp 1920w"
+      "avif": "/images/hero-services-768.535fa5ef.avif 768w, /images/hero-services-1280.1e9e4b85.avif 1280w, /images/hero-services-1920.3065e0b6.avif 1920w",
+      "webp": "/images/hero-services-768.760371ea.webp 768w, /images/hero-services-1280.f8c27145.webp 1280w, /images/hero-services-1920.febcc18e.webp 1920w"
     },
     "widths": [
       768,
       1280,
       1920
     ],
-    "manifestHash": "11ff02bfe7ea"
+    "manifestHash": "619c5a4706a5"
   },
   "hero-work": {
     "id": "hero-work",
@@ -598,17 +598,17 @@ export const images = /*__JSON__*/ {
     ],
     "width": 1080,
     "height": 810,
-    "src": "/images/hero-work-720.ee11a576.webp",
+    "src": "/images/hero-work-720.c24c46c7.webp",
     "sources": {
-      "avif": "/images/hero-work-480.1bbda930.avif 480w, /images/hero-work-720.46c374b2.avif 720w, /images/hero-work-1080.849d5b51.avif 1080w",
-      "webp": "/images/hero-work-480.bdeb1285.webp 480w, /images/hero-work-720.ee11a576.webp 720w, /images/hero-work-1080.bf3d829c.webp 1080w"
+      "avif": "/images/hero-work-480.16bcfcd9.avif 480w, /images/hero-work-720.4efeb2ea.avif 720w, /images/hero-work-1080.d9eb2bed.avif 1080w",
+      "webp": "/images/hero-work-480.02455102.webp 480w, /images/hero-work-720.c24c46c7.webp 720w, /images/hero-work-1080.ace2340a.webp 1080w"
     },
     "widths": [
       480,
       720,
       1080
     ],
-    "manifestHash": "43e40e3c3340"
+    "manifestHash": "8ecf5f32905a"
   },
   "nav-company": {
     "id": "nav-company",
@@ -621,16 +621,16 @@ export const images = /*__JSON__*/ {
     ],
     "width": 640,
     "height": 427,
-    "src": "/images/nav-company-320.6da94c36.webp",
+    "src": "/images/nav-company-320.9a02d3fb.webp",
     "sources": {
-      "avif": "/images/nav-company-320.b1dfbc59.avif 320w, /images/nav-company-640.e157c7d5.avif 640w",
-      "webp": "/images/nav-company-320.6da94c36.webp 320w, /images/nav-company-640.654f5d59.webp 640w"
+      "avif": "/images/nav-company-320.a89cb0fc.avif 320w, /images/nav-company-640.4fef8190.avif 640w",
+      "webp": "/images/nav-company-320.9a02d3fb.webp 320w, /images/nav-company-640.93035b4e.webp 640w"
     },
     "widths": [
       320,
       640
     ],
-    "manifestHash": "94ba995c0050"
+    "manifestHash": "b313c4e44ed3"
   },
   "nav-services": {
     "id": "nav-services",
@@ -643,16 +643,16 @@ export const images = /*__JSON__*/ {
     ],
     "width": 640,
     "height": 427,
-    "src": "/images/nav-services-320.5ece8eb3.webp",
+    "src": "/images/nav-services-320.070c8eb3.webp",
     "sources": {
-      "avif": "/images/nav-services-320.677b403d.avif 320w, /images/nav-services-640.987f7d0f.avif 640w",
-      "webp": "/images/nav-services-320.5ece8eb3.webp 320w, /images/nav-services-640.2cc2be3a.webp 640w"
+      "avif": "/images/nav-services-320.2fe108ba.avif 320w, /images/nav-services-640.bbdc6451.avif 640w",
+      "webp": "/images/nav-services-320.070c8eb3.webp 320w, /images/nav-services-640.fe99a4f3.webp 640w"
     },
     "widths": [
       320,
       640
     ],
-    "manifestHash": "c14419e6307e"
+    "manifestHash": "f72e30b70a7e"
   },
   "tile-industry-logistics": {
     "id": "tile-industry-logistics",
@@ -665,17 +665,17 @@ export const images = /*__JSON__*/ {
     ],
     "width": 960,
     "height": 720,
-    "src": "/images/tile-industry-logistics-640.4638a650.webp",
+    "src": "/images/tile-industry-logistics-640.5a056208.webp",
     "sources": {
-      "avif": "/images/tile-industry-logistics-400.a0b715cc.avif 400w, /images/tile-industry-logistics-640.faf9f08d.avif 640w, /images/tile-industry-logistics-960.4ae541f2.avif 960w",
-      "webp": "/images/tile-industry-logistics-400.0091e983.webp 400w, /images/tile-industry-logistics-640.4638a650.webp 640w, /images/tile-industry-logistics-960.13a173cb.webp 960w"
+      "avif": "/images/tile-industry-logistics-400.d40d8973.avif 400w, /images/tile-industry-logistics-640.eb8bc71d.avif 640w, /images/tile-industry-logistics-960.c6257f3d.avif 960w",
+      "webp": "/images/tile-industry-logistics-400.cb935f69.webp 400w, /images/tile-industry-logistics-640.5a056208.webp 640w, /images/tile-industry-logistics-960.71894380.webp 960w"
     },
     "widths": [
       400,
       640,
       960
     ],
-    "manifestHash": "eed21cb31592"
+    "manifestHash": "52582e1427c2"
   },
   "tile-industry-professional-services": {
     "id": "tile-industry-professional-services",
@@ -688,17 +688,17 @@ export const images = /*__JSON__*/ {
     ],
     "width": 960,
     "height": 720,
-    "src": "/images/tile-industry-professional-services-640.c17bf598.webp",
+    "src": "/images/tile-industry-professional-services-640.9b31a3bd.webp",
     "sources": {
-      "avif": "/images/tile-industry-professional-services-400.6816d625.avif 400w, /images/tile-industry-professional-services-640.5e0374ca.avif 640w, /images/tile-industry-professional-services-960.638d507a.avif 960w",
-      "webp": "/images/tile-industry-professional-services-400.a18a87e7.webp 400w, /images/tile-industry-professional-services-640.c17bf598.webp 640w, /images/tile-industry-professional-services-960.ceb89ecf.webp 960w"
+      "avif": "/images/tile-industry-professional-services-400.250652cb.avif 400w, /images/tile-industry-professional-services-640.effa48ce.avif 640w, /images/tile-industry-professional-services-960.bae6962f.avif 960w",
+      "webp": "/images/tile-industry-professional-services-400.b0cbb8d4.webp 400w, /images/tile-industry-professional-services-640.9b31a3bd.webp 640w, /images/tile-industry-professional-services-960.05d5622b.webp 960w"
     },
     "widths": [
       400,
       640,
       960
     ],
-    "manifestHash": "fbc548874ba5"
+    "manifestHash": "d87634da508a"
   },
   "tile-industry-retail": {
     "id": "tile-industry-retail",
@@ -711,17 +711,17 @@ export const images = /*__JSON__*/ {
     ],
     "width": 960,
     "height": 720,
-    "src": "/images/tile-industry-retail-640.526ffc12.webp",
+    "src": "/images/tile-industry-retail-640.bfe6954d.webp",
     "sources": {
-      "avif": "/images/tile-industry-retail-400.bcf5a88e.avif 400w, /images/tile-industry-retail-640.e7c4beb9.avif 640w, /images/tile-industry-retail-960.97072216.avif 960w",
-      "webp": "/images/tile-industry-retail-400.2857e659.webp 400w, /images/tile-industry-retail-640.526ffc12.webp 640w, /images/tile-industry-retail-960.4eb865fd.webp 960w"
+      "avif": "/images/tile-industry-retail-400.068fbf66.avif 400w, /images/tile-industry-retail-640.98e5aa9a.avif 640w, /images/tile-industry-retail-960.84b89f26.avif 960w",
+      "webp": "/images/tile-industry-retail-400.7e1221ac.webp 400w, /images/tile-industry-retail-640.bfe6954d.webp 640w, /images/tile-industry-retail-960.85f84fb8.webp 960w"
     },
     "widths": [
       400,
       640,
       960
     ],
-    "manifestHash": "87e3c69ba985"
+    "manifestHash": "9b82dec41c1b"
   },
   "tile-industry-technology-saas": {
     "id": "tile-industry-technology-saas",
@@ -734,17 +734,17 @@ export const images = /*__JSON__*/ {
     ],
     "width": 960,
     "height": 720,
-    "src": "/images/tile-industry-technology-saas-640.5fbd0c88.webp",
+    "src": "/images/tile-industry-technology-saas-640.589afc91.webp",
     "sources": {
-      "avif": "/images/tile-industry-technology-saas-400.b52a71be.avif 400w, /images/tile-industry-technology-saas-640.e5114d3f.avif 640w, /images/tile-industry-technology-saas-960.0e7c857f.avif 960w",
-      "webp": "/images/tile-industry-technology-saas-400.98bb6da8.webp 400w, /images/tile-industry-technology-saas-640.5fbd0c88.webp 640w, /images/tile-industry-technology-saas-960.f63b4a55.webp 960w"
+      "avif": "/images/tile-industry-technology-saas-400.1e65db5d.avif 400w, /images/tile-industry-technology-saas-640.de37d7d2.avif 640w, /images/tile-industry-technology-saas-960.9dfe4084.avif 960w",
+      "webp": "/images/tile-industry-technology-saas-400.900801a9.webp 400w, /images/tile-industry-technology-saas-640.589afc91.webp 640w, /images/tile-industry-technology-saas-960.e5eacc8d.webp 960w"
     },
     "widths": [
       400,
       640,
       960
     ],
-    "manifestHash": "bf13882d2447"
+    "manifestHash": "ce5f8f1a903b"
   }
 } /*__END__*/ as const satisfies Record<
   string,

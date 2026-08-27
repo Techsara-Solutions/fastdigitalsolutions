@@ -30,7 +30,7 @@ export function IndustryPanel({
     return (
       <article
         data-surface="dark"
-        className="group relative isolate flex aspect-[4/3] flex-col justify-end overflow-hidden rounded-[12px] bg-navy text-paper sm:aspect-[3/2] lg:aspect-[4/3]"
+        className="group relative isolate flex aspect-[4/3] flex-col justify-end overflow-hidden rounded-[12px] bg-espresso text-paper sm:aspect-[3/2] lg:aspect-[4/3]"
       >
         <Picture
           id={imageId}

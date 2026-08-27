@@ -23,7 +23,7 @@ export const metadata: Metadata = buildMetadata({
   title: "",
   absoluteTitle: "Cloud, AI and Digital Engineering | Fast Digital Solutions",
   description:
-    "Fast Digital Solutions helps growing organizations modernize applications, move to the cloud, automate operations, and strengthen engineering delivery—from discovery through ongoing support.",
+    "Fast Digital Solutions helps growing organizations modernize applications, move to the cloud, automate operations, and strengthen engineering delivery, from discovery through ongoing support.",
   path: "/",
 });
 
@@ -35,7 +35,7 @@ const commitments = [
   },
   {
     title: "Working demonstrations and early feedback",
-    detail: "You see running software at a regular rhythm — not status reports about it.",
+    detail: "You see running software at a regular rhythm, not status reports about it.",
   },
   {
     title: "Quality and documentation throughout delivery",
@@ -43,8 +43,7 @@ const commitments = [
   },
   {
     title: "Flexible engagement models",
-    detail:
-      "Fixed scope, time and materials, dedicated team, or augmentation — shaped to the work.",
+    detail: "Fixed scope, time and materials, dedicated team, or augmentation, shaped to the work.",
   },
 ];
 
@@ -61,7 +60,7 @@ export default function HomePage() {
         image="hero-home"
         eyebrow="Cloud, AI and digital engineering"
         title="Technology delivery built around your business."
-        lead="Fast Digital Solutions helps growing organizations modernize applications, move to the cloud, automate operations, and strengthen engineering delivery—from discovery through ongoing support."
+        lead="Fast Digital Solutions helps growing organizations modernize applications, move to the cloud, automate operations, and strengthen engineering delivery, from discovery through ongoing support."
         actions={
           <>
             <Button href="/contact/">Discuss your project</Button>
@@ -102,7 +101,7 @@ export default function HomePage() {
             <SectionIntro
               id="client-first-heading"
               eyebrow="Client-first delivery"
-              title="Your priorities stay at the center."
+              title="Your priorities set the agenda."
               lead="We work in clear stages, share progress early, document decisions, and shape the delivery model around your team, systems, and business goals."
             />
             <ul className="grid gap-x-8 gap-y-8 sm:grid-cols-2">
@@ -147,13 +146,13 @@ export default function HomePage() {
       </Section>
 
       {/* E. How We Work preview — dark surface */}
-      <Section surface="navy" ariaLabelledby="method-heading">
+      <Section surface="espresso" ariaLabelledby="method-heading">
         <Container>
           <SectionIntro
             id="method-heading"
             eyebrow="How we work"
             title="A practical path from problem to progress."
-            lead="Align on the outcome. Architect the right approach. Deliver in visible increments. Validate what matters. Improve with the learning captured along the way."
+            lead="We start by agreeing on the outcome, then design the right approach, deliver in visible increments, check what matters before release, and carry the learning into whatever comes next."
           />
           <div className="mt-14">
             <DeliveryTimeline variant="preview" onDark />
@@ -173,7 +172,7 @@ export default function HomePage() {
             id="industries-heading"
             eyebrow="Industries"
             title="Operating contexts we understand."
-            lead="Four environments where our services naturally apply — approached through the challenges teams actually face."
+            lead="Four environments where our services naturally apply, approached through the challenges their teams face day to day."
           />
           <div className="mt-12 grid gap-6 sm:grid-cols-2">
             {industries.map((industry) => (
@@ -192,7 +191,7 @@ export default function HomePage() {
             id="work-heading"
             eyebrow="Capabilities in practice"
             title="How these services combine around real needs."
-            lead="Representative scenarios that show how we approach common client situations. Named client work is published only with permission."
+            lead="Three illustrative scenarios that show how we approach the situations clients bring to us most often."
           />
           <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {scenarios.map((scenario) => (
@@ -211,7 +210,7 @@ export default function HomePage() {
             id="models-heading"
             eyebrow="Ways to engage"
             title="Four ways to shape an engagement."
-            lead="The model follows the work — not the other way round."
+            lead="The engagement model follows the work, not a template."
           />
           <dl className="mt-12 grid gap-x-10 gap-y-8 sm:grid-cols-2">
             {engagementModels.map((model) => (

@@ -40,6 +40,7 @@ npm run dev        # local dev server at http://localhost:3000
 | `npm run format` / `npm run format:check` | Prettier                                                       |
 | `npm run validate:content`                | Run the content gate on its own                                |
 | `npm run images`                          | Regenerate photo derivatives from `images/` (local only)       |
+| `npm run brand`                           | Regenerate logo paths, favicons, and the social image          |
 | `npm run check`                           | Everything CI runs: format, lint, typecheck, unit tests, build |
 
 The static build output lands in **`out/`** — plain HTML/CSS/JS, servable by
@@ -91,11 +92,17 @@ a typed record in `src/generated/images.ts`, both committed. The build fails if
 the manifest and the derivatives drift apart or if any photo is used twice.
 How to add or replace a photo: [docs/CONTENT-GUIDE.md](docs/CONTENT-GUIDE.md).
 
+## Brand assets
+
+The logo source is `brand/fds-logo.source.svg`; `npm run brand` derives the
+header/footer mark, favicons, and the social-share image from it. Outputs are
+committed and the build fails if the icons are missing.
+
 ## Proof-approval rules
 
-The build prints a warning block listing every unresolved placeholder (the
-final logo is the remaining one). Nothing may be invented to fill trust
-content — see [docs/CONTENT-GUIDE.md](docs/CONTENT-GUIDE.md).
+Nothing may be invented to fill trust content (clients, testimonials,
+metrics, people); see [docs/CONTENT-GUIDE.md](docs/CONTENT-GUIDE.md), which
+also carries the writing rules (no em dashes, no machine-sounding patterns).
 
 ## Contact-form integration contract
 

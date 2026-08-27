@@ -14,7 +14,7 @@ import type { ImageSlot } from "@/lib/image-types";
  * Bump PIPELINE_VERSION when the class width/quality tables change so the
  * validator forces a regeneration.
  */
-export const PIPELINE_VERSION = 1;
+export const PIPELINE_VERSION = 2;
 
 const S = "02-services";
 const I = "03-industries";

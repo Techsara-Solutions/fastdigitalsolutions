@@ -11,7 +11,7 @@ type CtaPanelProps = {
   ctaLabel?: string;
   /** Heading id — override when a page renders more than one panel. */
   id?: string;
-  /** Photo behind the navy scrim; the one global band photo by default. */
+  /** Photo behind the espresso scrim; the one global band photo by default. */
   image?: ImageId | null;
 };
 
@@ -27,7 +27,7 @@ export function CtaPanel({
   image = "band-cta",
 }: CtaPanelProps) {
   return (
-    <Section surface={image ? "photo" : "navy"} spacing="none" ariaLabelledby={id}>
+    <Section surface={image ? "photo" : "espresso"} spacing="none" ariaLabelledby={id}>
       {image ? (
         <>
           <Picture

@@ -35,9 +35,9 @@ export const industries: Industry[] = [
     tileImageId: "tile-industry-retail",
     name: "Retail and Digital Commerce",
     challenge:
-      "Keeping customer-facing systems fast, integrated, and dependable — especially when peak traffic arrives.",
+      "Keeping customer-facing systems fast, integrated, and dependable, especially when peak traffic arrives.",
     summary:
-      "We help commerce teams improve customer-facing applications, connect commerce and operational systems, build reliable data flows, and test readiness before peak periods rather than during them.",
+      "We help commerce teams improve customer-facing applications, connect commerce and operational systems, build reliable data flows, and test readiness before peak periods instead of during them.",
     commonNeeds: [
       "Customer-facing applications",
       "Commerce integrations",

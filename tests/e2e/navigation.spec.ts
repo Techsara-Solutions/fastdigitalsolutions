@@ -18,6 +18,7 @@ test.describe("desktop navigation", () => {
       ["Industries", "/industries/"],
       ["Work", "/work/"],
       ["How we work", "/how-we-work/"],
+      ["Insights", "/insights/"],
       ["Company", "/about/"],
     ] as const) {
       await nav.getByRole("link", { name: label, exact: true }).click();
@@ -33,12 +34,14 @@ test.describe("desktop navigation", () => {
     await expect(page).toHaveURL("/contact/");
   });
 
-  test("Insights stays out of primary navigation until the launch gate is met", async ({
+  test("Insights is in primary navigation because three approved articles exist", async ({
     page,
   }) => {
     await page.goto("/");
     const nav = page.getByRole("navigation", { name: "Primary" });
-    await expect(nav.getByRole("link", { name: "Insights" })).toHaveCount(0);
+    await expect(nav.getByRole("link", { name: "Insights", exact: true })).toHaveCount(1);
+    await page.goto("/insights/");
+    await expect(page.getByRole("link", { name: /AWS migration/ })).toBeVisible();
   });
 
   test("skip link focuses main content", async ({ page }) => {
@@ -159,7 +162,7 @@ test.describe("mobile navigation", () => {
 });
 
 test.describe("global content", () => {
-  test("footer phone link uses tel: and legal links resolve", async ({ page }) => {
+  test("footer carries the phone link, the legal name, and the logo", async ({ page }) => {
     await page.goto("/");
     const footer = page.getByRole("contentinfo");
     await expect(footer.getByRole("link", { name: "+1 302-464-5943" })).toHaveAttribute(
@@ -167,9 +170,12 @@ test.describe("global content", () => {
       "tel:+13024645943",
     );
     await expect(footer.getByText(/© \d{4} Fast Digital Solutions LLC/)).toBeVisible();
-    await footer.getByRole("link", { name: "Privacy Policy" }).click();
-    await expect(page).toHaveURL("/privacy/");
-    await expect(page.getByRole("heading", { level: 1, name: "Privacy Policy" })).toBeVisible();
+    await expect(footer.getByRole("link", { name: "Fast Digital Solutions home" })).toBeVisible();
+    await expect(page.locator('link[rel="icon"]').first()).toHaveAttribute("href", /icon/);
+    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+      "content",
+      /og-default/,
+    );
   });
 
   test("address is labelled as a mailing address, never an office", async ({ page }) => {
@@ -200,16 +206,14 @@ test.describe("global content", () => {
       "Built-in considerations",
       "Often combined with",
     ]) {
-      await expect(page.getByRole("heading", { name: heading })).toBeVisible();
+      await expect(page.getByRole("heading", { name: heading, exact: true })).toBeVisible();
     }
-    await expect(
-      page.getByText("Example engagement scenario — not a named client case study"),
-    ).toBeVisible();
+    await expect(page.getByText("Illustrative scenario", { exact: true })).toBeVisible();
   });
 
   test("work page labels every scenario as illustrative", async ({ page }) => {
     await page.goto("/work/");
-    const labels = page.getByText("Example engagement scenario — not a named client case study");
+    const labels = page.getByText("Illustrative scenario", { exact: true });
     await expect(labels).toHaveCount(3);
   });
 

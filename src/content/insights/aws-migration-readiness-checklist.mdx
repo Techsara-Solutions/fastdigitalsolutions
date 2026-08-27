@@ -1,41 +1,41 @@
 ---
-title: "A practical readiness checklist for an AWS migration"
-description: "The questions worth answering before you move workloads to AWS — covering goals, people, workloads, data, security, cost, and the operating model you will need on the other side."
+title: "A readiness checklist for an AWS migration"
+description: "The questions worth answering before you move workloads to AWS, covering goals, people, workloads, data, security, cost, and the operating model you will need on the other side."
 topic: "Cloud and platform engineering"
-author: "[AUTHOR-PENDING]"
-authorRole: "[ROLE-PENDING]"
-publishedAt: "2026-08-26"
-publishStatus: "draft"
-verified: false
+author: "Fast Digital Solutions"
+authorRole: "Engineering team"
+publishedAt: "2026-08-27"
+publishStatus: "approved"
+verified: true
 coverImageId: "cover-insight-aws-migration-readiness-checklist"
 relatedServiceSlugs:
   - "cloud-platform-engineering"
 ---
 
-Most AWS migrations do not fail during the migration. They fail earlier, in the assumptions nobody wrote down, or later, in an operating model nobody designed. The move itself — copying workloads from one place to another — is usually the most predictable part of the whole program.
+Most AWS migrations do not fail during the migration. They fail earlier, in the assumptions nobody wrote down, or later, in an operating model nobody designed. The move itself, copying workloads from one place to another, is usually the most predictable part of the whole program.
 
-This checklist covers the questions we believe are worth answering before committing to a migration plan. It is not a substitute for a proper current-state assessment, but it will tell you quickly whether you are ready to start one.
+This checklist covers the questions worth answering before committing to a migration plan. It is not a substitute for a proper current-state assessment, but it will tell you quickly whether you are ready to start one.
 
 ## 1. Know why you are migrating
 
-"We are moving to the cloud" is a destination, not a reason. Migrations that go well can usually state their purpose in one sentence: retire a data center before a lease ends, stop capacity planning from limiting growth, reduce the operational burden of aging hardware, or put infrastructure changes on the same footing as software changes.
+"We are moving to the cloud" is a destination, not a reason. Migrations that go well can usually state their purpose in one sentence. Retire a data center before a lease ends. Stop capacity planning from limiting growth. Reduce the operational burden of aging hardware. Put infrastructure changes on the same footing as software changes.
 
-Write the reason down and rank what you are optimizing for — cost, reliability, delivery speed, or risk reduction. You will face dozens of trade-off decisions during the migration, and the ranking is what resolves them consistently. If different stakeholders would rank these differently, resolve that disagreement now, while it is cheap.
+Write the reason down and rank what you are optimizing for, whether that is cost, reliability, delivery speed, or risk reduction. You will face dozens of trade-off decisions during the migration, and the ranking is what resolves them consistently. If different stakeholders would rank these differently, settle that disagreement now, while it is cheap.
 
-## 2. Inventory what you actually run
+## 2. Inventory what you run
 
 Almost every organization we have seen underestimates its own estate. The application list in the wiki is rarely the application list in production. Before planning anything:
 
 - List every application, including the internal tools and scheduled jobs nobody officially owns.
-- Map the dependencies between them — especially shared databases, file shares, and point-to-point integrations.
+- Map the dependencies between them, especially shared databases, file shares, and point-to-point integrations.
 - Record who depends on each system and what breaks downstream when it is unavailable.
-- Note licensing terms; some vendor licenses restrict or price cloud deployment differently.
+- Note licensing terms. Some vendor licenses restrict or price cloud deployment differently.
 
 The dependency map matters more than the inventory itself. Migration order is dictated by dependencies, and the systems that surprise you mid-migration are almost always the ones connected by an undocumented integration.
 
 ## 3. Decide the treatment per workload, not per estate
 
-A single strategy applied to everything is a warning sign. Healthy migration plans treat workloads individually: some are rehosted with minimal change, some are re-platformed onto managed services, some are worth modernizing properly, and some should be retired rather than moved at all.
+A single strategy applied to everything is a warning sign. Healthy migration plans treat workloads individually. Some are rehosted with minimal change, some are re-platformed onto managed services, some are worth modernizing properly, and some should be retired instead of moved at all.
 
 Retirement deserves particular attention. A migration is the best audit of an application portfolio most organizations ever get. Every system you can decommission is one you never pay to migrate, secure, or operate again.
 
@@ -44,9 +44,9 @@ Retirement deserves particular attention. A migration is the best audit of an ap
 Data gravity shapes migration order more than most teams expect. For each significant data store, ask:
 
 - How large is it, and how fast does it change? That determines whether you can migrate with a bulk copy plus a cut-over, or need continuous replication.
-- What consistency does the business actually require during transition? A reporting database and an order-processing database have very different answers.
+- What consistency does the business need during transition? A reporting database and an order-processing database have very different answers.
 - Are there residency, retention, or contractual constraints on where the data may live?
-- Who else reads this data — including the integrations you found in step 2?
+- Who else reads this data, including the integrations you found in step 2?
 
 Rehearse the data cut-over for anything business-critical. The rehearsal will surface the timing and validation problems you would otherwise discover on the night.
 
@@ -55,12 +55,12 @@ Rehearse the data cut-over for anything business-critical. The rehearsal will su
 Security is far cheaper to establish before workloads arrive than to retrofit afterwards. Before the first production workload moves, you want:
 
 - An account structure that separates production from everything else.
-- Identity and access rules based on roles and least privilege — not shared credentials.
+- Identity and access rules based on roles and least privilege, not shared credentials.
 - Encryption defaults for data at rest and in transit.
-- Network boundaries designed deliberately, rather than a default VPC that grew.
-- Centralized logging that someone actually reviews.
+- Network boundaries designed on purpose, not a default VPC that grew.
+- Centralized logging that someone reviews.
 
-None of this requires a large platform team, but it does require doing it deliberately. A modest, well-understood foundation beats a sophisticated one nobody can explain.
+None of this requires a large platform team, but it does require doing it with intent. A modest, well-understood foundation beats a sophisticated one nobody can explain.
 
 ## 6. Understand the cost model before the first bill
 
@@ -68,25 +68,25 @@ Cloud pricing rewards elasticity and punishes lift-and-shift inertia. A server t
 
 - Estimate costs per workload using realistic utilization, not nameplate capacity.
 - Decide who will own cost visibility, and set up tagging so spend is attributable from day one.
-- Identify the workloads whose usage patterns fit reserved capacity or savings plans — and the ones that should scale to zero instead.
+- Identify the workloads whose usage patterns fit reserved capacity or savings plans, and the ones that should scale to zero instead.
 
 The goal is not a perfect forecast. It is making sure the first invoice starts a conversation you have already prepared for.
 
-## 7. Plan the operating model, not just the move
+## 7. Plan the operating model as well as the move
 
-The day after migration, someone has to run all of this. That team needs monitoring and alerting they trust, runbooks for the failures that will eventually happen, a patching and backup discipline, and the skills to change infrastructure through code rather than consoles.
+The day after migration, someone has to run all of this. That team needs monitoring and alerting they trust, runbooks for the failures that will eventually happen, a patching and backup discipline, and the skills to change infrastructure through code instead of consoles.
 
-If those capabilities do not exist yet, building them is part of the migration scope — not a follow-up project that never quite starts. Budget training time honestly. The gap between "the workloads are in AWS" and "the team operates confidently in AWS" is where migration value quietly leaks away.
+If those capabilities do not exist yet, building them is part of the migration scope, not a follow-up project that never quite starts. Budget training time realistically. The gap between "the workloads are in AWS" and "the team operates confidently in AWS" is where migration value quietly leaks away.
 
 ## 8. Sequence for verification and rollback
 
 Finally, structure the plan so every increment can be verified and reversed:
 
 - Migrate in slices small enough that success or failure is observable.
-- Define, per slice, what "verified" means — and who confirms it.
+- Define, per slice, what "verified" means and who confirms it.
 - Keep a rollback path until verification is complete, and know how long that path remains open.
-- Start with something meaningful but survivable; save the most critical system for when the process is proven.
+- Start with something meaningful but survivable. Save the most critical system for when the process is proven.
 
 ## Using this checklist
 
-If you can answer most of these questions with specifics, you are ready to plan. If several answers are "we would have to check", that is not a failure — it is the readiness gap, described precisely. A short assessment engagement is usually the fastest way to close it, and it is considerably cheaper than discovering the same gaps with production workloads in flight.
+If you can answer most of these questions with specifics, you are ready to plan. If several answers are "we would have to check", that is not a failure. It is the readiness gap, described precisely. A short assessment engagement is usually the fastest way to close it, and it is considerably cheaper than discovering the same gaps with production workloads in flight.

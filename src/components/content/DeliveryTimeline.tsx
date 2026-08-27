@@ -3,7 +3,7 @@ import { deliveryStages } from "@/content/delivery-method";
 type DeliveryTimelineProps = {
   /** "preview" (home page: one sentence per stage) or "full" (/how-we-work/). */
   variant?: "preview" | "full";
-  /** Whether the timeline sits on the dark navy surface. */
+  /** Whether the timeline sits on the dark espresso surface. */
   onDark?: boolean;
 };
 
@@ -31,7 +31,7 @@ export function DeliveryTimeline({ variant = "preview", onDark = false }: Delive
             aria-hidden="true"
             className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full border text-sm font-bold ${
               onDark
-                ? "border-accent bg-navy text-accent"
+                ? "border-accent bg-espresso text-accent"
                 : "border-accent bg-paper text-accent-dark"
             }`}
           >

@@ -18,8 +18,8 @@ const PRIORITY_PAGES = [
   "/about/",
   "/careers/",
   "/contact/",
-  "/privacy/",
-  "/accessibility/",
+  "/insights/",
+  "/insights/aws-migration-readiness-checklist/",
 ];
 
 test.describe("axe-core scans", () => {

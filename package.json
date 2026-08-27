@@ -21,6 +21,7 @@
     "format:check": "prettier --check .",
     "validate:content": "tsx scripts/validate-content.ts",
     "images": "tsx scripts/build-images.ts",
+    "brand": "tsx scripts/build-brand.ts",
     "check": "npm run format:check && npm run lint && npm run typecheck && npm run test && npm run build"
   },
   "dependencies": {

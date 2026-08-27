@@ -4,9 +4,9 @@ import { z } from "zod";
  * Contact form field specification and validation rules.
  *
  * The seven API fields mirror the backend contract exactly
- * (API Gateway → Lambda `POST /api/contact-message`). `consent` and the
- * `website` honeypot are client-side only and are never sent. The backend
- * performs its own independent validation.
+ * (API Gateway → Lambda `POST /api/contact-message`). The `website` honeypot
+ * is client-side only and is never sent. The backend performs its own
+ * independent validation.
  */
 export const contactFormSchema = z.object({
   firstName: z
@@ -43,12 +43,9 @@ export const contactFormSchema = z.object({
   notes: z
     .string()
     .trim()
-    .min(20, "Tell us a little more — at least 20 characters.")
+    .min(20, "Tell us a little more, at least 20 characters.")
     .max(3000, "Please keep the notes under 3,000 characters."),
-  consent: z.literal(true, {
-    message: "Please confirm you have read the Privacy Policy so we can respond to your enquiry.",
-  }),
-  /** Honeypot — must remain empty; not announced to assistive technology. */
+  /** Honeypot: must remain empty; not announced to assistive technology. */
   website: z.string().max(0, "Submission rejected.").optional(),
 });
 

@@ -115,7 +115,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
       </Section>
 
       {/* 4. Delivery approach */}
-      <Section surface="navy" ariaLabelledby="approach-heading">
+      <Section surface="espresso" ariaLabelledby="approach-heading">
         <Container>
           <h2 id="approach-heading" className="text-h2 font-semibold">
             How we deliver it
@@ -152,7 +152,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
                   >
                     <span
                       aria-hidden="true"
-                      className="mt-[0.55em] h-1 w-3 shrink-0 rounded-full bg-teal/80"
+                      className="mt-[0.55em] h-1 w-3 shrink-0 rounded-full bg-olive/80"
                     />
                     {consideration}
                   </li>
@@ -160,7 +160,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
               </ul>
             </div>
             <div className="rounded-[12px] border border-stone bg-canvas p-6 lg:p-8">
-              <h2 className="text-h3 font-semibold">What we deliberately don&rsquo;t promise</h2>
+              <h2 className="text-h3 font-semibold">What we don&rsquo;t promise</h2>
               <ul className="mt-5 space-y-4">
                 {service.notPromised.map((item) => (
                   <li key={item} className="text-[0.9375rem] leading-relaxed text-muted">
@@ -192,7 +192,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
       ) : scenario ? (
         <Section surface="canvas" ariaLabelledby="scenario-heading">
           <Container>
-            <p className="mb-4 inline-flex items-center rounded-full border border-teal/40 bg-teal/10 px-3 py-1 text-xs font-semibold text-teal-dark">
+            <p className="mb-4 inline-flex items-center rounded-full border border-olive/40 bg-olive/10 px-3 py-1 text-xs font-semibold text-olive-dark">
               {SCENARIO_LABEL}
             </p>
             <h2 id="scenario-heading" className="text-h2 font-semibold">

@@ -26,7 +26,7 @@ export default function IndustriesPage() {
         image="hero-industries"
         eyebrow="Industries"
         title="We start from how your operation actually runs."
-        lead="Rather than claiming deep specialization everywhere, we focus on four operating contexts where our services naturally apply — and approach each through the challenges its teams face, not through industry buzzwords."
+        lead="We do not claim deep specialization everywhere. We focus on four operating contexts where our services naturally apply, and approach each through the challenges its teams face, not through industry buzzwords."
       />
 
       <Section surface="canvas" ariaLabelledby="industry-list-heading">
@@ -74,7 +74,7 @@ export default function IndustriesPage() {
 
       <CtaPanel
         heading="Working in a different context?"
-        copy="The four industries above are where we focus, not a boundary. If the challenge fits our capabilities, we are happy to talk it through honestly."
+        copy="The four industries above are where we focus, not a boundary. If the challenge fits our capabilities, we are happy to talk it through."
         ctaLabel="Talk through the challenge"
       />
     </>

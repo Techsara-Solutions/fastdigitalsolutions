@@ -22,7 +22,6 @@ async function fillValidForm(page: Page) {
     .fill(
       "We need to assess and modernize a customer-facing application currently hosted on legacy infrastructure.",
     );
-  await form.getByLabel(/I have read the/).check();
 }
 
 test.describe("contact form", () => {
@@ -160,6 +159,6 @@ test.describe("contact form", () => {
     });
     await fillValidForm(page);
     await page.getByRole("button", { name: "Send enquiry" }).click();
-    await expect(page.getByRole("button", { name: "Sending…" })).toBeDisabled();
+    await expect(page.getByRole("button", { name: "Sending" })).toBeDisabled();
   });
 });

@@ -17,7 +17,7 @@ type PageHeroProps = {
   /**
    * "text"        — copy only (legal, 404, no photo available)
    * "split"       — copy left, rounded photo right; photo shown on every viewport
-   * "full-bleed"  — photo behind a navy scrim with copy over the darker left side
+   * "full-bleed"  — photo behind an espresso scrim with copy over the darker left side
    */
   variant?: "text" | "split" | "full-bleed";
   image?: ImageId;

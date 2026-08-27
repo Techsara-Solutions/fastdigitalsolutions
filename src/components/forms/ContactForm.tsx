@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/Button";
 /**
  * Contact form. Implements every required state: idle, client validation
  * error, submitting, accepted, rate-limited, network timeout, and server
- * error — with focus management and live-region announcements. Non-sensitive
+ * error, with focus management and live-region announcements. Non-sensitive
  * values are preserved after recoverable failures.
  *
  * Response handling: any 2xx is success (observed contract, 2026-08-27:
@@ -48,7 +48,6 @@ const FIELD_LABELS: Record<FieldName, string> = {
   phoneNumber: "Phone number",
   discussionTopic: "Discussion topic",
   notes: "Notes",
-  consent: "Consent",
 };
 
 function isFieldName(value: string): value is FieldName {
@@ -152,7 +151,7 @@ export function ContactForm({ apiUrl, timeoutMs }: { apiUrl: string; timeoutMs: 
 
   if (submission.kind === "accepted") {
     return (
-      <div className="rounded-[12px] border border-teal/40 bg-teal/10 p-8" role="status">
+      <div className="rounded-[12px] border border-olive/40 bg-olive/10 p-8" role="status">
         <h2 ref={successHeadingRef} tabIndex={-1} className="text-h3 font-semibold text-ink">
           Thank you. Your enquiry has been received.
         </h2>
@@ -178,7 +177,7 @@ export function ContactForm({ apiUrl, timeoutMs }: { apiUrl: string; timeoutMs: 
   );
 
   const textField = (
-    name: Exclude<FieldName, "consent" | "notes">,
+    name: Exclude<FieldName, "notes">,
     options: { type?: string; autoComplete?: string; hint?: string } = {},
   ) => {
     const error = errors[name];
@@ -230,7 +229,7 @@ export function ContactForm({ apiUrl, timeoutMs }: { apiUrl: string; timeoutMs: 
           : ""}
       </p>
 
-      {/* Error summary — focused after failed validation */}
+      {/* Error summary, focused after failed validation */}
       <div
         ref={errorSummaryRef}
         tabIndex={-1}
@@ -300,10 +299,10 @@ export function ContactForm({ apiUrl, timeoutMs }: { apiUrl: string; timeoutMs: 
         {textField("phoneNumber", {
           type: "tel",
           autoComplete: "tel",
-          hint: "Include the country code, e.g. +1 302 555 0100.",
+          hint: "Include the country code, for example +1 302 555 0100.",
         })}
         {textField("discussionTopic", {
-          hint: "A few words — e.g. cloud migration readiness, QA automation, a modernization roadmap.",
+          hint: "A few words, for example cloud migration readiness, QA automation, or a modernization roadmap.",
         })}
       </div>
 
@@ -313,8 +312,8 @@ export function ContactForm({ apiUrl, timeoutMs }: { apiUrl: string; timeoutMs: 
           {requiredMark}
         </label>
         <p id={`${fieldId("notes")}-hint`} className={fieldHintClasses}>
-          The business goal, current challenge, or delivery gap — 20 to 3,000 characters. Please do
-          not include passwords, credentials, or sensitive personal data.
+          The business goal, current challenge, or delivery gap, in 20 to 3,000 characters. Please
+          do not include passwords, credentials, or sensitive personal data.
         </p>
         <textarea
           id={fieldId("notes")}
@@ -335,7 +334,7 @@ export function ContactForm({ apiUrl, timeoutMs }: { apiUrl: string; timeoutMs: 
         ) : null}
       </div>
 
-      {/* Honeypot — visually hidden and hidden from assistive technology */}
+      {/* Honeypot: visually hidden and hidden from assistive technology */}
       <div aria-hidden="true" className="absolute left-[-9999px] h-0 w-0 overflow-hidden">
         <label htmlFor={fieldId("website")}>Website</label>
         <input
@@ -347,36 +346,9 @@ export function ContactForm({ apiUrl, timeoutMs }: { apiUrl: string; timeoutMs: 
         />
       </div>
 
-      <div className="flex items-start gap-3">
-        <input
-          id={fieldId("consent")}
-          type="checkbox"
-          aria-invalid={errors.consent ? true : undefined}
-          aria-describedby={errors.consent ? `${fieldId("consent")}-error` : undefined}
-          className="mt-1 h-5 w-5 rounded border-stone accent-[var(--color-accent-dark)]"
-          {...register("consent")}
-        />
-        <div>
-          <label htmlFor={fieldId("consent")} className="text-sm leading-relaxed text-ink/85">
-            I have read the{" "}
-            <a href="/privacy/" className="font-semibold text-accent-dark underline">
-              Privacy Policy
-            </a>{" "}
-            and agree that {siteConfig.legalName} may process the information I have provided to
-            respond to this enquiry.
-            {requiredMark}
-          </label>
-          {errors.consent ? (
-            <p id={`${fieldId("consent")}-error`} className={errorClasses}>
-              {errors.consent.message}
-            </p>
-          ) : null}
-        </div>
-      </div>
-
       <div>
         <Button type="submit" disabled={isSubmitting || submission.kind === "submitting"}>
-          {submission.kind === "submitting" ? "Sending…" : "Send enquiry"}
+          {submission.kind === "submitting" ? "Sending" : "Send enquiry"}
         </Button>
       </div>
     </form>

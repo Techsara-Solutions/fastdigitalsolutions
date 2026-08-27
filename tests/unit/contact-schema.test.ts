@@ -10,7 +10,6 @@ const validValues = {
   discussionTopic: "Cloud migration readiness",
   notes:
     "We need to assess and modernize a customer-facing application currently hosted on legacy infrastructure.",
-  consent: true as const,
   website: "",
 };
 
@@ -64,10 +63,6 @@ describe("contact form validation", () => {
     );
   });
 
-  it("requires explicit consent", () => {
-    expect(contactFormSchema.safeParse({ ...validValues, consent: false }).success).toBe(false);
-  });
-
   it("rejects submissions where the honeypot is filled", () => {
     expect(contactFormSchema.safeParse({ ...validValues, website: "spam.example" }).success).toBe(
       false,
@@ -92,7 +87,7 @@ describe("API payload", () => {
 
   it("never sends client-only or backend-owned fields", () => {
     const payload = toApiPayload(validValues) as Record<string, unknown>;
-    for (const key of ["consent", "website", "sourcePath", "timestamp", "ip", "verified"]) {
+    for (const key of ["website", "sourcePath", "timestamp", "ip", "verified"]) {
       expect(payload).not.toHaveProperty(key);
     }
   });

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getSiteUrl, isPlaceholder, siteConfig } from "@/content/site";
+import { OG_IMAGE } from "@/generated/brand";
 
 type PageMetadataInput = {
   /** Page topic; becomes "{title} | Fast Digital Solutions" (PRD §24.1). */
@@ -25,6 +26,9 @@ export function buildMetadata({
   const siteUrl = getSiteUrl();
   const domainReady = !isPlaceholder(siteUrl);
   const fullTitle = absoluteTitle ?? `${title} | ${siteConfig.brandName}`;
+  // Social crawlers need an absolute image URL, which needs metadataBase; the
+  // generated brand image is only attached once the real domain is configured.
+  const socialImage = { ...OG_IMAGE, alt: siteConfig.brandName };
 
   return {
     // Absolute: the root layout template must not re-append the brand name.
@@ -43,12 +47,13 @@ export function buildMetadata({
       description,
       type: "website",
       siteName: siteConfig.brandName,
-      ...(domainReady ? { url: path } : {}),
+      ...(domainReady ? { url: path, images: [socialImage] } : {}),
     },
     twitter: {
-      card: "summary",
+      card: domainReady ? "summary_large_image" : "summary",
       title: fullTitle,
       description,
+      ...(domainReady ? { images: [socialImage] } : {}),
     },
   };
 }

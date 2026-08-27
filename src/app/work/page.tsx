@@ -12,14 +12,13 @@ import { getService } from "@/content/services";
 export const metadata: Metadata = buildMetadata({
   title: "Capabilities in practice",
   description:
-    "Representative engagement scenarios showing how Fast Digital Solutions' services combine around common client needs. Named client work is published only with permission.",
+    "Representative engagement scenarios showing how Fast Digital Solutions' services combine around common client needs.",
   path: "/work/",
 });
 
 /**
- * Work page (PRD §14.5). State A: no verified named work yet, so the page
- * presents clearly labelled representative scenarios. Published case studies
- * automatically appear here when approved and verified records exist.
+ * Work page. Presents clearly labelled illustrative scenarios; published case
+ * studies appear above them once approved and verified records exist.
  */
 export default function WorkPage() {
   const caseStudies = getPublishedCaseStudies();
@@ -32,7 +31,7 @@ export default function WorkPage() {
         image="hero-work"
         eyebrow="Work"
         title="Capabilities in practice"
-        lead="These representative scenarios show how our services can be combined around common client needs. Named client work will be published only with permission."
+        lead="These scenarios show how our services combine around the kinds of situations we work on. Each one is illustrative, so you can see the approach without reading a sales pitch."
       />
 
       {caseStudies.length > 0 ? (
@@ -71,7 +70,7 @@ export default function WorkPage() {
                 id={scenario.slug}
                 className="scroll-mt-24 rounded-[12px] border border-stone bg-paper p-6 md:p-10"
               >
-                <p className="mb-5 inline-flex items-center rounded-full border border-teal/40 bg-teal/10 px-3 py-1 text-xs font-semibold text-teal-dark">
+                <p className="mb-5 inline-flex items-center rounded-full border border-olive/40 bg-olive/10 px-3 py-1 text-xs font-semibold text-olive-dark">
                   {SCENARIO_LABEL}
                 </p>
                 <h3 className="text-h3 font-semibold">{scenario.title}</h3>
@@ -148,7 +147,7 @@ export default function WorkPage() {
 
       <CtaPanel
         heading="Facing something similar?"
-        copy="Describe your situation and we will tell you honestly how we would approach it — and whether we are the right team for it."
+        copy="Describe your situation and we will tell you plainly how we would approach it, and whether we are the right team for it."
       />
     </>
   );

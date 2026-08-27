@@ -1,5 +1,5 @@
 /**
- * The five-stage client-first delivery method (PRD §11).
+ * The five-stage client-first delivery method.
  * Shown as a preview on the home page and in full on /how-we-work/.
  */
 export type DeliveryStage = {
@@ -15,7 +15,8 @@ export const deliveryStages: DeliveryStage[] = [
   {
     number: 1,
     name: "Align",
-    short: "Understand the business objective, the people involved, and what success means.",
+    short:
+      "We start by understanding the business objective, the people involved, and what a good result looks like.",
     purpose: [
       "Understand the business objective",
       "Identify users, stakeholders, systems, constraints, and risks",
@@ -34,9 +35,9 @@ export const deliveryStages: DeliveryStage[] = [
   {
     number: 2,
     name: "Architect",
-    short: "Convert the problem into a practical plan with clear boundaries and priorities.",
+    short: "Then we turn the problem into a workable plan with clear boundaries and priorities.",
     purpose: [
-      "Convert the problem into a practical delivery plan",
+      "Convert the problem into a realistic delivery plan",
       "Define solution boundaries and technical decisions",
       "Prioritize value, risk, and dependencies",
       "Establish quality, security, and operating considerations",
@@ -53,12 +54,13 @@ export const deliveryStages: DeliveryStage[] = [
   {
     number: 3,
     name: "Deliver",
-    short: "Build in visible increments, demonstrate progress often, and raise issues early.",
+    short:
+      "We build in visible increments, show progress often, and raise issues as soon as they appear.",
     purpose: [
       "Build in visible increments",
       "Demonstrate progress frequently",
       "Integrate testing, review, and documentation",
-      "Raise issues early rather than hiding them until the end",
+      "Raise issues early instead of hiding them until the end",
     ],
     outputsTitle: "Typical practices",
     outputs: [
@@ -73,7 +75,8 @@ export const deliveryStages: DeliveryStage[] = [
   {
     number: 4,
     name: "Validate",
-    short: "Confirm the solution meets agreed expectations and prepare people for release.",
+    short:
+      "Before release we confirm the solution meets what was agreed and get people ready for it.",
     purpose: [
       "Confirm the solution meets agreed functional, quality, accessibility, performance, and operational expectations",
       "Prepare users and operators for release",
@@ -90,7 +93,8 @@ export const deliveryStages: DeliveryStage[] = [
   {
     number: 5,
     name: "Improve",
-    short: "Support adoption, capture learning, and reduce dependency on the delivery team.",
+    short:
+      "After release we support adoption, capture what was learned, and reduce reliance on us.",
     purpose: [
       "Support adoption, maintenance, optimization, and the next priority",
       "Capture learning and reduce future dependency on the delivery team",
@@ -106,7 +110,7 @@ export const deliveryStages: DeliveryStage[] = [
   },
 ];
 
-/** Working-practice commitments (PRD §11.1) — operating principles the company can follow. */
+/** Working-practice commitments: operating principles the company can follow. */
 export const workingCommitments = [
   "A named point of contact for each engagement",
   "Agreed communication and reporting cadence",
@@ -118,7 +122,7 @@ export const workingCommitments = [
   "Respect for the client's architecture, security, and governance standards",
 ];
 
-/** "What happens after enquiry" sequence (PRD §14.6). */
+/** "What happens after enquiry" sequence. */
 export const afterEnquirySteps = [
   { title: "Enquiry received", detail: "Your message arrives with a reference for follow-up." },
   {
@@ -131,7 +135,8 @@ export const afterEnquirySteps = [
   },
   {
     title: "Recommended next step",
-    detail: "A clear recommendation — which may be a project, a discovery, or an honest 'not us'.",
+    detail:
+      "A clear recommendation. It may be a project, a discovery, or the view that we are not the right team for this one.",
   },
   {
     title: "Proposal or discovery plan where appropriate",

@@ -14,7 +14,7 @@ import { engagementModels } from "@/content/engagement-models";
 export const metadata: Metadata = buildMetadata({
   title: "How we work",
   description:
-    "The client-first delivery method behind every Fast Digital Solutions engagement: align, architect, deliver, validate, improve — with visible progress and documented decisions.",
+    "The client-first delivery method behind every Fast Digital Solutions engagement, from alignment through delivery and validation, with visible progress and documented decisions.",
   path: "/how-we-work/",
 });
 
@@ -27,7 +27,7 @@ export default function HowWeWorkPage() {
         image="hero-how-we-work"
         eyebrow="How we work"
         title="Delivery you can see, question, and steer."
-        lead="Most delivery risk comes from working in the dark: progress you cannot verify, decisions you were not part of, problems raised too late to fix cheaply. Our method is designed to remove that darkness."
+        lead="Most delivery risk comes from working in the dark. Progress you cannot verify, decisions you were not part of, and problems raised too late to fix cheaply. Our method is built to remove that darkness."
       />
 
       <Section surface="canvas" spacing="tight" ariaLabelledby="philosophy-heading">
@@ -37,9 +37,9 @@ export default function HowWeWorkPage() {
           </h2>
           <div className="max-w-[46rem]">
             <PullStatement>
-              Understand the business context. Define a practical plan. Deliver in visible
-              increments. Communicate risks early. Document decisions. Leave behind systems and
-              knowledge the client can maintain.
+              We start by understanding the business context and turning it into a plan the team can
+              work to. Then we deliver in visible increments, flag risks early, write decisions
+              down, and leave behind systems and knowledge the client can maintain without us.
             </PullStatement>
           </div>
         </Container>
@@ -53,7 +53,7 @@ export default function HowWeWorkPage() {
               id="stages-heading"
               eyebrow="The method"
               title="Five stages, each with visible outputs."
-              lead="Each stage ends with something you can see and check — a plan, a running increment, a test result, a handover document — so progress is never a matter of trust alone."
+              lead="Each stage ends with something you can see and check, whether that is a plan, a running increment, a test result, or a handover document. Progress is never a matter of trust alone."
             />
             <Picture
               id="feature-how-we-work-stages"
@@ -108,7 +108,7 @@ export default function HowWeWorkPage() {
                       >
                         <span
                           aria-hidden="true"
-                          className="mt-[0.55em] h-1 w-3 shrink-0 rounded-full bg-teal/70"
+                          className="mt-[0.55em] h-1 w-3 shrink-0 rounded-full bg-olive/70"
                         />
                         {output}
                       </li>
@@ -122,13 +122,13 @@ export default function HowWeWorkPage() {
       </Section>
 
       {/* Communication, governance, quality, documentation */}
-      <Section surface="navy" ariaLabelledby="commitments-heading">
+      <Section surface="espresso" ariaLabelledby="commitments-heading">
         <Container>
           <SectionIntro
             id="commitments-heading"
             eyebrow="Working practices"
             title="Commitments we can be held to."
-            lead="These are operating principles, not slogans — each one is something you can check during an engagement."
+            lead="These are operating principles, not slogans. Each one is something you can check during an engagement."
           />
           <ul className="mt-12 grid gap-x-10 gap-y-5 md:grid-cols-2">
             {workingCommitments.map((commitment) => (
@@ -181,7 +181,7 @@ export default function HowWeWorkPage() {
             id="after-enquiry-heading"
             eyebrow="After you get in touch"
             title="What happens when you enquire."
-            lead="No pressure sequence, no automated sales cadence — a considered response within two business days."
+            lead="There is no sales cadence behind this. You get a reply from a person within two business days."
           />
           <ol className="mt-12 grid gap-8 md:grid-cols-5">
             {afterEnquirySteps.map((step, index) => (
@@ -202,7 +202,7 @@ export default function HowWeWorkPage() {
 
       <CtaPanel
         heading="See the method applied to your priority."
-        copy="Tell us what needs to move forward and we will walk you through how we would run it — stage by stage."
+        copy="Tell us what needs to move forward and we will walk you through how we would run it, stage by stage."
       />
     </>
   );
