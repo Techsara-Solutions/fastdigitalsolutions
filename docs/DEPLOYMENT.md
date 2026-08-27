@@ -95,7 +95,8 @@ Afterwards, run the workflow again normally to move back to the newest release.
 
 > Because deploy.yml calls ci.yml for main, **CI no longer triggers separately
 > on push to main** — it appears as the "CI gate" job inside the deploy run.
-> It still runs standalone for `dev`, `hd-dev`, and every pull request.
+> It still runs for every pull request. There is no `push` trigger at all —
+> that would double every run on branches with an open PR.
 
 ## Server directory layout
 

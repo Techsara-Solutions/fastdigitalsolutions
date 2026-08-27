@@ -71,11 +71,16 @@ metrics, people) from ever publishing, per PRD §2.
 - `dev` — integration (PR from `hd-dev`, created manually)
 - `main` — production; **pushes to `main` deploy to EC2**
 
-CI (lint, typecheck, tests, build, E2E) runs standalone on every pull request
-and on pushes to `dev` and `hd-dev`. On `main` it runs as the **CI gate** job
-inside the deploy workflow: the deploy job declares `needs: ci`, so a commit
-that fails any check cannot reach production. That gate lives in the workflow
-because repository branch protection requires a paid plan for private repos.
+CI (lint, typecheck, tests, build, E2E) runs on **every pull request**, and on
+`main` as the **CI gate** job inside the deploy workflow — the deploy job
+declares `needs: ci`, so a commit that fails any check cannot reach production.
+That gate lives in the workflow because repository branch protection requires a
+paid plan for private repos.
+
+There is no `push` trigger on `ci.yml`. Pushing to a branch with an open PR
+would otherwise fire both `push` and `pull_request` for the same commit and run
+everything twice. Pushing more commits to an open PR still re-runs the suite,
+so nothing is lost — but a push to a branch with **no** open PR gets no CI.
 
 ## Deployment
 
