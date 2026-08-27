@@ -6,7 +6,7 @@
  * square) and emits everything the site needs from it:
  *
  *   src/components/layout/logo-paths.ts   path data for the React <LogoMark>
- *   src/app/icon.svg                      favicon (SVG)
+ *   src/app/icon.svg                      favicon (SVG), white mark on espresso
  *   src/app/icon.png                      favicon (32 px, for browsers without SVG favicons)
  *   src/app/apple-icon.png                180 px home-screen icon
  *   public/images/og-default.<hash>.png   1200×630 social-share image
@@ -28,6 +28,7 @@ const SOURCE = path.join(ROOT, "brand", "fds-logo.source.svg");
 
 /* Palette (mirrors src/styles/globals.css). */
 const PAPER = "#faf8f5";
+const ESPRESSO = "#2a211c";
 const INK = "#1f1a17";
 const MUTED = "#5c5049";
 const ACCENT = "#d57b47";
@@ -90,14 +91,6 @@ function sha1(buffer: Buffer): string {
   return createHash("sha1").update(buffer).digest("hex").slice(0, 8);
 }
 
-function markSvg(
-  box: { x: number; y: number; w: number; h: number },
-  mark: string,
-  square: string,
-) {
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${box.x} ${box.y} ${box.w} ${box.h}"><path fill="${INK}" fill-rule="evenodd" d="${mark}"/><path fill="${ACCENT}" d="${square}"/></svg>`;
-}
-
 async function renderPng(svg: string, width: number, height: number): Promise<Buffer> {
   const { data, info } = await sharp(Buffer.from(svg))
     .png({ compressionLevel: 9, palette: false })
@@ -135,14 +128,14 @@ export const LOGO_SQUARE_D = "${squareD}";
 `,
   );
 
-  /* 2. Favicons. */
-  const iconSvg = markSvg(ICON_BOX, markD, squareD);
+  /* 2. Favicons: white mark on the dark espresso surface. */
+  const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${ICON_BOX.x} ${ICON_BOX.y} ${ICON_BOX.w} ${ICON_BOX.h}"><rect x="${ICON_BOX.x}" y="${ICON_BOX.y}" width="${ICON_BOX.w}" height="${ICON_BOX.h}" rx="64" fill="${ESPRESSO}"/><path fill="${PAPER}" fill-rule="evenodd" d="${markD}"/><path fill="${ACCENT}" d="${squareD}"/></svg>`;
   fs.writeFileSync(path.join(ROOT, "src", "app", "icon.svg"), `${iconSvg}\n`);
 
-  const icon32 = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="${PAPER}"/><svg x="2" y="2" width="28" height="28" viewBox="${ICON_BOX.x} ${ICON_BOX.y} ${ICON_BOX.w} ${ICON_BOX.h}"><path fill="${INK}" fill-rule="evenodd" d="${markD}"/><path fill="${ACCENT}" d="${squareD}"/></svg></svg>`;
+  const icon32 = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="${ESPRESSO}"/><svg x="2" y="2" width="28" height="28" viewBox="${ICON_BOX.x} ${ICON_BOX.y} ${ICON_BOX.w} ${ICON_BOX.h}"><path fill="${PAPER}" fill-rule="evenodd" d="${markD}"/><path fill="${ACCENT}" d="${squareD}"/></svg></svg>`;
   fs.writeFileSync(path.join(ROOT, "src", "app", "icon.png"), await renderPng(icon32, 32, 32));
 
-  const apple = `<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180"><rect width="180" height="180" fill="${PAPER}"/><svg x="20" y="46" width="140" height="87" viewBox="${viewBox}"><path fill="${INK}" fill-rule="evenodd" d="${markD}"/><path fill="${ACCENT}" d="${squareD}"/></svg></svg>`;
+  const apple = `<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180"><rect width="180" height="180" fill="${ESPRESSO}"/><svg x="20" y="46" width="140" height="87" viewBox="${viewBox}"><path fill="${PAPER}" fill-rule="evenodd" d="${markD}"/><path fill="${ACCENT}" d="${squareD}"/></svg></svg>`;
   fs.writeFileSync(
     path.join(ROOT, "src", "app", "apple-icon.png"),
     await renderPng(apple, 180, 180),

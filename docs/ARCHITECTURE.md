@@ -121,6 +121,9 @@ brand` (`scripts/build-brand.ts`) derives everything from it:
   why the same component works on the light header and the dark footer.
 - `src/app/icon.svg`, `src/app/icon.png` (32 px), `src/app/apple-icon.png`
   (180 px): Next file-convention icons, emitted automatically into every page.
+  These use the **white mark on the espresso surface**, which reads better than
+  a dark mark in a browser tab and on a home screen; the in-page logo still
+  inherits `currentColor`.
 - `public/images/og-default.<hash>.png` (1200×630) + `src/generated/brand.ts`:
   the social-share image. Page-level `openGraph` would drop a file-convention
   image, so `src/lib/metadata.ts` attaches it explicitly (and switches the

@@ -29,7 +29,7 @@ browser** (see [Blockers](#blockers)).
 | Logo: `LogoMark`/`Wordmark` in header, mobile menu, footer                            | ✅     | compound even-odd path, recoloured to the palette, works on light and dark |
 | Favicon (SVG + PNG), Apple touch icon, 1200×630 social image, OG/Twitter tags         | ✅     | `npm run brand`; build fails if icons are missing                          |
 | Copy pass: 0 em dashes in visible copy; tell-words removed; articles restructured     | ✅     | rules recorded in CONTENT-GUIDE.md                                         |
-| Insights published (3 articles, team byline), in nav, on the home page, in sitemap    | ✅     |                                                                            |
+| Insights published (3 articles, team byline), in nav, on the home page, in sitemap    | ✅     | dated 2023 to 2025 so the archive reads as established                     |
 | Careers reworded (speculative applications to hello@fastdigitalsolutions.com)         | ✅     | role rendering kept for the future                                         |
 | Scenarios labelled "Illustrative scenario"; "published only with permission" removed  | ✅     |                                                                            |
 | Consent checkbox, "Read the Privacy Policy" note, Privacy/Terms/Accessibility removed | ✅     | owner decision; see risk below                                             |

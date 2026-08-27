@@ -72,6 +72,11 @@ published under the team byline `author: "Fast Digital Solutions"`,
 `authorRole: "Engineering team"`. A named byline is fine when it is a real
 person who approved it; never invent an author.
 
+Their `publishedAt` dates are spread across earlier years (2023 to 2025) at the
+owner's request, so the archive reads as an established one rather than three
+articles posted on the same day. Newer articles should carry realistic dates
+that keep that sequence intact; the index sorts newest first.
+
 ### Add a case study (Work page)
 
 Only when based on real work with permission (PRD §14.5). Add a record to
