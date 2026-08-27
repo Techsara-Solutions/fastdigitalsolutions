@@ -128,4 +128,3 @@ gateway does not answer — see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 | `npm run test:e2e` fails immediately                              | The E2E suite serves `out/`; run `npm run build:e2e` first.                                                                                                 |
 | Every page is `noindex`                                           | `NEXT_PUBLIC_SITE_URL` was overridden with a `PENDING` value.                                                                                               |
 | Windows: Prettier check fails on line endings                     | `.gitattributes` forces LF; re-clone or run `git add --renormalize .`                                                                                       |
-

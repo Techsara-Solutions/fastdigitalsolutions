@@ -48,7 +48,7 @@ export function CtaPanel({
             </h2>
             <p className="mt-5 max-w-[38rem] text-lead text-paper/90">{copy}</p>
           </div>
-          <div className="flex flex-col items-start gap-4 lg:items-end">
+          <div className="flex flex-col items-center gap-4 text-center">
             <Button href="/contact/" variant="onDark">
               {ctaLabel}
             </Button>
