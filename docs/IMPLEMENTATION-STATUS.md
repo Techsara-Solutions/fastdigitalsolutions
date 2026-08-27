@@ -12,10 +12,10 @@ design system, the contact form with every specified state, the
 content-credibility gate, the test suite (41 unit + 45 E2E/accessibility tests,
 all passing), the CI pipeline, and the EC2 deployment pipeline.
 
-**The site is live at http://44.197.228.225/** — Amazon Linux 2023 + nginx,
-serving all routes with security headers, compression, and asset caching
-verified from the public internet. Crawlers are deliberately blocked until a
-real domain exists.
+**The site is live at https://fastdigitalsolutions.com/** — Amazon Linux 2023 +
+nginx behind Cloudflare, serving all routes over HTTPS with security headers,
+compression, and asset caching verified from the public internet. Crawlers are
+still deliberately blocked until `NEXT_PUBLIC_SITE_URL` is set (see below).
 
 What stands between this and a public production launch is **not code** — it
 is the owner-supplied inputs and verifications listed under
@@ -88,11 +88,17 @@ is the owner-supplied inputs and verifications listed under
 | GitHub secrets (EC2_HOST / EC2_USER / EC2_SSH_KEY)  | ✅     | set via `gh secret set`, key read from disk                                                                                |
 | EC2 setup script + runbook                          | ✅     | `deploy/setup-ec2.sh`, `docs/DEPLOYMENT.md`                                                                                |
 | Dependabot (npm + actions)                          | ✅     | Actions bumped to v7; two npm majors blocked upstream (below)                                                              |
-| **Elastic IP**                                      | ⏳     | **recommended now** — current IP changes on instance stop/start                                                            |
-| TLS + canonical host redirects                      | ⏳     | after domain purchase (runbook ready)                                                                                      |
-| Restrict SSH (port 22) to trusted IPs               | ⏳     | security-group hardening                                                                                                   |
+| Domain + HTTPS via Cloudflare                       | ✅     | live 2026-08-27; Origin Certificate valid to 2041, covers apex + `*.` wildcard                                             |
+| **Elastic IP**                                      | ⏳     | **urgent now** — a stop/start changes the IP, breaking DNS _and_ deploys                                                   |
+| Restrict origin to Cloudflare IPs                   | ⏳     | `http://44.197.228.225/` is still reachable directly, bypassing Cloudflare                                                 |
+| Cloudflare "Always Use HTTPS"                       | ⏳     | dashboard toggle; HTTP currently serves instead of redirecting                                                             |
+| HSTS                                                | ⏳     | enable a few days after TLS proves stable (`setup-ec2.sh --enable-hsts`)                                                   |
+| Canonical host redirect (apex vs `www`)             | ⏳     | both currently return 200 (PRD §23.4)                                                                                      |
+| Real visitor IPs in nginx logs (`realip`)           | ⏳     | logs currently show Cloudflare IPs, not visitors                                                                           |
+| `NEXT_PUBLIC_SITE_URL` set → indexing on            | ⏳     | site is still `noindex`; set when you are ready to be found by Google                                                      |
+| Restrict SSH (port 22) to trusted IPs               | ⏳     | hard while GitHub-hosted runners deploy over SSH; OIDC + SSM is the real fix                                               |
 | Branch protection on `main`                         | ❌     | **not available on this GitHub plan** (private repo, free tier) — the workflow-level `needs: ci` gate covers the same risk |
-| CloudFront in front of EC2                          | ⏳     | optional; adds global edge caching + managed TLS, keeps the pipeline as is                                                 |
+| CloudFront in front of EC2                          | ❌     | no longer needed — Cloudflare now provides the CDN layer                                                                   |
 | Replace SSH key with GitHub OIDC + SSM              | ⏳     | optional hardening; removes the long-lived key and closes port 22                                                          |
 
 ### Blocked dependency updates (no action available)

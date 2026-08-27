@@ -11,6 +11,7 @@ request** — the deviation is recorded in [ARCHITECTURE.md](ARCHITECTURE.md).
 
 | Item             | Value                                                                                                                    |
 | ---------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Public URL       | **https://fastdigitalsolutions.com** (and `www`), via Cloudflare                                                         |
 | EC2 instance     | `i-00719a511f891b6d8` ("fastdigitalsolutions.com")                                                                       |
 | Region           | `us-east-1`                                                                                                              |
 | Instance type    | `t2.small` (2 GB RAM, 8 GB disk)                                                                                         |
@@ -205,27 +206,100 @@ Until `NEXT_PUBLIC_SITE_URL` is set, every page ships `noindex` and
 `robots.txt` disallows all crawlers. That is intentional: it stops search
 engines indexing the site at its raw IP address before the real domain exists.
 
-## Domain and TLS (when the domain is purchased)
+## Domain and TLS — live since 2026-08-27
 
-1. Allocate an **Elastic IP** first (see the warning above), then point the
-   domain's A record at it.
-2. On the server, edit `/etc/nginx/conf.d/fastdigitalsolutions.conf` and set
-   `server_name fastdigitalsolutions.com www.fastdigitalsolutions.com;`, then
-   `sudo nginx -t && sudo systemctl reload nginx`.
-3. Install certbot and issue the certificate:
-   ```bash
-   sudo dnf install -y certbot python3-certbot-nginx
-   sudo certbot --nginx
-   ```
-   Certbot adds the 443 listener and the HTTP→HTTPS redirect, and installs a
-   renewal timer.
-4. Enable HSTS **only now that TLS works**:
-   `bash /tmp/deploy/setup-ec2.sh --enable-hsts`
-5. Pick one canonical host (apex or `www`) and redirect the other (PRD §23.4).
-6. Set the `NEXT_PUBLIC_SITE_URL` variable and redeploy — this switches on
-   indexing, canonical URLs, the sitemap, and the Organization structured data.
-7. Add the contact API origin to `connect-src` and `form-action` in
+`fastdigitalsolutions.com` is served through **Cloudflare**, which terminates
+TLS for visitors and proxies to this origin.
+
+```
+visitor ──HTTPS──> Cloudflare edge ──HTTPS──> nginx on EC2 :443
+                   (public cert)              (Cloudflare Origin Certificate)
+```
+
+| Setting            | Value                                                                                                           |
+| ------------------ | --------------------------------------------------------------------------------------------------------------- |
+| Nameservers        | `abby.ns.cloudflare.com`, `odin.ns.cloudflare.com`                                                              |
+| Proxy              | Enabled (orange cloud) — visitors resolve to Cloudflare IPs                                                     |
+| Origin certificate | Cloudflare Origin CA, covers `fastdigitalsolutions.com` + `*.fastdigitalsolutions.com`, **expires 23 Aug 2041** |
+| Cert path          | `/etc/ssl/certs/fastdigitalsolutions.origin.pem` (`644` root)                                                   |
+| Key path           | `/etc/ssl/private/fastdigitalsolutions.origin.key` (`600` root)                                                 |
+
+### Why an Origin Certificate rather than Let's Encrypt
+
+A Cloudflare Origin Certificate is trusted **only by Cloudflare**, not by
+browsers — which is exactly right here, because Cloudflare is the only client
+that ever connects to this origin. Visitors see Cloudflare's own
+publicly-trusted certificate. It is valid for 15 years, so there is no 90-day
+renewal timer to fail silently, and no HTTP-01 challenge to arrange around the
+proxy.
+
+### If the certificate ever needs replacing
+
+Generate a new one at _Cloudflare → SSL/TLS → Origin Server → Create
+Certificate_, then install it (the private key is shown **once** — keep a copy
+in a password manager):
+
+```bash
+sudo install -m 600 -o root -g root /dev/null /etc/ssl/private/fastdigitalsolutions.origin.key
+sudo tee /etc/ssl/private/fastdigitalsolutions.origin.key > /dev/null <<'EOF'
+...paste key...
+EOF
+sudo install -m 644 -o root -g root /dev/null /etc/ssl/certs/fastdigitalsolutions.origin.pem
+sudo tee /etc/ssl/certs/fastdigitalsolutions.origin.pem > /dev/null <<'EOF'
+...paste certificate...
+EOF
+
+# The two MUST produce identical hashes, or nginx will refuse to start:
+sudo openssl x509 -in /etc/ssl/certs/fastdigitalsolutions.origin.pem -noout -pubkey | openssl sha256
+sudo openssl pkey -in /etc/ssl/private/fastdigitalsolutions.origin.key -pubout | openssl sha256
+
+sudo nginx -t && sudo systemctl reload nginx
+```
+
+### Why port 80 still serves the site instead of redirecting
+
+Two reasons: the deployment health check runs `curl http://127.0.0.1/` on the
+instance, and in a CDN setup the visitor-facing HTTP→HTTPS redirect belongs at
+the edge (_Cloudflare → SSL/TLS → Edge Certificates → Always Use HTTPS_) rather
+than at the origin.
+
+### Remaining hardening
+
+1. **Restrict the origin to Cloudflare.** `http://44.197.228.225/` is still
+   reachable directly, which bypasses Cloudflare's protection and exposes the
+   origin. Fix at the security group (strongest) by allowing 80/443 only from
+   [Cloudflare's ranges](https://www.cloudflare.com/ips/), or at nginx with an
+   allowlist. **Leave port 22 open** — GitHub Actions runners deploy over SSH
+   from a wide dynamic range.
+2. **Enable HSTS** once HTTPS has been stable for a few days:
+   `bash /tmp/deploy/setup-ec2.sh --enable-hsts`. Browsers cache it
+   aggressively, so it is painful to reverse.
+3. **Pick one canonical host** (apex or `www`) and redirect the other (PRD §23.4).
+4. **Set `NEXT_PUBLIC_SITE_URL`** and redeploy to switch on indexing, canonical
+   URLs, the sitemap, and the Organization structured data.
+5. **Restore real visitor IPs** in nginx logs with the `realip` module and
+   Cloudflare's ranges — otherwise every log line shows a Cloudflare IP.
+6. **Add the contact API origin** to `connect-src` and `form-action` in
    `/etc/nginx/security-headers.conf` once that endpoint exists.
+
+### Troubleshooting: Cloudflare Error 521
+
+"Web server is down" means Cloudflare could not open a TCP connection to the
+origin. It is almost never an actual outage. Diagnose from outside:
+
+```bash
+curl -I http://<origin-ip>/          # origin alive on 80?
+curl -kI https://<origin-ip>/        # origin answering TLS on 443?
+```
+
+If port 80 works but 443 is refused, Cloudflare's SSL/TLS mode is **Full** or
+**Full (Strict)** — both connect to the origin over HTTPS — while nginx has no
+443 listener. That was the cause on 2026-08-27, fixed by installing the Origin
+Certificate above.
+
+A quick way to tell a firewall block from a missing listener: a **refused**
+connection (fast) means the security group allows the port but nothing is
+listening; a **timeout** (slow) means the traffic is being dropped upstream.
 
 ## Rollback
 
