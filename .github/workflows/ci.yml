@@ -1,13 +1,25 @@
 name: CI
 
-# Runs standalone on feature branches and pull requests, and is also called by
-# deploy.yml as a required gate before anything reaches production.
+# Runs on pull requests, and is called by deploy.yml as the required gate
+# before anything reaches production.
 #
-# `push: main` is deliberately absent: deploy.yml calls this workflow for main,
-# so listing it here as well would run every check twice for the same commit.
+# There is deliberately NO `push` trigger. A push to a branch that has an open
+# pull request fires both `push` and `pull_request` for the same commit, and
+# because the two events report different values for github.ref they land in
+# different concurrency groups and neither cancels the other — so every change
+# ran the whole suite twice and billed twice the Actions minutes.
+#
+# `pull_request` alone is sufficient and slightly better:
+#   - pushing more commits to an open PR still re-runs everything (the
+#     `synchronize` event), so feedback while iterating is unchanged;
+#   - it tests the MERGE RESULT rather than the branch in isolation, which is
+#     the thing actually being proposed;
+#   - `main` is covered by deploy.yml calling this workflow via workflow_call.
+#
+# The trade-off: a push to a branch with no open PR gets no CI. That is fine
+# here — work reaches production only through hd-dev → dev → main pull
+# requests, each of which is checked.
 on:
-  push:
-    branches: [dev, hd-dev]
   pull_request:
   workflow_call:
 
