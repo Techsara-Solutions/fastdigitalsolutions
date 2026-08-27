@@ -1,22 +1,24 @@
 import type { Service } from "@/lib/schemas";
 
 /**
- * The six Version 1 service groups (PRD §8, §14.2–14.3).
+ * The six service groups (cards, mega-menu, and full detail pages).
  *
  * Copy rules: client situation first, outcomes before tools, no partnership or
- * certification claims, no guarantees that require discovery, none of the
- * banned cliché phrases (PRD §7.4).
+ * certification claims, no guarantees that require discovery, no em dashes,
+ * none of the banned cliché phrases (docs/CONTENT-GUIDE.md).
  */
 export const services: Service[] = [
   {
     slug: "cloud-platform-engineering",
+    cardImageId: "card-service-cloud",
+    heroImageId: "hero-service-cloud-platform-engineering",
     name: "Cloud and Platform Engineering",
     stripLabel: "Cloud & Platform",
     clientNeed:
-      "Modern, reliable, scalable infrastructure with a practical migration and operating model.",
+      "Modern, reliable, scalable infrastructure with a realistic migration and operating model.",
     outcome: "A cloud foundation your team can run, extend, and afford.",
     summary:
-      "Plan, build, and operate cloud infrastructure that fits how your applications and team actually work — from readiness assessment through migration, automation, and ongoing reliability.",
+      "Plan, build, and operate cloud infrastructure that fits how your applications and team work, from readiness assessment through migration, automation, and day-to-day reliability.",
     cardCapabilities: [
       "AWS readiness and current-state assessment",
       "Cloud architecture and migration planning",
@@ -25,14 +27,14 @@ export const services: Service[] = [
       "Cloud cost visibility and optimization",
     ],
     hero: {
-      headline: "Cloud infrastructure planned around your workloads, not the other way round.",
-      copy: "We help teams assess where they are, design a practical target architecture, migrate deliberately, and put the automation and observability in place to operate confidently afterwards.",
+      headline: "Cloud infrastructure planned around your workloads.",
+      copy: "We help teams see where they stand, design a target architecture they can run, migrate in careful steps, and put automation and monitoring in place so they can operate with confidence afterwards.",
     },
     situations: [
       "Your applications run on infrastructure that is expensive, fragile, or hard to change, and you need a realistic path to the cloud.",
       "You are already on AWS but releases are manual, environments drift, and nobody fully trusts the monitoring.",
       "Cloud costs have grown faster than usage and you need visibility before you can optimize.",
-      "A growth milestone — new customers, new regions, a launch — will stress infrastructure that has never been load-tested.",
+      "A growth milestone such as new customers, a new region, or a launch will put load on infrastructure that has never been tested at that scale.",
     ],
     capabilityGroups: [
       {
@@ -64,9 +66,9 @@ export const services: Service[] = [
       },
     ],
     deliveryApproach: [
-      "Start with a current-state review: workloads, dependencies, operational pain points, and cost drivers — before any target architecture is proposed.",
-      "Design a target state your team can operate, with infrastructure defined as code and environments that can be rebuilt rather than repaired.",
-      "Migrate in increments that can be verified and rolled back, prioritized by business risk rather than technical convenience.",
+      "Start with a current-state review of workloads, dependencies, operational pain points, and cost drivers before proposing any target architecture.",
+      "Design a target state your team can operate, with infrastructure defined as code and environments that can be rebuilt instead of repaired.",
+      "Migrate in increments that can be verified and rolled back, ordered by business risk instead of technical convenience.",
       "Leave behind runbooks, dashboards, and documentation so operating the platform does not depend on us.",
     ],
     considerations: [
@@ -77,20 +79,22 @@ export const services: Service[] = [
     ],
     notPromised: [
       "We do not quote migration timelines or cost-savings figures before a current-state assessment.",
-      "We do not claim AWS partner status or certifications; capability descriptions reflect delivery experience only.",
+      "We do not claim AWS partner status or certifications. Capability descriptions reflect delivery experience only.",
     ],
     relatedSlugs: ["software-engineering-modernization", "application-maintenance-support"],
     scenarioSlug: "cloud-foundation-software-platform",
   },
   {
     slug: "ai-data-automation",
+    cardImageId: "card-service-ai",
+    heroImageId: "hero-service-ai-data-automation",
     name: "AI, Data, and Automation",
     stripLabel: "AI & Automation",
     clientNeed:
       "Apply AI and automation to defined workflows and data, with human oversight and measurable objectives.",
-    outcome: "Automation applied where it demonstrably helps — with people kept in control.",
+    outcome: "Automation applied where it clearly helps, with people kept in control.",
     summary:
-      "Identify where AI and automation genuinely reduce effort or error in your workflows, prove it on real cases, and put it into production with evaluation and human oversight built in.",
+      "Find where AI and automation reduce effort or error in your workflows, prove it on real cases, and put it into production with evaluation and human oversight built in.",
     cardCapabilities: [
       "AI opportunity and readiness assessment",
       "Workflow and process automation",
@@ -100,7 +104,7 @@ export const services: Service[] = [
     ],
     hero: {
       headline: "AI and automation for specific workflows, not for appearances.",
-      copy: "We start from the workflow and the data you already have, test whether AI genuinely improves the result, and only then integrate it — with evaluation, oversight, and monitoring designed in from the beginning.",
+      copy: "We start from the workflow and the data you already have, test whether AI improves the result, and only then integrate it, with evaluation, oversight, and monitoring designed in from the beginning.",
     },
     situations: [
       "A document-heavy or repetitive process consumes skilled people's time and produces inconsistent results.",
@@ -145,7 +149,7 @@ export const services: Service[] = [
       "Hand over monitoring and an improvement plan so quality is tracked after launch, not assumed.",
     ],
     considerations: [
-      "Data handling follows the client's governance and residency requirements; sensitive data is minimized by design.",
+      "Data handling follows the client's governance and residency requirements, and sensitive data is minimized by design.",
       "Automated outputs that affect customers or money keep a human review step until accuracy is demonstrated.",
       "Model behavior is evaluated against agreed test sets before and after release.",
       "Costs of inference and data processing are estimated and monitored, not discovered on the first invoice.",
@@ -159,13 +163,15 @@ export const services: Service[] = [
   },
   {
     slug: "software-engineering-modernization",
+    cardImageId: "card-service-software",
+    heroImageId: "hero-service-software-engineering-modernization",
     name: "Software Engineering and Modernization",
     stripLabel: "Software Engineering",
     clientNeed:
       "Build or improve software that supports customer experiences and internal operations.",
     outcome: "Software your users rely on and your team can keep changing.",
     summary:
-      "Design, build, and modernize web applications, internal platforms, and integrations — with architecture, testing, and documentation treated as part of delivery rather than extras.",
+      "Design, build, and modernize web applications, internal platforms, and integrations, with architecture, testing, and documentation treated as part of the work.",
     cardCapabilities: [
       "Product discovery and technical planning",
       "Custom web application development",
@@ -174,8 +180,8 @@ export const services: Service[] = [
       "Performance and maintainability improvements",
     ],
     hero: {
-      headline: "Software built to be changed, not just shipped.",
-      copy: "Whether it is a new customer-facing application, an internal platform, or a legacy system that has become risky to touch, we deliver in visible increments and leave the codebase better documented than we found it.",
+      headline: "Software built to keep changing.",
+      copy: "It might be a new customer-facing application, an internal platform, or a legacy system that has become risky to touch. Either way, we deliver in visible increments and leave the codebase better documented than we found it.",
     },
     situations: [
       "A business-critical application has outgrown its architecture, and every change now takes longer than the last.",
@@ -213,10 +219,10 @@ export const services: Service[] = [
       },
     ],
     deliveryApproach: [
-      "Break the work into increments that each produce something reviewable — a working feature, a migrated module, a measurable improvement.",
+      "Break the work into increments that each produce something reviewable, such as a working feature, a migrated module, or a measurable improvement.",
       "Keep a prioritized backlog visible to the client, with trade-offs discussed before they are decided.",
-      "Integrate code review, automated testing, and documentation into the delivery rhythm rather than scheduling them at the end.",
-      "For modernization, run old and new side by side where practical, so cut-over is a decision rather than a gamble.",
+      "Integrate code review, automated testing, and documentation into the delivery rhythm instead of scheduling them at the end.",
+      "For modernization, run old and new side by side where practical, so cut-over is a decision and not a gamble.",
     ],
     considerations: [
       "Security review of authentication, authorization, and data handling is part of design, with the client's standards taken as the baseline.",
@@ -231,13 +237,15 @@ export const services: Service[] = [
   },
   {
     slug: "quality-engineering",
+    cardImageId: "card-service-quality",
+    heroImageId: "hero-service-quality-engineering",
     name: "Quality Engineering and Test Automation",
     stripLabel: "Quality Engineering",
     clientNeed:
-      "Reduce release risk and make quality part of the delivery system rather than a final checkpoint.",
+      "Reduce release risk and make quality part of the delivery system instead of a final checkpoint.",
     outcome: "Releases you can trust because quality is checked continuously, not at the end.",
     summary:
-      "Build the test strategy, automation, and release-readiness practices that let your team ship faster with fewer surprises — integrated into CI rather than bolted on before launch.",
+      "Build the test strategy, automation, and release-readiness practices that let your team ship faster with fewer surprises, integrated into CI instead of bolted on before launch.",
     cardCapabilities: [
       "Quality strategy and test planning",
       "Test automation and CI-integrated execution",
@@ -283,31 +291,33 @@ export const services: Service[] = [
       },
     ],
     deliveryApproach: [
-      "Map what actually breaks and what a failure costs, then aim automation at the highest-risk paths first.",
-      "Build automation that developers trust: fast, deterministic, and run on every change in CI.",
-      "Report quality in terms the business understands — release risk and defect trends, not raw test counts.",
-      "Transfer ownership: the client team learns to maintain and extend the test system as part of the engagement.",
+      "Map what breaks in practice and what a failure costs, then aim automation at the highest-risk paths first.",
+      "Build automation that developers trust. It has to be fast, deterministic, and run on every change in CI.",
+      "Report quality in terms the business understands, such as release risk and defect trends, instead of raw test counts.",
+      "Transfer ownership as part of the engagement, so the client team learns to maintain and extend the test system.",
     ],
     considerations: [
-      "Test data is managed deliberately — production data is not copied into test environments without controls.",
+      "Test data is managed with care. Production data is not copied into test environments without controls.",
       "Performance tests run against production-like environments, and results state their assumptions.",
       "Flaky tests are treated as defects, because ignored red builds train teams to ignore real failures.",
     ],
     notPromised: [
-      "We do not certify a release as defect-free; we make release risk visible and reduce it systematically.",
+      "We do not certify a release as defect-free. We make release risk visible and reduce it systematically.",
     ],
     relatedSlugs: ["software-engineering-modernization", "application-maintenance-support"],
     scenarioSlug: "quality-engineering-release-cycle",
   },
   {
     slug: "application-maintenance-support",
+    cardImageId: "card-service-support",
+    heroImageId: "hero-service-application-maintenance-support",
     name: "Application Maintenance and Managed Support",
     stripLabel: "Maintenance & Support",
     clientNeed:
       "Keep business applications reliable, secure, current, and aligned with evolving needs.",
     outcome: "Applications that stay dependable after the project team has moved on.",
     summary:
-      "Ongoing care for the applications your business depends on: incident resolution, upgrades, monitoring support, small enhancements, and steady reduction of technical debt.",
+      "Ongoing care for the applications your business depends on, covering incident resolution, upgrades, monitoring support, small enhancements, and steady reduction of technical debt.",
     cardCapabilities: [
       "Incident triage and resolution",
       "Version and dependency upgrades",
@@ -317,13 +327,13 @@ export const services: Service[] = [
     ],
     hero: {
       headline: "Someone accountable for keeping your applications healthy.",
-      copy: "We take on the corrective, adaptive, and preventive work that keeps business applications reliable — with a defined intake process, agreed priorities, and documentation that improves over time.",
+      copy: "We take on the corrective, adaptive, and preventive work that keeps business applications reliable, with a defined intake process, agreed priorities, and documentation that improves over time.",
     },
     situations: [
       "The team that built an important application has moved on, and issues now wait for whoever can spare time.",
       "Dependency and framework versions have fallen far enough behind to become a security and compatibility risk.",
       "Small enhancement requests queue for months because there is no capacity dedicated to them.",
-      "You want production monitored and incidents handled through a defined process rather than heroics.",
+      "You want production monitored and incidents handled through a defined process instead of heroics.",
     ],
     capabilityGroups: [
       {
@@ -349,30 +359,32 @@ export const services: Service[] = [
       },
     ],
     deliveryApproach: [
-      "Begin with a structured transition: system walkthroughs, access, monitoring review, and a risk register of what is most likely to break.",
+      "Begin with a structured transition covering system walkthroughs, access, a monitoring review, and a risk register of what is most likely to break.",
       "Agree an intake and prioritization process so urgent, important, and routine work each have a clear path.",
-      "Report on a regular cadence: incidents, changes shipped, upgrade status, and risks that need a decision.",
-      "Reduce technical debt steadily inside the agreed capacity rather than letting it accumulate toward a crisis.",
+      "Report on a regular cadence covering incidents, changes shipped, upgrade status, and risks that need a decision.",
+      "Reduce technical debt steadily inside the agreed capacity so it never builds toward a crisis.",
     ],
     considerations: [
-      "Access follows least-privilege: we request only the permissions the agreed scope requires.",
+      "Access follows least privilege. We request only the permissions the agreed scope requires.",
       "Changes to production go through the same review and testing discipline as project work.",
-      "Support hours, response expectations, and escalation paths are defined per agreement — and only what is contracted is advertised.",
+      "Support hours, response expectations, and escalation paths are defined per agreement, and only what is contracted is advertised.",
     ],
     notPromised: [
-      "We do not advertise 24/7 support or guaranteed response times; support terms are defined per contract once staffing and escalation are in place.",
+      "We do not advertise 24/7 support or guaranteed response times. Support terms are defined per contract once staffing and escalation are in place.",
     ],
     relatedSlugs: ["quality-engineering", "cloud-platform-engineering"],
   },
   {
     slug: "flexible-delivery-teams",
+    cardImageId: "card-service-teams",
+    heroImageId: "hero-service-flexible-delivery-teams",
     name: "Flexible Delivery Teams",
     stripLabel: "Flexible Teams",
     clientNeed:
       "Add experienced capacity or ownership for a defined workstream without waiting for permanent hiring.",
     outcome: "Experienced people integrated into your delivery, at the pace hiring cannot match.",
     summary:
-      "Add a dedicated cross-functional team, or individual specialists, who work inside your tools, standards, and rituals — with onboarding, governance, and reporting defined up front.",
+      "Add a dedicated cross-functional team, or individual specialists, who work inside your tools, standards, and rituals, with onboarding, governance, and reporting defined up front.",
     cardCapabilities: [
       "Dedicated cross-functional delivery teams",
       "Staff augmentation for specialist roles",
@@ -382,12 +394,12 @@ export const services: Service[] = [
     ],
     hero: {
       headline: "Delivery capacity that joins your team, not a black box beside it.",
-      copy: "Whether you need a dedicated team to own a workstream or individual specialists to strengthen an existing one, we integrate into your tools, standards, and cadence — with clear governance from day one.",
+      copy: "You might need a dedicated team to own a workstream, or individual specialists to strengthen an existing one. Either way, we integrate into your tools, standards, and cadence, with clear governance from day one.",
     },
     situations: [
       "A funded roadmap is waiting on hires that will realistically take two or three quarters to land.",
-      "An internal team needs specific skills — cloud, QA automation, data engineering — for a defined period.",
-      "A workstream needs an owner: a stable team accountable for delivery, not a rotating cast of contractors.",
+      "An internal team needs specific skills, such as cloud, QA automation, or data engineering, for a defined period.",
+      "A workstream needs an owner, meaning a stable team accountable for delivery and not a rotating cast of contractors.",
       "A delivery partner needs dependable specialist capacity behind its own client commitments.",
     ],
     capabilityGroups: [
@@ -418,18 +430,18 @@ export const services: Service[] = [
       },
     ],
     deliveryApproach: [
-      "Define the workstream, decision rights, and reporting lines before anyone starts — ambiguity here is where augmented teams fail.",
-      "Onboard against a checklist: access, standards, definition of done, and the client's ways of working.",
+      "Define the workstream, decision rights, and reporting lines before anyone starts. Ambiguity here is where augmented teams fail.",
+      "Onboard against a checklist that covers access, standards, definition of done, and the client's ways of working.",
       "Work inside the client's tools and rituals by default, so progress is visible where the client already looks.",
-      "Review team composition and performance with the client on a regular cadence, and adjust deliberately.",
+      "Review team composition and performance with the client on a regular cadence, and adjust with care.",
     ],
     considerations: [
       "Confidentiality and IP terms are established contractually before work begins.",
-      "Continuity is managed explicitly: documentation and pairing reduce dependence on any single person.",
-      "We respect client relationships: engagement boundaries with partner agencies are contractual and honored.",
+      "Continuity is managed explicitly. Documentation and pairing reduce dependence on any single person.",
+      "We respect client relationships. Engagement boundaries with partner agencies are contractual and honored.",
     ],
     notPromised: [
-      "We do not claim a standing bench, guaranteed onboarding speed, or role inventories; team composition is confirmed per engagement.",
+      "We do not claim a standing bench, guaranteed onboarding speed, or role inventories. Team composition is confirmed per engagement.",
     ],
     relatedSlugs: ["software-engineering-modernization", "quality-engineering"],
   },

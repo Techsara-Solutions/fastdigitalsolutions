@@ -33,6 +33,9 @@ import { careerRoles } from "../src/content/careers";
 import { people } from "../src/content/people";
 import { certifications, clientLogos, metrics, testimonials } from "../src/content/proof";
 import { siteConfig, isPlaceholder, getContactApiUrl } from "../src/content/site";
+import { imageManifest, PIPELINE_VERSION } from "../src/content/image-manifest";
+import { CLASS_MAX_BYTES, type GeneratedImage } from "../src/lib/image-types";
+import { manifestHash } from "../src/lib/image-hash";
 
 const errors: string[] = [];
 const warnings: string[] = [];
@@ -177,28 +180,122 @@ if (fs.existsSync(insightsDir)) {
         errors.push(`insights/${file}: related service slug "${slug}" does not exist`);
       }
     }
+    if (fm.coverImageId && !imageManifest.some((slot) => slot.id === fm.coverImageId)) {
+      errors.push(`insights/${file}: coverImageId "${fm.coverImageId}" is not in the manifest`);
+    }
   }
   assertUniqueSlugs("insights", insightSlugs);
 }
 
-/* Legal pages exist -------------------------------------------------- */
-for (const legal of ["privacy.mdx", "terms.mdx", "accessibility.mdx"]) {
-  const legalPath = path.join(process.cwd(), "src", "content", "legal", legal);
-  if (!fs.existsSync(legalPath)) {
-    errors.push(`legal: missing required file src/content/legal/${legal}`);
+/* Photography (manifest ↔ generated derivatives) --------------------- */
+//
+// The generated record and the derivatives in public/images are committed;
+// this gate guarantees a page can never ship a broken or oversized image and
+// that the manifest and the generated module have not drifted apart.
+const generatedImagesFile = path.join(process.cwd(), "src", "generated", "images.ts");
+const generatedImages: Record<string, GeneratedImage> = {};
+if (!fs.existsSync(generatedImagesFile)) {
+  errors.push("images: src/generated/images.ts is missing — run `npm run images`");
+} else {
+  const source = fs.readFileSync(generatedImagesFile, "utf8");
+  const start = source.indexOf("/*__JSON__*/");
+  const end = source.indexOf("/*__END__*/");
+  if (start < 0 || end < 0) {
+    errors.push("images: src/generated/images.ts is not in the expected generated format");
+  } else {
+    Object.assign(
+      generatedImages,
+      JSON.parse(source.slice(start + "/*__JSON__*/".length, end).trim()),
+    );
   }
 }
 
-/* Placeholder warnings (production blockers — PRD §17.3, §32.1) ------- */
+const manifestIds = new Set<string>();
+const manifestSources = new Set<string>();
+for (const slot of imageManifest) {
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slot.id))
+    errors.push(`images/${slot.id}: id must be kebab-case`);
+  if (manifestIds.has(slot.id)) errors.push(`images: duplicate manifest id "${slot.id}"`);
+  manifestIds.add(slot.id);
+  if (manifestSources.has(slot.source)) {
+    errors.push(
+      `images/${slot.id}: source "${slot.source}" is already used by another slot — every photo appears once`,
+    );
+  }
+  manifestSources.add(slot.source);
+  if (!slot.decorative && slot.alt.trim().length === 0) {
+    errors.push(
+      `images/${slot.id}: informative images need alt text (or mark the slot decorative)`,
+    );
+  }
+  if (slot.focus && ![slot.focus.x, slot.focus.y].every((v) => v >= 0 && v <= 1)) {
+    errors.push(`images/${slot.id}: focus must be within 0–1`);
+  }
+
+  const generated = generatedImages[slot.id];
+  if (!generated) {
+    errors.push(`images/${slot.id}: no generated derivatives — run \`npm run images\``);
+    continue;
+  }
+  if (generated.manifestHash !== manifestHash(slot, PIPELINE_VERSION)) {
+    errors.push(
+      `images/${slot.id}: manifest changed since derivatives were generated — run \`npm run images\``,
+    );
+  }
+  const candidates = [
+    ...generated.sources.avif.split(", "),
+    ...generated.sources.webp.split(", "),
+    `${generated.src} fallback`,
+  ];
+  for (const candidate of candidates) {
+    const url = candidate.split(" ")[0] ?? "";
+    const file = path.join(process.cwd(), "public", url.replace(/^\//, ""));
+    if (!fs.existsSync(file)) {
+      errors.push(`images/${slot.id}: derivative missing on disk — ${url}`);
+      continue;
+    }
+    const maxBytes = CLASS_MAX_BYTES[slot.class];
+    if (fs.statSync(file).size > maxBytes) {
+      errors.push(`images/${slot.id}: ${url} exceeds the ${Math.round(maxBytes / 1024)} KB budget`);
+    }
+  }
+}
+for (const id of Object.keys(generatedImages)) {
+  if (!manifestIds.has(id)) {
+    errors.push(
+      `images: generated id "${id}" is no longer in the manifest — run \`npm run images\``,
+    );
+  }
+}
+
+const imageRefs: [string, string | undefined][] = [
+  ...services.flatMap((s): [string, string | undefined][] => [
+    [`services/${s.slug}.cardImageId`, s.cardImageId],
+    [`services/${s.slug}.heroImageId`, s.heroImageId],
+  ]),
+  ...industries.map((i): [string, string | undefined] => [
+    `industries/${i.slug}.tileImageId`,
+    i.tileImageId,
+  ]),
+];
+for (const [label, ref] of imageRefs) {
+  if (ref && !manifestIds.has(ref))
+    errors.push(`${label}: image id "${ref}" is not in the manifest`);
+}
+
+/* Brand assets (generated by scripts/build-brand.ts) ----------------- */
+for (const asset of ["icon.svg", "icon.png", "apple-icon.png"]) {
+  if (!fs.existsSync(path.join(process.cwd(), "src", "app", asset))) {
+    errors.push(`brand: src/app/${asset} is missing — run \`npm run brand\``);
+  }
+}
+
+/* Placeholder warnings (production blockers) ------------------------- */
 if (isPlaceholder(siteConfig.domain)) warnings.push("Site domain is a placeholder");
 if (isPlaceholder(siteConfig.email)) warnings.push("Business email is a placeholder");
-if (siteConfig.legalName === null)
-  warnings.push("Legal entity name is unverified (footer shows brand name only)");
-if (!fs.existsSync(path.join(process.cwd(), "public", "images", "logo.svg"))) {
-  warnings.push("Final logo is pending (text wordmark in use)");
-}
+if (isPlaceholder(siteConfig.legalName)) warnings.push("Legal entity name is a placeholder");
 if (!getContactApiUrl()) {
-  warnings.push("NEXT_PUBLIC_CONTACT_API_URL is not set (contact page shows the fallback state)");
+  warnings.push("NEXT_PUBLIC_CONTACT_API_URL is a placeholder (contact form disabled)");
 }
 
 /* Environment sanity (fail fast rather than deep inside the build) ---- */

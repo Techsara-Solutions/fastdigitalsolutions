@@ -1,56 +1,60 @@
 "use client";
 
 import { useId, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, type FieldError } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { usePathname } from "next/navigation";
-import {
-  budgetOptions,
-  contactFormSchema,
-  serviceOptions,
-  timelineOptions,
-  toApiPayload,
-  type ContactFormValues,
-} from "@/lib/contact-schema";
-import { OTHER_OPTION, otherCountries, primaryCountries } from "@/lib/countries";
+import { contactFormSchema, toApiPayload, type ContactFormValues } from "@/lib/contact-schema";
 import { siteConfig } from "@/content/site";
 import { Button } from "@/components/ui/Button";
 
 /**
- * Contact form (PRD §22). Implements every required state: idle, client
- * validation error, submitting, accepted, rate-limited, network timeout, and
- * server error — with the focus management and live-region announcements of
- * PRD §22.2. Non-sensitive values are preserved after recoverable failures.
+ * Contact form. Implements every required state: idle, client validation
+ * error, submitting, accepted, rate-limited, network timeout, and server
+ * error, with focus management and live-region announcements. Non-sensitive
+ * values are preserved after recoverable failures.
+ *
+ * Response handling: any 2xx is success (observed contract, 2026-08-27:
+ * `200 { success, contactId, message, email }`); a 4xx body with
+ * `fieldErrors` maps onto fields; 429 is the throttle state; everything else
+ * is the generic failure with the phone fallback.
+ *
+ * The JSON body is sent as `text/plain` on purpose: API Gateway has no OPTIONS
+ * route, so a JSON content type would trigger a CORS preflight that 404s. A
+ * text/plain POST is a "simple request" and needs no preflight; the Lambda
+ * parses the body as JSON regardless.
  */
 
 type SubmissionState =
   | { kind: "idle" }
   | { kind: "submitting" }
-  | { kind: "accepted"; requestId: string }
+  | { kind: "accepted"; reference?: string }
   | { kind: "rate_limited" }
   | { kind: "timeout" }
   | { kind: "server_error" };
 
+type FieldName = Exclude<keyof ContactFormValues, "website">;
+
 const inputClasses =
-  "mt-1.5 w-full rounded-[10px] border border-stone bg-white px-3.5 py-2.5 text-[0.9375rem] text-ink placeholder:text-muted/60 focus-visible:border-clay-dark aria-[invalid=true]:border-clay-dark";
+  "mt-1.5 w-full rounded-[10px] border border-stone bg-white px-3.5 py-2.5 text-[0.9375rem] text-ink placeholder:text-muted/60 focus-visible:border-accent-dark aria-[invalid=true]:border-accent-dark";
 const labelClasses = "block text-sm font-semibold text-ink";
 const fieldHintClasses = "mt-1 text-xs text-muted";
+const errorClasses = "mt-1.5 text-sm font-medium text-accent-dark";
 
-const FIELD_LABELS: Record<string, string> = {
-  fullName: "Full name",
-  workEmail: "Work email",
+const FIELD_LABELS: Record<FieldName, string> = {
+  firstName: "First name",
+  lastName: "Last name",
+  email: "Email",
   company: "Company",
-  country: "Country or region",
-  service: "Service required",
-  projectSummary: "Project summary",
-  budgetRange: "Budget range",
-  timeline: "Desired timeline",
-  phone: "Phone",
-  consent: "Consent",
+  phoneNumber: "Phone number",
+  discussionTopic: "Discussion topic",
+  notes: "Notes",
 };
 
+function isFieldName(value: string): value is FieldName {
+  return value in FIELD_LABELS;
+}
+
 export function ContactForm({ apiUrl, timeoutMs }: { apiUrl: string; timeoutMs: number }) {
-  const pathname = usePathname();
   const formId = useId();
   const [submission, setSubmission] = useState<SubmissionState>({ kind: "idle" });
   const errorSummaryRef = useRef<HTMLDivElement>(null);
@@ -67,7 +71,10 @@ export function ContactForm({ apiUrl, timeoutMs }: { apiUrl: string; timeoutMs: 
     defaultValues: { website: "" },
   });
 
-  const errorEntries = Object.entries(errors).filter(([key]) => key !== "website");
+  const errorEntries = Object.entries(errors).filter(([key]) => key !== "website") as [
+    string,
+    FieldError | undefined,
+  ][];
 
   const fieldId = (name: string) => `${formId}-${name}`;
 
@@ -83,30 +90,21 @@ export function ContactForm({ apiUrl, timeoutMs }: { apiUrl: string; timeoutMs: 
     try {
       const response = await fetch(apiUrl, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify(toApiPayload(values, pathname)),
+        headers: { "Content-Type": "text/plain;charset=UTF-8", Accept: "application/json" },
+        body: JSON.stringify(toApiPayload(values)),
         signal: controller.signal,
       });
 
-      if (response.status === 202) {
-        const data = (await response.json().catch(() => ({}))) as { requestId?: string };
-        setSubmission({ kind: "accepted", requestId: data.requestId ?? "received" });
-        requestAnimationFrame(() => successHeadingRef.current?.focus());
-        return;
-      }
-
-      if (response.status === 422) {
+      if (response.ok) {
         const data = (await response.json().catch(() => ({}))) as {
-          fieldErrors?: Record<string, string>;
+          contactId?: unknown;
+          requestId?: unknown;
         };
-        setSubmission({ kind: "idle" });
-        const fieldErrors = data.fieldErrors ?? {};
-        for (const [field, message] of Object.entries(fieldErrors)) {
-          if (field in FIELD_LABELS) {
-            setError(field as keyof ContactFormValues, { type: "server", message });
-          }
-        }
-        requestAnimationFrame(() => errorSummaryRef.current?.focus());
+        const reference = [data.contactId, data.requestId].find(
+          (value): value is string => typeof value === "string" && value.length > 0,
+        );
+        setSubmission({ kind: "accepted", reference });
+        requestAnimationFrame(() => successHeadingRef.current?.focus());
         return;
       }
 
@@ -114,6 +112,23 @@ export function ContactForm({ apiUrl, timeoutMs }: { apiUrl: string; timeoutMs: 
         setSubmission({ kind: "rate_limited" });
         focusFailure();
         return;
+      }
+
+      if (response.status >= 400 && response.status < 500) {
+        const data = (await response.json().catch(() => ({}))) as {
+          fieldErrors?: Record<string, string>;
+        };
+        const fieldErrors = Object.entries(data.fieldErrors ?? {}).filter(([field]) =>
+          isFieldName(field),
+        );
+        if (fieldErrors.length > 0) {
+          setSubmission({ kind: "idle" });
+          for (const [field, message] of fieldErrors) {
+            setError(field as FieldName, { type: "server", message });
+          }
+          requestAnimationFrame(() => errorSummaryRef.current?.focus());
+          return;
+        }
       }
 
       setSubmission({ kind: "server_error" });
@@ -141,12 +156,61 @@ export function ContactForm({ apiUrl, timeoutMs }: { apiUrl: string; timeoutMs: 
           Thank you. Your enquiry has been received.
         </h2>
         <p className="mt-3 text-[0.9375rem] leading-relaxed text-ink/85">
-          We will review it and respond {siteConfig.responseCommitment}. Reference:{" "}
-          <strong>{submission.requestId}</strong>
+          We will review it and respond {siteConfig.responseCommitment}.
+          {submission.reference ? (
+            <>
+              {" "}
+              Reference: <strong>{submission.reference}</strong>
+            </>
+          ) : null}
         </p>
       </div>
     );
   }
+
+  const requiredMark = (
+    <>
+      {" "}
+      <span aria-hidden="true">*</span>
+      <span className="sr-only">(required)</span>
+    </>
+  );
+
+  const textField = (
+    name: Exclude<FieldName, "notes">,
+    options: { type?: string; autoComplete?: string; hint?: string } = {},
+  ) => {
+    const error = errors[name];
+    const hintId = options.hint ? `${fieldId(name)}-hint` : undefined;
+    const errorId = error ? `${fieldId(name)}-error` : undefined;
+    return (
+      <div>
+        <label htmlFor={fieldId(name)} className={labelClasses}>
+          {FIELD_LABELS[name]}
+          {requiredMark}
+        </label>
+        {options.hint ? (
+          <p id={hintId} className={fieldHintClasses}>
+            {options.hint}
+          </p>
+        ) : null}
+        <input
+          id={fieldId(name)}
+          type={options.type ?? "text"}
+          autoComplete={options.autoComplete}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={[errorId, hintId].filter(Boolean).join(" ") || undefined}
+          className={inputClasses}
+          {...register(name)}
+        />
+        {error ? (
+          <p id={errorId} className={errorClasses}>
+            {error.message}
+          </p>
+        ) : null}
+      </div>
+    );
+  };
 
   return (
     <form
@@ -154,7 +218,7 @@ export function ContactForm({ apiUrl, timeoutMs }: { apiUrl: string; timeoutMs: 
       onSubmit={(event) => void handleSubmit(onValid, onInvalid)(event)}
       className="space-y-6"
     >
-      {/* Live region announcing the submitting/result states (PRD §22.2) */}
+      {/* Live region announcing the submitting/result states */}
       <p aria-live="polite" className="sr-only">
         {submission.kind === "submitting" ? "Sending your enquiry." : ""}
         {submission.kind === "rate_limited"
@@ -165,20 +229,23 @@ export function ContactForm({ apiUrl, timeoutMs }: { apiUrl: string; timeoutMs: 
           : ""}
       </p>
 
-      {/* Error summary — focused after failed validation (PRD §19.3) */}
+      {/* Error summary, focused after failed validation */}
       <div
         ref={errorSummaryRef}
         tabIndex={-1}
         aria-labelledby={errorEntries.length > 0 ? `${formId}-error-summary-title` : undefined}
         className={
           errorEntries.length > 0
-            ? "rounded-[12px] border-2 border-clay-dark bg-white p-5"
+            ? "rounded-[12px] border-2 border-accent-dark bg-white p-5"
             : "sr-only"
         }
       >
         {errorEntries.length > 0 ? (
           <>
-            <h2 id={`${formId}-error-summary-title`} className="text-base font-bold text-clay-dark">
+            <h2
+              id={`${formId}-error-summary-title`}
+              className="text-base font-bold text-accent-dark"
+            >
               Review the highlighted fields
             </h2>
             <ul className="mt-3 space-y-1.5">
@@ -186,13 +253,13 @@ export function ContactForm({ apiUrl, timeoutMs }: { apiUrl: string; timeoutMs: 
                 <li key={name}>
                   <a
                     href={`#${fieldId(name)}`}
-                    className="text-sm font-medium text-clay-dark underline"
+                    className="text-sm font-medium text-accent-dark underline"
                     onClick={(event) => {
                       event.preventDefault();
                       document.getElementById(fieldId(name))?.focus();
                     }}
                   >
-                    {FIELD_LABELS[name] ?? name}: {error?.message as string}
+                    {isFieldName(name) ? FIELD_LABELS[name] : name}: {error?.message}
                   </a>
                 </li>
               ))}
@@ -209,9 +276,9 @@ export function ContactForm({ apiUrl, timeoutMs }: { apiUrl: string; timeoutMs: 
           ref={failureRef}
           tabIndex={-1}
           role="alert"
-          className="rounded-[12px] border-2 border-clay-dark bg-white p-5"
+          className="rounded-[12px] border-2 border-accent-dark bg-white p-5"
         >
-          <h2 className="text-base font-bold text-clay-dark">
+          <h2 className="text-base font-bold text-accent-dark">
             {submission.kind === "rate_limited"
               ? "Too many requests"
               : "We could not send your enquiry"}
@@ -225,232 +292,49 @@ export function ContactForm({ apiUrl, timeoutMs }: { apiUrl: string; timeoutMs: 
       ) : null}
 
       <div className="grid gap-5 sm:grid-cols-2">
-        <div>
-          <label htmlFor={fieldId("fullName")} className={labelClasses}>
-            Full name <span aria-hidden="true">*</span>
-            <span className="sr-only">(required)</span>
-          </label>
-          <input
-            id={fieldId("fullName")}
-            type="text"
-            autoComplete="name"
-            aria-invalid={errors.fullName ? true : undefined}
-            aria-describedby={errors.fullName ? `${fieldId("fullName")}-error` : undefined}
-            className={inputClasses}
-            {...register("fullName")}
-          />
-          {errors.fullName ? (
-            <p
-              id={`${fieldId("fullName")}-error`}
-              className="mt-1.5 text-sm font-medium text-clay-dark"
-            >
-              {errors.fullName.message}
-            </p>
-          ) : null}
-        </div>
-
-        <div>
-          <label htmlFor={fieldId("workEmail")} className={labelClasses}>
-            Work email <span aria-hidden="true">*</span>
-            <span className="sr-only">(required)</span>
-          </label>
-          <input
-            id={fieldId("workEmail")}
-            type="email"
-            autoComplete="email"
-            aria-invalid={errors.workEmail ? true : undefined}
-            aria-describedby={errors.workEmail ? `${fieldId("workEmail")}-error` : undefined}
-            className={inputClasses}
-            {...register("workEmail")}
-          />
-          {errors.workEmail ? (
-            <p
-              id={`${fieldId("workEmail")}-error`}
-              className="mt-1.5 text-sm font-medium text-clay-dark"
-            >
-              {errors.workEmail.message}
-            </p>
-          ) : null}
-        </div>
-
-        <div>
-          <label htmlFor={fieldId("company")} className={labelClasses}>
-            Company <span aria-hidden="true">*</span>
-            <span className="sr-only">(required)</span>
-          </label>
-          <input
-            id={fieldId("company")}
-            type="text"
-            autoComplete="organization"
-            aria-invalid={errors.company ? true : undefined}
-            aria-describedby={errors.company ? `${fieldId("company")}-error` : undefined}
-            className={inputClasses}
-            {...register("company")}
-          />
-          {errors.company ? (
-            <p
-              id={`${fieldId("company")}-error`}
-              className="mt-1.5 text-sm font-medium text-clay-dark"
-            >
-              {errors.company.message}
-            </p>
-          ) : null}
-        </div>
-
-        <div>
-          <label htmlFor={fieldId("country")} className={labelClasses}>
-            Country or region <span aria-hidden="true">*</span>
-            <span className="sr-only">(required)</span>
-          </label>
-          <select
-            id={fieldId("country")}
-            autoComplete="country-name"
-            aria-invalid={errors.country ? true : undefined}
-            aria-describedby={errors.country ? `${fieldId("country")}-error` : undefined}
-            className={inputClasses}
-            defaultValue=""
-            {...register("country")}
-          >
-            <option value="" disabled>
-              Select your country or region
-            </option>
-            {primaryCountries.map((country) => (
-              <option key={country} value={country}>
-                {country}
-              </option>
-            ))}
-            <option value="" disabled>
-              ──────────
-            </option>
-            {otherCountries.map((country) => (
-              <option key={country} value={country}>
-                {country}
-              </option>
-            ))}
-            <option value={OTHER_OPTION}>{OTHER_OPTION}</option>
-          </select>
-          {errors.country ? (
-            <p
-              id={`${fieldId("country")}-error`}
-              className="mt-1.5 text-sm font-medium text-clay-dark"
-            >
-              {errors.country.message}
-            </p>
-          ) : null}
-        </div>
+        {textField("firstName", { autoComplete: "given-name" })}
+        {textField("lastName", { autoComplete: "family-name" })}
+        {textField("email", { type: "email", autoComplete: "email" })}
+        {textField("company", { autoComplete: "organization" })}
+        {textField("phoneNumber", {
+          type: "tel",
+          autoComplete: "tel",
+          hint: "Include the country code, for example +1 302 555 0100.",
+        })}
+        {textField("discussionTopic", {
+          hint: "A few words, for example cloud migration readiness, QA automation, or a modernization roadmap.",
+        })}
       </div>
 
       <div>
-        <label htmlFor={fieldId("service")} className={labelClasses}>
-          Service required <span aria-hidden="true">*</span>
-          <span className="sr-only">(required)</span>
+        <label htmlFor={fieldId("notes")} className={labelClasses}>
+          {FIELD_LABELS.notes}
+          {requiredMark}
         </label>
-        <select
-          id={fieldId("service")}
-          aria-invalid={errors.service ? true : undefined}
-          aria-describedby={errors.service ? `${fieldId("service")}-error` : undefined}
-          className={inputClasses}
-          defaultValue=""
-          {...register("service")}
-        >
-          <option value="" disabled>
-            Select a service
-          </option>
-          {serviceOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-        {errors.service ? (
-          <p
-            id={`${fieldId("service")}-error`}
-            className="mt-1.5 text-sm font-medium text-clay-dark"
-          >
-            {errors.service.message}
-          </p>
-        ) : null}
-      </div>
-
-      <div>
-        <label htmlFor={fieldId("projectSummary")} className={labelClasses}>
-          Project summary <span aria-hidden="true">*</span>
-          <span className="sr-only">(required)</span>
-        </label>
-        <p id={`${fieldId("projectSummary")}-hint`} className={fieldHintClasses}>
-          The business goal, current challenge, or delivery gap — 30 to 3,000 characters. Please do
-          not include passwords, credentials, or sensitive personal data.
+        <p id={`${fieldId("notes")}-hint`} className={fieldHintClasses}>
+          The business goal, current challenge, or delivery gap, in 20 to 3,000 characters. Please
+          do not include passwords, credentials, or sensitive personal data.
         </p>
         <textarea
-          id={fieldId("projectSummary")}
+          id={fieldId("notes")}
           rows={6}
-          aria-invalid={errors.projectSummary ? true : undefined}
+          aria-invalid={errors.notes ? true : undefined}
           aria-describedby={
-            errors.projectSummary
-              ? `${fieldId("projectSummary")}-error ${fieldId("projectSummary")}-hint`
-              : `${fieldId("projectSummary")}-hint`
+            errors.notes
+              ? `${fieldId("notes")}-error ${fieldId("notes")}-hint`
+              : `${fieldId("notes")}-hint`
           }
           className={inputClasses}
-          {...register("projectSummary")}
+          {...register("notes")}
         />
-        {errors.projectSummary ? (
-          <p
-            id={`${fieldId("projectSummary")}-error`}
-            className="mt-1.5 text-sm font-medium text-clay-dark"
-          >
-            {errors.projectSummary.message}
+        {errors.notes ? (
+          <p id={`${fieldId("notes")}-error`} className={errorClasses}>
+            {errors.notes.message}
           </p>
         ) : null}
       </div>
 
-      <div className="grid gap-5 sm:grid-cols-2">
-        <div>
-          <label htmlFor={fieldId("budgetRange")} className={labelClasses}>
-            Budget range
-          </label>
-          <select id={fieldId("budgetRange")} className={inputClasses} {...register("budgetRange")}>
-            {budgetOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label htmlFor={fieldId("timeline")} className={labelClasses}>
-            Desired timeline
-          </label>
-          <select id={fieldId("timeline")} className={inputClasses} {...register("timeline")}>
-            {timelineOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      <div className="sm:max-w-[50%]">
-        <label htmlFor={fieldId("phone")} className={labelClasses}>
-          Phone
-        </label>
-        <input
-          id={fieldId("phone")}
-          type="tel"
-          autoComplete="tel"
-          aria-invalid={errors.phone ? true : undefined}
-          aria-describedby={errors.phone ? `${fieldId("phone")}-error` : undefined}
-          className={inputClasses}
-          {...register("phone")}
-        />
-        {errors.phone ? (
-          <p id={`${fieldId("phone")}-error`} className="mt-1.5 text-sm font-medium text-clay-dark">
-            {errors.phone.message}
-          </p>
-        ) : null}
-      </div>
-
-      {/* Honeypot — visually hidden and hidden from assistive technology (PRD §22.1) */}
+      {/* Honeypot: visually hidden and hidden from assistive technology */}
       <div aria-hidden="true" className="absolute left-[-9999px] h-0 w-0 overflow-hidden">
         <label htmlFor={fieldId("website")}>Website</label>
         <input
@@ -462,39 +346,9 @@ export function ContactForm({ apiUrl, timeoutMs }: { apiUrl: string; timeoutMs: 
         />
       </div>
 
-      <div className="flex items-start gap-3">
-        <input
-          id={fieldId("consent")}
-          type="checkbox"
-          aria-invalid={errors.consent ? true : undefined}
-          aria-describedby={errors.consent ? `${fieldId("consent")}-error` : undefined}
-          className="mt-1 h-5 w-5 rounded border-stone accent-[var(--color-clay-dark)]"
-          {...register("consent")}
-        />
-        <div>
-          <label htmlFor={fieldId("consent")} className="text-sm leading-relaxed text-ink/85">
-            I have read the{" "}
-            <a href="/privacy/" className="font-semibold text-clay-dark underline">
-              Privacy Policy
-            </a>{" "}
-            and agree that Fast Digital Solutions may process the information I have provided to
-            respond to this enquiry. <span aria-hidden="true">*</span>
-            <span className="sr-only">(required)</span>
-          </label>
-          {errors.consent ? (
-            <p
-              id={`${fieldId("consent")}-error`}
-              className="mt-1.5 text-sm font-medium text-clay-dark"
-            >
-              {errors.consent.message}
-            </p>
-          ) : null}
-        </div>
-      </div>
-
       <div>
         <Button type="submit" disabled={isSubmitting || submission.kind === "submitting"}>
-          {submission.kind === "submitting" ? "Sending…" : "Send enquiry"}
+          {submission.kind === "submitting" ? "Sending" : "Send enquiry"}
         </Button>
       </div>
     </form>

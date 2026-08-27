@@ -1,0 +1,1036 @@
+{
+  "generated": "2026-08-27",
+  "kept": [
+    {
+      "id": 2,
+      "file": "05-cta-band/cta-01-blue-hour-tower-sky--pexels-303335.jpg",
+      "slot": "05-cta-band",
+      "role": "primary",
+      "tags": ["architecture", "blue-hour", "copy-space-left", "no-people", "low-detail", "cool"],
+      "orientation": "landscape",
+      "width": 5184,
+      "height": 3456,
+      "notes": "Best CTA candidate: large empty sky on the left for text overlay.",
+      "altUses": [],
+      "source": {
+        "site": "pexels",
+        "photoId": "303335",
+        "photographer": "dom-j",
+        "url": "https://www.pexels.com/photo/303335/",
+        "license": "Pexels License (free for commercial use, no attribution required)"
+      },
+      "originalFile": "images/CTA Band background/pexels-dom-j-7304-303335.jpg"
+    },
+    {
+      "id": 1,
+      "file": "05-cta-band/cta-02-glass-towers-dusk--pexels-18106080.jpg",
+      "slot": "05-cta-band",
+      "role": "alt",
+      "tags": ["architecture", "dusk", "reflections", "no-people", "dark", "cool", "portrait"],
+      "orientation": "portrait",
+      "width": 3648,
+      "height": 5472,
+      "notes": "Portrait - crop a 2.4:1 band from the middle third; still ~3648x1520.",
+      "altUses": [],
+      "source": {
+        "site": "pexels",
+        "photoId": "18106080",
+        "photographer": "chuck",
+        "url": "https://www.pexels.com/photo/18106080/",
+        "license": "Pexels License (free for commercial use, no attribution required)"
+      },
+      "originalFile": "images/CTA Band background/pexels-chuck-18106080.jpg"
+    },
+    {
+      "id": 31,
+      "file": "02-services/cloud-platform-engineering/cloud-01-fibre-patch-panel--pexels-4682189.jpg",
+      "slot": "02-services/cloud-platform-engineering",
+      "role": "primary",
+      "tags": [
+        "infrastructure",
+        "fibre-optic",
+        "cables",
+        "close-up",
+        "no-people",
+        "teal",
+        "cool",
+        "dark"
+      ],
+      "orientation": "landscape",
+      "width": 5850,
+      "height": 3892,
+      "notes": "Reassigned from the ai-data folder - this is network infrastructure. Strong texture; works as card and detail-page hero.",
+      "altUses": ["cta-band-alt", "background"],
+      "source": {
+        "site": "pexels",
+        "photoId": "4682189",
+        "photographer": "brett-sayles",
+        "url": "https://www.pexels.com/photo/4682189/",
+        "license": "Pexels License (free for commercial use, no attribution required)"
+      },
+      "originalFile": "images/services/ai data and automation/pexels-brett-sayles-4682189.jpg"
+    },
+    {
+      "id": 38,
+      "file": "02-services/cloud-platform-engineering/cloud-02-server-racks-leds--pexels-5050305.jpg",
+      "slot": "02-services/cloud-platform-engineering",
+      "role": "alt",
+      "tags": ["infrastructure", "server-rack", "leds", "no-people", "dark", "shallow-dof"],
+      "orientation": "landscape",
+      "width": 4630,
+      "height": 3081,
+      "notes": "",
+      "altUses": ["background"],
+      "source": {
+        "site": "pexels",
+        "photoId": "5050305",
+        "photographer": "brett-sayles",
+        "url": "https://www.pexels.com/photo/5050305/",
+        "license": "Pexels License (free for commercial use, no attribution required)"
+      },
+      "originalFile": "images/services/cloud platform engineering/pexels-brett-sayles-5050305.jpg"
+    },
+    {
+      "id": 39,
+      "file": "02-services/cloud-platform-engineering/cloud-03-server-rack-blue--pexels-17489157.jpg",
+      "slot": "02-services/cloud-platform-engineering",
+      "role": "alt",
+      "tags": ["infrastructure", "server-rack", "blue-light", "no-people", "dark"],
+      "orientation": "landscape",
+      "width": 6016,
+      "height": 4016,
+      "notes": "Blue glow is stronger than the rest of the set - grade slightly if used next to 01/02.",
+      "altUses": [],
+      "source": {
+        "site": "pexels",
+        "photoId": "17489157",
+        "photographer": "cookiecutter",
+        "url": "https://www.pexels.com/photo/17489157/",
+        "license": "Pexels License (free for commercial use, no attribution required)"
+      },
+      "originalFile": "images/services/cloud platform engineering/pexels-cookiecutter-17489157.jpg"
+    },
+    {
+      "id": 41,
+      "file": "02-services/cloud-platform-engineering/cloud-04-network-switch-ports--pexels-13963756.jpg",
+      "slot": "02-services/cloud-platform-engineering",
+      "role": "alt",
+      "tags": ["infrastructure", "network-switch", "ethernet", "close-up", "no-people", "dark"],
+      "orientation": "landscape",
+      "width": 7169,
+      "height": 4779,
+      "notes": "Port labels are readable but generic (no brand).",
+      "altUses": [],
+      "source": {
+        "site": "pexels",
+        "photoId": "13963756",
+        "photographer": "vladimirsrajber",
+        "url": "https://www.pexels.com/photo/13963756/",
+        "license": "Pexels License (free for commercial use, no attribution required)"
+      },
+      "originalFile": "images/services/cloud platform engineering/pexels-vladimirsrajber-13963756.jpg"
+    },
+    {
+      "id": 36,
+      "file": "02-services/ai-data-automation/ai-data-01-laptop-map-analysis--pexels-8441819.jpg",
+      "slot": "02-services/ai-data-automation",
+      "role": "primary",
+      "tags": [
+        "analytics",
+        "laptop",
+        "map-infographic",
+        "documents",
+        "hands",
+        "neutral",
+        "overhead"
+      ],
+      "orientation": "landscape",
+      "width": 6016,
+      "height": 4016,
+      "notes": "Screen shows a generic map infographic - no third-party UI chrome.",
+      "altUses": [],
+      "source": {
+        "site": "pexels",
+        "photoId": "8441819",
+        "photographer": "kampus",
+        "url": "https://www.pexels.com/photo/8441819/",
+        "license": "Pexels License (free for commercial use, no attribution required)"
+      },
+      "originalFile": "images/services/ai data and automation/pexels-kampus-8441819.jpg"
+    },
+    {
+      "id": 34,
+      "file": "02-services/ai-data-automation/ai-data-02-analytics-dashboard-overhead--pexels-577195.jpg",
+      "slot": "02-services/ai-data-automation",
+      "role": "alt",
+      "tags": ["analytics", "dashboard", "laptop", "overhead", "no-people", "neutral"],
+      "orientation": "landscape",
+      "width": 6144,
+      "height": 4069,
+      "notes": "Screen is a Google Analytics view; text is unreadable at output size but soften/blur the UI chrome to be safe.",
+      "altUses": ["soften-screen"],
+      "source": {
+        "site": "pexels",
+        "photoId": "577195",
+        "photographer": "goumbik",
+        "url": "https://www.pexels.com/photo/577195/",
+        "license": "Pexels License (free for commercial use, no attribution required)"
+      },
+      "originalFile": "images/services/ai data and automation/pexels-goumbik-577195.jpg"
+    },
+    {
+      "id": 35,
+      "file": "02-services/ai-data-automation/ai-data-03-data-screens-desk--pexels-36598869.jpg",
+      "slot": "02-services/ai-data-automation",
+      "role": "alt",
+      "tags": ["data", "monitors", "charts", "hands", "keyboard", "cool"],
+      "orientation": "landscape",
+      "width": 3000,
+      "height": 1907,
+      "notes": "Monitor shows a stock ticker with readable company names - blur that region. Smallest file in the set (3000x1907) but still above 1600x1000.",
+      "altUses": ["blur-screen-text"],
+      "source": {
+        "site": "pexels",
+        "photoId": "36598869",
+        "photographer": "jakubzerdzicki",
+        "url": "https://www.pexels.com/photo/36598869/",
+        "license": "Pexels License (free for commercial use, no attribution required)"
+      },
+      "originalFile": "images/services/ai data and automation/pexels-jakubzerdzicki-36598869.jpg"
+    },
+    {
+      "id": 24,
+      "file": "02-services/software-engineering-modernization/software-01-developer-dual-monitors--pexels-16129703.jpg",
+      "slot": "02-services/software-engineering-modernization",
+      "role": "primary",
+      "tags": ["developer", "code", "dual-monitors", "over-shoulder", "neutral", "wood-desk"],
+      "orientation": "landscape",
+      "width": 5006,
+      "height": 3755,
+      "notes": "Small HP badge on monitor bezel - mask.",
+      "altUses": ["mask-logo"],
+      "source": {
+        "site": "pexels",
+        "photoId": "16129703",
+        "photographer": "fotios-photos",
+        "url": "https://www.pexels.com/photo/16129703/",
+        "license": "Pexels License (free for commercial use, no attribution required)"
+      },
+      "originalFile": "images/services/Software engineering modernization/pexels-fotios-photos-16129703.jpg"
+    },
+    {
+      "id": 27,
+      "file": "02-services/software-engineering-modernization/software-02-developer-html-monitor--pexels-7988081.jpg",
+      "slot": "02-services/software-engineering-modernization",
+      "role": "alt",
+      "tags": ["developer", "code", "monitor", "from-behind", "bright", "neutral", "portrait"],
+      "orientation": "portrait",
+      "width": 3380,
+      "height": 5063,
+      "notes": "Portrait - crop 1.6:1 around monitor + shoulders.",
+      "altUses": [],
+      "source": {
+        "site": "pexels",
+        "photoId": "7988081",
+        "photographer": "mikhail-nilov",
+        "url": "https://www.pexels.com/photo/7988081/",
+        "license": "Pexels License (free for commercial use, no attribution required)"
+      },
+      "originalFile": "images/services/Software engineering modernization/pexels-mikhail-nilov-7988081.jpg"
+    },
+    {
+      "id": 25,
+      "file": "02-services/software-engineering-modernization/software-03-dual-monitors-code-front--pexels-16129724.jpg",
+      "slot": "02-services/software-engineering-modernization",
+      "role": "alt",
+      "tags": ["developer", "code", "dual-monitors", "neutral"],
+      "orientation": "landscape",
+      "width": 5184,
+      "height": 3888,
+      "notes": "Same shoot as software-01 - use one or the other on a page, not both. HP badge - mask.",
+      "altUses": ["mask-logo"],
+      "source": {
+        "site": "pexels",
+        "photoId": "16129724",
+        "photographer": "fotios-photos",
+        "url": "https://www.pexels.com/photo/16129724/",
+        "license": "Pexels License (free for commercial use, no attribution required)"
+      },
+      "originalFile": "images/services/Software engineering modernization/pexels-fotios-photos-16129724.jpg"
+    },
+    {
+      "id": 26,
+      "file": "02-services/software-engineering-modernization/software-04-code-screen-detail--pexels-4439901.jpg",
+      "slot": "02-services/software-engineering-modernization",
+      "role": "detail",
+      "tags": ["code", "screen", "close-up", "dark", "no-people"],
+      "orientation": "landscape",
+      "width": 3500,
+      "height": 2333,
+      "notes": "Abstract code detail - good for split-section backgrounds or mega-menu thumbnails.",
+      "altUses": ["background", "mega-menu"],
+      "source": {
+        "site": "pexels",
+        "photoId": "4439901",
+        "photographer": "markusspiske",
+        "url": "https://www.pexels.com/photo/4439901/",
+        "license": "Pexels License (free for commercial use, no attribution required)"
+      },
+      "originalFile": "images/services/Software engineering modernization/pexels-markusspiske-4439901.jpg"
+    },
+    {
+      "id": 29,
+      "file": "02-services/software-engineering-modernization/software-05-code-closeup-bokeh--pexels-6424585.jpg",
+      "slot": "02-services/software-engineering-modernization",
+      "role": "detail",
+      "tags": ["code", "screen", "close-up", "bokeh", "dark", "no-people"],
+      "orientation": "landscape",
+      "width": 5760,
+      "height": 3840,
+      "notes": "Sibling of software-04; pick one per page.",
+      "altUses": ["background", "mega-menu"],
+      "source": {
+        "site": "pexels",
+        "photoId": "6424585",
+        "photographer": "nemuel",
+        "url": "https://www.pexels.com/photo/6424585/",
+        "license": "Pexels License (free for commercial use, no attribution required)"
+      },
+      "originalFile": "images/services/Software engineering modernization/pexels-nemuel-6424585.jpg"
+    },
+    {
+      "id": 54,
+      "file": "02-services/software-engineering-modernization/software-06-laptop-code-notebook--pexels-4841641.jpg",
+      "slot": "02-services/software-engineering-modernization",
+      "role": "alt",
+      "tags": ["developer", "laptop", "code", "hands", "notebook", "neutral", "portrait"],
+      "orientation": "portrait",
+      "width": 4000,
+      "height": 6000,
+      "notes": "Moved from the QA folder - it is a generic coding shot. Portrait; crop around the laptop.",
+      "altUses": ["quality-alt"],
+      "source": {
+        "site": "pexels",
+        "photoId": "4841641",
+        "photographer": "tima-miroshnichenko",
+        "url": "https://www.pexels.com/photo/4841641/",
+        "license": "Pexels License (free for commercial use, no attribution required)"
+      },
+      "originalFile": "images/services/quality engineering and test automation/pexels-tima-miroshnichenko-4841641.jpg"
+    },
+    {
+      "id": 51,
+      "file": "02-services/quality-engineering-test-automation/quality-01-phone-app-laptop-code--pexels-892769.jpg",
+      "slot": "02-services/quality-engineering-test-automation",
+      "role": "primary",
+      "tags": ["testing", "mobile", "phone", "app-ui", "laptop", "code", "bright", "neutral"],
+      "orientation": "landscape",
+      "width": 5472,
+      "height": 3648,
+      "notes": "Phone shows a generic unbranded form UI - acceptable.",
+      "altUses": [],
+      "source": {
+        "site": "pexels",
+        "photoId": "892769",
+        "photographer": "freestocks",
+        "url": "https://www.pexels.com/photo/892769/",
+        "license": "Pexels License (free for commercial use, no attribution required)"
+      },
+      "originalFile": "images/services/quality engineering and test automation/pexels-freestocks-892769.jpg"
+    },
+    {
+      "id": 49,
+      "file": "02-services/quality-engineering-test-automation/quality-02-phone-vs-laptop-check--pexels-20044369.jpg",
+      "slot": "02-services/quality-engineering-test-automation",
+      "role": "alt",
+      "tags": ["testing", "mobile", "phone", "laptop", "website", "hands", "neutral"],
+      "orientation": "landscape",
+      "width": 6000,
+      "height": 4000,
+      "notes": "Website on laptop is generic; branded drink can top-left and cup - crop out or mask.",
+      "altUses": ["mask-logo"],
+      "source": {
+        "site": "pexels",
+        "photoId": "20044369",
+        "photographer": "airamdphoto",
+        "url": "https://www.pexels.com/photo/20044369/",
+        "license": "Pexels License (free for commercial use, no attribution required)"
+      },
+      "originalFile": "images/services/quality engineering and test automation/pexels-airamdphoto-20044369.jpg"
+    },
+    {
+      "id": 52,
+      "file": "02-services/quality-engineering-test-automation/quality-03-flowchart-tablet-stylus--pexels-34212988.jpg",
+      "slot": "02-services/quality-engineering-test-automation",
+      "role": "alt",
+      "tags": ["test-design", "flowchart", "tablet", "stylus", "sticky-notes", "code", "blue-cast"],
+      "orientation": "landscape",
+      "width": 7950,
+      "height": 4472,
+      "notes": "Most on-topic composition but blue/yellow LED cast - desaturate/grade toward neutral before use.",
+      "altUses": ["grade-colour"],
+      "source": {
+        "site": "pexels",
+        "photoId": "34212988",
+        "photographer": "jakubzerdzicki",
+        "url": "https://www.pexels.com/photo/34212988/",
+        "license": "Pexels License (free for commercial use, no attribution required)"
+      },
+      "originalFile": "images/services/quality engineering and test automation/pexels-jakubzerdzicki-34212988.jpg"
+    },
+    {
+      "id": 45,
+      "file": "02-services/flexible-delivery-teams/teams-01-five-people-meeting-table--pexels-7988664.jpg",
+      "slot": "02-services/flexible-delivery-teams",
+      "role": "primary",
+      "tags": ["team", "meeting", "laptops", "five-people", "bright", "neutral", "candid"],
+      "orientation": "landscape",
+      "width": 5823,
+      "height": 3887,
+      "notes": "Natural, unposed, clean room.",
+      "altUses": ["hero-fallback", "industries/technology-saas"],
+      "source": {
+        "site": "pexels",
+        "photoId": "7988664",
+        "photographer": "mikhail-nilov",
+        "url": "https://www.pexels.com/photo/7988664/",
+        "license": "Pexels License (free for commercial use, no attribution required)"
+      },
+      "originalFile": "images/services/flexible delivery teams/pexels-mikhail-nilov-7988664.jpg"
+    },
+    {
+      "id": 44,
+      "file": "02-services/flexible-delivery-teams/teams-02-three-people-laptops--pexels-7988661.jpg",
+      "slot": "02-services/flexible-delivery-teams",
+      "role": "alt",
+      "tags": ["team", "laptops", "three-people", "close", "neutral"],
+      "orientation": "landscape",
+      "width": 4985,
+      "height": 3328,
+      "notes": "Same shoot as teams-01.",
+      "altUses": [],
+      "source": {
+        "site": "pexels",
+        "photoId": "7988661",
+        "photographer": "mikhail-nilov",
+        "url": "https://www.pexels.com/photo/7988661/",
+        "license": "Pexels License (free for commercial use, no attribution required)"
+      },
+      "originalFile": "images/services/flexible delivery teams/pexels-mikhail-nilov-7988661.jpg"
+    },
+    {
+      "id": 48,
+      "file": "02-services/flexible-delivery-teams/teams-03-team-review-laptop--pexels-5256817.jpg",
+      "slot": "02-services/flexible-delivery-teams",
+      "role": "alt",
+      "tags": ["team", "meeting", "laptop", "documents", "five-people", "neutral"],
+      "orientation": "landscape",
+      "width": 6460,
+      "height": 4307,
+      "notes": "",
+      "altUses": ["about"],
+      "source": {
+        "site": "pexels",
+        "photoId": "5256817",
+        "photographer": "thirdman",
+        "url": "https://www.pexels.com/photo/5256817/",
+        "license": "Pexels License (free for commercial use, no attribution required)"
+      },
+      "originalFile": "images/services/flexible delivery teams/pexels-thirdman-5256817.jpg"
+    },
+    {
+      "id": 22,
+      "file": "02-services/application-maintenance-managed-support/support-01-headset-engineer-desk--pexels-5453921.jpg",
+      "slot": "02-services/application-maintenance-managed-support",
+      "role": "primary",
+      "tags": ["support", "headset", "monitor", "desk", "colleague", "neutral"],
+      "orientation": "landscape",
+      "width": 6000,
+      "height": 4000,
+      "notes": "Natural, not call-centre-posed.",
+      "altUses": [],
+      "source": {
+        "site": "pexels",
+        "photoId": "5453921",
+        "photographer": "tima-miroshnichenko",
+        "url": "https://www.pexels.com/photo/5453921/",
+        "license": "Pexels License (free for commercial use, no attribution required)"
+      },
+      "originalFile": "images/services/Application maintenance and managed support/pexels-tima-miroshnichenko-5453921.jpg"
+    },
+    {
+      "id": 43,
+      "file": "02-services/application-maintenance-managed-support/support-02-support-team-headsets-room--pexels-7682106.jpg",
+      "slot": "02-services/application-maintenance-managed-support",
+      "role": "alt",
+      "tags": ["support", "headsets", "team", "meeting-room", "bright", "neutral"],
+      "orientation": "landscape",
+      "width": 6000,
+      "height": 4000,
+      "notes": "Moved from the teams folder - headsets read as support/ops. Also usable for Flexible Delivery Teams.",
+      "altUses": ["flexible-delivery-teams-alt"],
+      "source": {
+        "site": "pexels",
+        "photoId": "7682106",
+        "photographer": "mikhail-nilov",
+        "url": "https://www.pexels.com/photo/7682106/",
+        "license": "Pexels License (free for commercial use, no attribution required)"
+      },
+      "originalFile": "images/services/flexible delivery teams/pexels-mikhail-nilov-7682106.jpg"
+    },
+    {
+      "id": 23,
+      "file": "02-services/application-maintenance-managed-support/support-03-headset-on-monitor--pexels-8867229.jpg",
+      "slot": "02-services/application-maintenance-managed-support",
+      "role": "alt",
+      "tags": ["support", "headset", "monitor", "object", "no-people", "neutral", "portrait"],
+      "orientation": "portrait",
+      "width": 3753,
+      "height": 5629,
+      "notes": "Object shot, no faces - safe filler. Portrait; crop around the monitor.",
+      "altUses": ["mega-menu"],
+      "source": {
+        "site": "pexels",
+        "photoId": "8867229",
+        "photographer": "yankrukov",
+        "url": "https://www.pexels.com/photo/8867229/",
+        "license": "Pexels License (free for commercial use, no attribution required)"
+      },
+      "originalFile": "images/services/Application maintenance and managed support/pexels-yankrukov-8867229.jpg"
+    },
+    {
+      "id": 19,
+      "file": "03-industries/technology-saas/tech-saas-01-three-people-desk-window--pexels-7653473.jpg",
+      "slot": "03-industries/technology-saas",
+      "role": "primary",
+      "tags": [
+        "office",
+        "laptops",
+        "three-people",
+        "window-light",
+        "bright",
+        "neutral",
+        "copy-space-right"
+      ],
+      "orientation": "landscape",
+      "width": 6309,
+      "height": 4206,
+      "notes": "Bright empty window on the right - mirrored, this is the nearest thing in the set to a hero with a clear left side.",
+      "altUses": ["hero-fallback"],
+      "source": {
+        "site": "pexels",
+        "photoId": "7653473",
+        "photographer": "thirdman",
+        "url": "https://www.pexels.com/photo/7653473/",
+        "license": "Pexels License (free for commercial use, no attribution required)"
+      },
+      "originalFile": "images/industries/technology and saas/pexels-thirdman-7653473.jpg"
+    },
+    {
+      "id": 18,
+      "file": "03-industries/technology-saas/tech-saas-02-three-colleagues-laptop--pexels-39204862.jpg",
+      "slot": "03-industries/technology-saas",
+      "role": "alt",
+      "tags": ["office", "laptop", "three-people", "collaboration", "neutral"],
+      "orientation": "landscape",
+      "width": 3840,
+      "height": 2160,
+      "notes": "3840x2160 - fine for 1600x1000.",
+      "altUses": [],
+      "source": {
+        "site": "pexels",
+        "photoId": "39204862",
+        "photographer": "silverkblack",
+        "url": "https://www.pexels.com/photo/39204862/",
+        "license": "Pexels License (free for commercial use, no attribution required)"
+      },
+      "originalFile": "images/industries/technology and saas/pexels-silverkblack-39204862.jpg"
+    },
+    {
+      "id": 57,
+      "file": "04-team-candids/candid-01-whiteboard-sticky-notes--pexels-7792859.jpg",
+      "slot": "04-team-candids",
+      "role": "primary",
+      "tags": ["candid", "whiteboard", "sticky-notes", "office", "bright", "neutral"],
+      "orientation": "landscape",
+      "width": 6000,
+      "height": 4000,
+      "notes": "",
+      "altUses": ["how-we-work", "hero-fallback"],
+      "source": {
+        "site": "pexels",
+        "photoId": "7792859",
+        "photographer": "yankrukov",
+        "url": "https://www.pexels.com/photo/7792859/",
+        "license": "Pexels License (free for commercial use, no attribution required)"
+      },
+      "originalFile": "images/team workspace candids/pexels-yankrukov-7792859.jpg"
+    },
+    {
+      "id": 56,
+      "file": "04-team-candids/candid-02-office-planning-board--pexels-7428212.jpg",
+      "slot": "04-team-candids",
+      "role": "alt",
+      "tags": ["candid", "office", "tablet", "flipchart", "bright", "neutral"],
+      "orientation": "landscape",
+      "width": 5638,
+      "height": 3759,
+      "notes": "Flipchart says \"PLANNING\" - harmless but visible; crop tighter if unwanted.",
+      "altUses": ["about"],
+      "source": {
+        "site": "pexels",
+        "photoId": "7428212",
+        "photographer": "cottonbro",
+        "url": "https://www.pexels.com/photo/7428212/",
+        "license": "Pexels License (free for commercial use, no attribution required)"
+      },
+      "originalFile": "images/team workspace candids/pexels-cottonbro-7428212.jpg"
+    },
+    {
+      "id": 55,
+      "file": "04-team-candids/candid-03-sketching-flow-notebook--pexels-7278587.jpg",
+      "slot": "04-team-candids",
+      "role": "alt",
+      "tags": ["candid", "sketching", "notebook", "flowchart", "hands", "laptop", "wood-desk"],
+      "orientation": "landscape",
+      "width": 6720,
+      "height": 4480,
+      "notes": "",
+      "altUses": ["how-we-work", "split-section"],
+      "source": {
+        "site": "pexels",
+        "photoId": "7278587",
+        "photographer": "anastasia-shuraeva",
+        "url": "https://www.pexels.com/photo/7278587/",
+        "license": "Pexels License (free for commercial use, no attribution required)"
+      },
+      "originalFile": "images/team workspace candids/pexels-anastasia-shuraeva-7278587.jpg"
+    },
+    {
+      "id": 8,
+      "file": "04-team-candids/candid-04-two-colleagues-desk-plants--pexels-36765663.jpg",
+      "slot": "04-team-candids",
+      "role": "alt",
+      "tags": ["candid", "two-people", "desk", "plants", "foreground-blur", "neutral"],
+      "orientation": "landscape",
+      "width": 3800,
+      "height": 2138,
+      "notes": "Moved from devs-working-together. Studio/creative vibe rather than dev - use in About, not Services.",
+      "altUses": ["about"],
+      "source": {
+        "site": "pexels",
+        "photoId": "36765663",
+        "photographer": "silverkblack",
+        "url": "https://www.pexels.com/photo/36765663/",
+        "license": "Pexels License (free for commercial use, no attribution required)"
+      },
+      "originalFile": "images/devs working together/pexels-silverkblack-36765663.jpg"
+    },
+    {
+      "id": 9,
+      "file": "07-insights/document-heavy-operations/insight-docs-01-stack-of-folders--pexels-6567865.jpg",
+      "slot": "07-insights/document-heavy-operations",
+      "role": "primary",
+      "tags": ["documents", "folders", "hands", "grey", "neutral", "portrait"],
+      "orientation": "portrait",
+      "width": 4131,
+      "height": 6196,
+      "notes": "Portrait - crop 16:9 around the hands/folders.",
+      "altUses": [],
+      "source": {
+        "site": "pexels",
+        "photoId": "6567865",
+        "photographer": "cottonbro",
+        "url": "https://www.pexels.com/photo/6567865/",
+        "license": "Pexels License (free for commercial use, no attribution required)"
+      },
+      "originalFile": "images/document heavy operations/pexels-cottonbro-6567865.jpg"
+    },
+    {
+      "id": 11,
+      "file": "07-insights/document-heavy-operations/insight-docs-02-office-copier--pexels-9301897.jpg",
+      "slot": "07-insights/document-heavy-operations",
+      "role": "alt",
+      "tags": ["documents", "copier", "scanner", "hands", "office", "neutral", "portrait"],
+      "orientation": "portrait",
+      "width": 3923,
+      "height": 5885,
+      "notes": "Portrait - crop 16:9 around copier lid + hand.",
+      "altUses": [],
+      "source": {
+        "site": "pexels",
+        "photoId": "9301897",
+        "photographer": "mikhail-nilov",
+        "url": "https://www.pexels.com/photo/9301897/",
+        "license": "Pexels License (free for commercial use, no attribution required)"
+      },
+      "originalFile": "images/document heavy operations/pexels-mikhail-nilov-9301897.jpg"
+    }
+  ],
+  "rejected": [
+    {
+      "id": 3,
+      "file": "_rejected/CTA Band background/pexels-jansher-chakkittammal-230257630-20776189.jpg",
+      "reason": "Warm yellow/green tint, busy facade with people visible inside; portrait. Off colour family.",
+      "recoverable": false,
+      "width": 3016,
+      "height": 4016,
+      "originalFile": "images/CTA Band background/pexels-jansher-chakkittammal-230257630-20776189.jpg",
+      "source": {
+        "photoId": "20776189",
+        "photographer": "jansher-chakkittammal",
+        "url": "https://www.pexels.com/photo/20776189/"
+      }
+    },
+    {
+      "id": 4,
+      "file": "_rejected/CTA Band background/pexels-matreding-10344210.jpg",
+      "reason": "Dark moody street shot with warm orange interior light; portrait. Off colour family.",
+      "recoverable": false,
+      "width": 4160,
+      "height": 6240,
+      "originalFile": "images/CTA Band background/pexels-matreding-10344210.jpg",
+      "source": {
+        "photoId": "10344210",
+        "photographer": "matreding",
+        "url": "https://www.pexels.com/photo/10344210/"
+      }
+    },
+    {
+      "id": 5,
+      "file": "_rejected/CTA Band background/pexels-nicolasflor-37200723.jpg",
+      "reason": "Dramatic high-contrast corner with orange light strip; portrait. Off colour family.",
+      "recoverable": false,
+      "width": 4000,
+      "height": 6000,
+      "originalFile": "images/CTA Band background/pexels-nicolasflor-37200723.jpg",
+      "source": {
+        "photoId": "37200723",
+        "photographer": "nicolasflor",
+        "url": "https://www.pexels.com/photo/37200723/"
+      }
+    },
+    {
+      "id": 6,
+      "file": "_rejected/devs working together/pexels-gabby-k-5273610.jpg",
+      "reason": "Subject pointing at screen (rule: no pointing); peach/pink wall off colour family.",
+      "recoverable": true,
+      "width": 6587,
+      "height": 4391,
+      "originalFile": "images/devs working together/pexels-gabby-k-5273610.jpg",
+      "source": {
+        "photoId": "5273610",
+        "photographer": "gabby-k",
+        "url": "https://www.pexels.com/photo/5273610/"
+      }
+    },
+    {
+      "id": 7,
+      "file": "_rejected/devs working together/pexels-ivan-s-7212946.jpg",
+      "reason": "Readable poster text (\"THE FUTURE IS NOW\"), purple tint, warm lamps; reads as students.",
+      "recoverable": false,
+      "width": 6596,
+      "height": 4398,
+      "originalFile": "images/devs working together/pexels-ivan-s-7212946.jpg",
+      "source": {
+        "photoId": "7212946",
+        "photographer": "ivan-s",
+        "url": "https://www.pexels.com/photo/7212946/"
+      }
+    },
+    {
+      "id": 10,
+      "file": "_rejected/document heavy operations/pexels-mikhail-nilov-8297536.jpg",
+      "reason": "Red binder dominates, cluttered desk; portrait. Weaker than insight-docs-01.",
+      "recoverable": true,
+      "width": 4000,
+      "height": 6000,
+      "originalFile": "images/document heavy operations/pexels-mikhail-nilov-8297536.jpg",
+      "source": {
+        "photoId": "8297536",
+        "photographer": "mikhail-nilov",
+        "url": "https://www.pexels.com/photo/8297536/"
+      }
+    },
+    {
+      "id": 12,
+      "file": "_rejected/document heavy operations/pexels-ron-lach-9222427.jpg",
+      "reason": "Warm tone, readable form text, cluttered; portrait.",
+      "recoverable": false,
+      "width": 3739,
+      "height": 5608,
+      "originalFile": "images/document heavy operations/pexels-ron-lach-9222427.jpg",
+      "source": {
+        "photoId": "9222427",
+        "photographer": "ron-lach",
+        "url": "https://www.pexels.com/photo/9222427/"
+      }
+    },
+    {
+      "id": 13,
+      "file": "_rejected/industries/technology and saas/pexels-bertellifotografia-18999469.jpg",
+      "reason": "Apple logos on 4 laptops + Pexels-branded stickers + printed shirt text. Heavy retouch needed.",
+      "recoverable": true,
+      "width": 6678,
+      "height": 4452,
+      "originalFile": "images/industries/technology and saas/pexels-bertellifotografia-18999469.jpg",
+      "source": {
+        "photoId": "18999469",
+        "photographer": "bertellifotografia",
+        "url": "https://www.pexels.com/photo/18999469/"
+      }
+    },
+    {
+      "id": 14,
+      "file": "_rejected/industries/technology and saas/pexels-bertellifotografia-18999471.jpg",
+      "reason": "Same shoot as #13: Apple logos, stickers, phone in hand.",
+      "recoverable": true,
+      "width": 6720,
+      "height": 4480,
+      "originalFile": "images/industries/technology and saas/pexels-bertellifotografia-18999471.jpg",
+      "source": {
+        "photoId": "18999471",
+        "photographer": "bertellifotografia",
+        "url": "https://www.pexels.com/photo/18999471/"
+      }
+    },
+    {
+      "id": 15,
+      "file": "_rejected/industries/technology and saas/pexels-bertellifotografia-34774358.jpg",
+      "reason": "Cluttered, logo on laptop, cap; no clear subject.",
+      "recoverable": false,
+      "width": 6720,
+      "height": 4480,
+      "originalFile": "images/industries/technology and saas/pexels-bertellifotografia-34774358.jpg",
+      "source": {
+        "photoId": "34774358",
+        "photographer": "bertellifotografia",
+        "url": "https://www.pexels.com/photo/34774358/"
+      }
+    },
+    {
+      "id": 16,
+      "file": "_rejected/industries/technology and saas/pexels-cottonbro-6804084.jpg",
+      "reason": "Dark room with warm lamp, subject pointing at screen - moody + pointing.",
+      "recoverable": false,
+      "width": 6289,
+      "height": 4193,
+      "originalFile": "images/industries/technology and saas/pexels-cottonbro-6804084.jpg",
+      "source": {
+        "photoId": "6804084",
+        "photographer": "cottonbro",
+        "url": "https://www.pexels.com/photo/6804084/"
+      }
+    },
+    {
+      "id": 17,
+      "file": "_rejected/industries/technology and saas/pexels-cottonbro-6804587.jpg",
+      "reason": "Foosball table, person pointing/shouting - off topic and posed.",
+      "recoverable": false,
+      "width": 6495,
+      "height": 4330,
+      "originalFile": "images/industries/technology and saas/pexels-cottonbro-6804587.jpg",
+      "source": {
+        "photoId": "6804587",
+        "photographer": "cottonbro",
+        "url": "https://www.pexels.com/photo/6804587/"
+      }
+    },
+    {
+      "id": 20,
+      "file": "_rejected/services/Application maintenance and managed support/pexels-gustavo-fring-6285166.jpg",
+      "reason": "Posed headset-and-tie call-centre look, large black TV behind; weaker than support-01.",
+      "recoverable": true,
+      "width": 5760,
+      "height": 3840,
+      "originalFile": "images/services/Application maintenance and managed support/pexels-gustavo-fring-6285166.jpg",
+      "source": {
+        "photoId": "6285166",
+        "photographer": "gustavo-fring",
+        "url": "https://www.pexels.com/photo/6285166/"
+      }
+    },
+    {
+      "id": 21,
+      "file": "_rejected/services/Application maintenance and managed support/pexels-kampus-8353777.jpg",
+      "reason": "Suit + trading-style charts reads as finance/stock market, not managed support.",
+      "recoverable": false,
+      "width": 6016,
+      "height": 4016,
+      "originalFile": "images/services/Application maintenance and managed support/pexels-kampus-8353777.jpg",
+      "source": {
+        "photoId": "8353777",
+        "photographer": "kampus",
+        "url": "https://www.pexels.com/photo/8353777/"
+      }
+    },
+    {
+      "id": 28,
+      "file": "_rejected/services/Software engineering modernization/pexels-mikhail-nilov-7988114.jpg",
+      "reason": "Laptop shows a Chinese-language webpage with overlaid site text (third-party content).",
+      "recoverable": false,
+      "width": 5215,
+      "height": 3481,
+      "originalFile": "images/services/Software engineering modernization/pexels-mikhail-nilov-7988114.jpg",
+      "source": {
+        "photoId": "7988114",
+        "photographer": "mikhail-nilov",
+        "url": "https://www.pexels.com/photo/7988114/"
+      }
+    },
+    {
+      "id": 30,
+      "file": "_rejected/services/Software engineering modernization/pexels-zayed-hossain-52728970-36706459.jpg",
+      "reason": "Strong green wall colour cast; off colour family.",
+      "recoverable": false,
+      "width": 4096,
+      "height": 3072,
+      "originalFile": "images/services/Software engineering modernization/pexels-zayed-hossain-52728970-36706459.jpg",
+      "source": {
+        "photoId": "36706459",
+        "photographer": "zayed-hossain",
+        "url": "https://www.pexels.com/photo/36706459/"
+      }
+    },
+    {
+      "id": 32,
+      "file": "_rejected/services/ai data and automation/pexels-divinetechygirl-1181354.jpg",
+      "reason": "Vendor logo strip (Dell, EMC, Emerson, HP, Intel, NetApp, Schneider) across the glass - logos are the focal band.",
+      "recoverable": false,
+      "width": 5644,
+      "height": 3768,
+      "originalFile": "images/services/ai data and automation/pexels-divinetechygirl-1181354.jpg",
+      "source": {
+        "photoId": "1181354",
+        "photographer": "divinetechygirl",
+        "url": "https://www.pexels.com/photo/1181354/"
+      }
+    },
+    {
+      "id": 33,
+      "file": "_rejected/services/ai data and automation/pexels-firmbee-com-22729701-7013070.jpg",
+      "reason": "Outdoor snow setting, bright red hat/blue jacket, macOS dock + Finder visible. Off setting and colour family.",
+      "recoverable": false,
+      "width": 6210,
+      "height": 4140,
+      "originalFile": "images/services/ai data and automation/pexels-firmbee-com-22729701-7013070.jpg",
+      "source": {
+        "photoId": "7013070",
+        "photographer": "firmbee-com",
+        "url": "https://www.pexels.com/photo/7013070/"
+      }
+    },
+    {
+      "id": 37,
+      "file": "_rejected/services/ai data and automation/pexels-rdne-8217724.jpg",
+      "reason": "Laptop shows a readable news article about vaccines - off-topic third-party content.",
+      "recoverable": false,
+      "width": 6720,
+      "height": 4480,
+      "originalFile": "images/services/ai data and automation/pexels-rdne-8217724.jpg",
+      "source": {
+        "photoId": "8217724",
+        "photographer": "rdne",
+        "url": "https://www.pexels.com/photo/8217724/"
+      }
+    },
+    {
+      "id": 40,
+      "file": "_rejected/services/cloud platform engineering/pexels-divinetechygirl-1181320.jpg",
+      "reason": "Same vendor logo strip as #32.",
+      "recoverable": false,
+      "width": 6016,
+      "height": 4016,
+      "originalFile": "images/services/cloud platform engineering/pexels-divinetechygirl-1181320.jpg",
+      "source": {
+        "photoId": "1181320",
+        "photographer": "divinetechygirl",
+        "url": "https://www.pexels.com/photo/1181320/"
+      }
+    },
+    {
+      "id": 42,
+      "file": "_rejected/services/flexible delivery teams/pexels-divinetechygirl-1181376.jpg",
+      "reason": "Laptop covered in brand stickers (tumblr, Canalero, Apple), posed grins, peach wall.",
+      "recoverable": false,
+      "width": 6016,
+      "height": 4016,
+      "originalFile": "images/services/flexible delivery teams/pexels-divinetechygirl-1181376.jpg",
+      "source": {
+        "photoId": "1181376",
+        "photographer": "divinetechygirl",
+        "url": "https://www.pexels.com/photo/1181376/"
+      }
+    },
+    {
+      "id": 46,
+      "file": "_rejected/services/flexible delivery teams/pexels-silverkblack-39190502.jpg",
+      "reason": "Pointing at screen, busy multi-colour scene, video-call composite.",
+      "recoverable": false,
+      "width": 3840,
+      "height": 2160,
+      "originalFile": "images/services/flexible delivery teams/pexels-silverkblack-39190502.jpg",
+      "source": {
+        "photoId": "39190502",
+        "photographer": "silverkblack",
+        "url": "https://www.pexels.com/photo/39190502/"
+      }
+    },
+    {
+      "id": 47,
+      "file": "_rejected/services/flexible delivery teams/pexels-silverkblack-39204860.jpg",
+      "reason": "Six people posed grinning around a laptop - stock-smile cliche.",
+      "recoverable": false,
+      "width": 3840,
+      "height": 2160,
+      "originalFile": "images/services/flexible delivery teams/pexels-silverkblack-39204860.jpg",
+      "source": {
+        "photoId": "39204860",
+        "photographer": "silverkblack",
+        "url": "https://www.pexels.com/photo/39204860/"
+      }
+    },
+    {
+      "id": 50,
+      "file": "_rejected/services/quality engineering and test automation/pexels-enginakyurt-3228682.jpg",
+      "reason": "Dark bar setting, warm, blurry, cluttered.",
+      "recoverable": false,
+      "width": 6720,
+      "height": 4480,
+      "originalFile": "images/services/quality engineering and test automation/pexels-enginakyurt-3228682.jpg",
+      "source": {
+        "photoId": "3228682",
+        "photographer": "enginakyurt",
+        "url": "https://www.pexels.com/photo/3228682/"
+      }
+    },
+    {
+      "id": 53,
+      "file": "_rejected/services/quality engineering and test automation/pexels-magnetme-3917414-5839461.jpg",
+      "reason": "Third-party branded website (magnet.me) fills the laptop screen; phone UI too.",
+      "recoverable": false,
+      "width": 6632,
+      "height": 4421,
+      "originalFile": "images/services/quality engineering and test automation/pexels-magnetme-3917414-5839461.jpg",
+      "source": {
+        "photoId": "5839461",
+        "photographer": "magnetme",
+        "url": "https://www.pexels.com/photo/5839461/"
+      }
+    },
+    {
+      "id": 58,
+      "file": "_rejected/team workspace candids/pexels-yankrukov-7794077.jpg",
+      "reason": "Sticky notes on foreheads - comedic/posed.",
+      "recoverable": false,
+      "width": 6000,
+      "height": 4000,
+      "originalFile": "images/team workspace candids/pexels-yankrukov-7794077.jpg",
+      "source": {
+        "photoId": "7794077",
+        "photographer": "yankrukov",
+        "url": "https://www.pexels.com/photo/7794077/"
+      }
+    }
+  ]
+}

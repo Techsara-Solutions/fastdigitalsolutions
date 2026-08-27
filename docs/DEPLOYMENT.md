@@ -194,17 +194,20 @@ gh secret set EC2_USER --body "ec2-user"
 gh secret set EC2_SSH_KEY < fastdigitalsolutions.com.pem
 ```
 
-Variables (build-time page values, not secret) — **set these when known**:
+Variables (build-time page values, not secret) — all **optional overrides**
+since 2026-08-27; the production values are the defaults in
+`src/content/site.ts`:
 
-| Variable                             | Value                               |
-| ------------------------------------ | ----------------------------------- |
-| `NEXT_PUBLIC_SITE_URL`               | `https://<the purchased domain>`    |
-| `NEXT_PUBLIC_CONTACT_API_URL`        | endpoint from the backend developer |
-| `NEXT_PUBLIC_CONTACT_API_TIMEOUT_MS` | optional; default 12000             |
+| Variable                             | Default / purpose                                                         |
+| ------------------------------------ | ------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL`               | `https://fastdigitalsolutions.com`; a `PENDING` value re-enables noindex  |
+| `NEXT_PUBLIC_CONTACT_API_URL`        | the production API Gateway endpoint; a `PENDING` value shows the fallback |
+| `NEXT_PUBLIC_CONTACT_API_TIMEOUT_MS` | optional; default 12000                                                   |
 
-Until `NEXT_PUBLIC_SITE_URL` is set, every page ships `noindex` and
-`robots.txt` disallows all crawlers. That is intentional: it stops search
-engines indexing the site at its raw IP address before the real domain exists.
+Because the domain is baked in, every build is indexable with canonical URLs,
+a populated sitemap, and Organization JSON-LD. The nginx CSP
+(`deploy/nginx/security-headers.conf`) lists the API origin in `connect-src`;
+re-run `deploy/setup-ec2.sh` (or copy the file) whenever it changes.
 
 ## Domain and TLS — live since 2026-08-27
 
@@ -274,13 +277,13 @@ than at the origin.
 2. **Enable HSTS** once HTTPS has been stable for a few days:
    `bash /tmp/deploy/setup-ec2.sh --enable-hsts`. Browsers cache it
    aggressively, so it is painful to reverse.
-3. **Pick one canonical host** (apex or `www`) and redirect the other (PRD §23.4).
-4. **Set `NEXT_PUBLIC_SITE_URL`** and redeploy to switch on indexing, canonical
-   URLs, the sitemap, and the Organization structured data.
-5. **Restore real visitor IPs** in nginx logs with the `realip` module and
+3. **Pick one canonical host** (apex or `www`) and redirect the other.
+4. **Restore real visitor IPs** in nginx logs with the `realip` module and
    Cloudflare's ranges — otherwise every log line shows a Cloudflare IP.
-6. **Add the contact API origin** to `connect-src` and `form-action` in
-   `/etc/nginx/security-headers.conf` once that endpoint exists.
+5. **Install the updated nginx config** — `security-headers.conf` now lists the
+   contact API origin in `connect-src` and `site-locations.conf` adds the
+   `/images/` cache block. Until the files on the server match the repo, the
+   browser blocks the enquiry POST under the old CSP.
 
 ### Troubleshooting: Cloudflare Error 521
 

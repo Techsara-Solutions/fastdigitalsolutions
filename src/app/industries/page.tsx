@@ -3,6 +3,7 @@ import { buildMetadata } from "@/lib/metadata";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { SectionIntro } from "@/components/ui/SectionIntro";
+import { PageHero } from "@/components/content/PageHero";
 import { IndustryPanel } from "@/components/content/IndustryPanel";
 import { CtaPanel } from "@/components/content/CtaPanel";
 import { industries } from "@/content/industries";
@@ -19,21 +20,14 @@ export const metadata: Metadata = buildMetadata({
 export default function IndustriesPage() {
   return (
     <>
-      <Section surface="paper" spacing="tight" ariaLabelledby="industries-hero">
-        <Container>
-          <div className="max-w-[46rem] py-6">
-            <p className="eyebrow mb-4">Industries</p>
-            <h1 id="industries-hero" className="text-h1 font-semibold">
-              We start from how your operation actually runs.
-            </h1>
-            <p className="mt-6 text-lead text-muted">
-              Rather than claiming deep specialization everywhere, we focus on four operating
-              contexts where our services naturally apply — and approach each through the challenges
-              its teams face, not through industry buzzwords.
-            </p>
-          </div>
-        </Container>
-      </Section>
+      <PageHero
+        headingId="industries-hero"
+        variant="split"
+        image="hero-industries"
+        eyebrow="Industries"
+        title="We start from how your operation actually runs."
+        lead="We do not claim deep specialization everywhere. We focus on four operating contexts where our services naturally apply, and approach each through the challenges its teams face, not through industry buzzwords."
+      />
 
       <Section surface="canvas" ariaLabelledby="industry-list-heading">
         <Container>
@@ -68,7 +62,7 @@ export default function IndustriesPage() {
                 <li key={commitment} className="flex gap-3 text-[0.9375rem] text-ink/85">
                   <span
                     aria-hidden="true"
-                    className="mt-[0.55em] h-1 w-3 shrink-0 rounded-full bg-clay/70"
+                    className="mt-[0.55em] h-1 w-3 shrink-0 rounded-full bg-accent/70"
                   />
                   {commitment}
                 </li>
@@ -80,7 +74,7 @@ export default function IndustriesPage() {
 
       <CtaPanel
         heading="Working in a different context?"
-        copy="The four industries above are where we focus, not a boundary. If the challenge fits our capabilities, we are happy to talk it through honestly."
+        copy="The four industries above are where we focus, not a boundary. If the challenge fits our capabilities, we are happy to talk it through."
         ctaLabel="Talk through the challenge"
       />
     </>

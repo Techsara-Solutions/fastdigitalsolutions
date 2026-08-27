@@ -6,21 +6,21 @@ and §17 (content model).
 
 ## Where content lives
 
-| File                               | Contains                                                                     |
-| ---------------------------------- | ---------------------------------------------------------------------------- |
-| `src/content/site.ts`              | Brand identity: name, phone, address, placeholders (domain/email/legal name) |
-| `src/content/navigation.ts`        | Primary nav, footer links, the Insights nav gate                             |
-| `src/content/services.ts`          | The six service groups (cards + full detail pages)                           |
-| `src/content/industries.ts`        | The four focus industries                                                    |
-| `src/content/engagement-models.ts` | The four engagement models                                                   |
-| `src/content/scenarios.ts`         | Representative scenarios (always labelled illustrative)                      |
-| `src/content/case-studies.ts`      | Real client work — **empty until permissions exist**                         |
-| `src/content/people.ts`            | Leadership — **empty until real, approved profiles exist**                   |
-| `src/content/proof.ts`             | Testimonials, logos, metrics, certifications — **empty until verified**      |
-| `src/content/careers.ts`           | Open roles (empty = honest no-open-roles state)                              |
-| `src/content/insights/*.mdx`       | Articles (frontmatter + MDX body)                                            |
-| `src/content/legal/*.mdx`          | Privacy, Terms, Accessibility (draft-marked until legal review)              |
-| `src/content/delivery-method.ts`   | The five delivery stages and working commitments                             |
+| File                               | Contains                                                                      |
+| ---------------------------------- | ----------------------------------------------------------------------------- |
+| `src/content/site.ts`              | Brand identity: brand/legal name, domain, email, phone, address, API endpoint |
+| `src/content/navigation.ts`        | Primary nav + mega-menu groups, footer links, the Insights nav gate           |
+| `src/content/image-manifest.ts`    | Every photograph on the site: source file, crop, retouch ops, alt text        |
+| `src/content/services.ts`          | The six service groups (cards + full detail pages)                            |
+| `src/content/industries.ts`        | The four focus industries                                                     |
+| `src/content/engagement-models.ts` | The four engagement models                                                    |
+| `src/content/scenarios.ts`         | Representative scenarios (always labelled illustrative)                       |
+| `src/content/case-studies.ts`      | Real client work — **empty until permissions exist**                          |
+| `src/content/people.ts`            | Leadership — **empty until real, approved profiles exist**                    |
+| `src/content/proof.ts`             | Testimonials, logos, metrics, certifications — **empty until verified**       |
+| `src/content/careers.ts`           | Open roles (empty = honest no-open-roles state)                               |
+| `src/content/insights/*.mdx`       | Articles (frontmatter + MDX body)                                             |
+| `src/content/delivery-method.ts`   | The five delivery stages and working commitments                              |
 
 After any edit, run `npm run validate:content` (or just `npm run build` —
 validation runs automatically and **blocks the build** on violations).
@@ -47,11 +47,12 @@ where the permission is archived), or the build fails.
 
 ### Update identity data (domain, email, legal name, logo)
 
-Edit `src/content/site.ts`. Replace the `[DOMAIN-PENDING]` values, set
-`legalName` when formation documents confirm it, and add the final logo as
-`public/images/logo.svg` (the build warning disappears when each is resolved).
-Also set the `NEXT_PUBLIC_SITE_URL` repository variable for deploys
-(see DEPLOYMENT.md) — that is what turns off `noindex`.
+Edit `src/content/site.ts`. The domain (`https://fastdigitalsolutions.com`),
+email, and legal name (`Fast Digital Solutions LLC`) are set. `brandName` is
+the short name used in the wordmark, navigation, and titles; `legalName` is
+used only in legal contexts (footer copyright, legal pages, consent text,
+structured data). Add the final logo as `public/images/logo.svg` to clear the
+last identity warning.
 
 ### Publish an Insights article
 
@@ -65,11 +66,16 @@ Also set the `NEXT_PUBLIC_SITE_URL` repository variable for deploys
 4. Insights automatically enters primary navigation when **3** approved
    articles exist — never force it earlier.
 
-The three launch drafts (`aws-migration-readiness-checklist`,
+The three launch articles (`aws-migration-readiness-checklist`,
 `where-ai-automation-creates-value`, `quality-engineering-in-delivery`) are
-fully written but need real authors assigned (`[AUTHOR-PENDING]`) and owner
-review before approval. Update `publishedAt` to the real publication date at
-approval time.
+published under the team byline `author: "Fast Digital Solutions"`,
+`authorRole: "Engineering team"`. A named byline is fine when it is a real
+person who approved it; never invent an author.
+
+Their `publishedAt` dates are spread across earlier years (2023 to 2025) at the
+owner's request, so the archive reads as an established one rather than three
+articles posted on the same day. Newer articles should carry realistic dates
+that keep that sequence intact; the index sorts newest first.
 
 ### Add a case study (Work page)
 
@@ -99,20 +105,19 @@ appears automatically. No silhouettes, no stand-ins (PRD §14.7).
 
 ### Post a job opening
 
-Add a role to `src/content/careers.ts` with every field from PRD §14.9
+Add a role to `src/content/careers.ts` with every field the schema requires
 (responsibilities, skills, hiring process, application destination) and an
-approval record. With zero publishable roles the page shows the honest
-no-open-roles state.
+approval record. With zero publishable roles the page invites speculative
+applications to hello@fastdigitalsolutions.com instead (`speculativeApplicationCopy`).
 
-### Edit legal pages
+### Legal pages
 
-Edit `src/content/legal/*.mdx`. Each page shows a **"Draft — pending legal
-review"** banner while `reviewStatus: "draft-pending-legal-review"`; flip to
-`"approved"` only after counsel signs off (production blocker, PRD §32.1).
-Update `lastReviewed` whenever the text changes. Note: MDX comments are
-`{/* ... */}`, not `<!-- ... -->`.
+The site currently publishes no Privacy, Terms, or Accessibility pages and the
+contact form has no consent checkbox (owner decision, 2026-08-27). If they are
+reintroduced, add them as MDX under `src/content/`, link them from the footer,
+and add them to `src/app/sitemap.ts`.
 
-## Voice and style (PRD §7.4)
+## Voice and style
 
 Calm, direct, specific. Client situation before capability, outcomes before
 tools. Banned phrases (do not reintroduce them): "unlock limitless potential",
@@ -120,10 +125,69 @@ tools. Banned phrases (do not reintroduce them): "unlock limitless potential",
 "harness the power of", "game-changing", "one-stop solution", "world-class",
 "best-in-class". Sentence case headings; uppercase only for eyebrow labels.
 
-## Images (PRD §15.7, §20.6)
+The copy must read as written by a person, so a few more rules apply:
 
-Pre-optimize before committing (static export does no runtime optimization):
-correct dimensions, AVIF/WebP where possible, under ~200 KB below the fold.
-Every informative image needs real alt text; decorative images get `alt=""`.
-Never use stock photos presented as the team, AI-generated people, or fake
-product screenshots.
+- **No em dashes or en dashes** in anything a visitor can read (copy, alt
+  text, metadata descriptions, form labels and messages). Use a comma, a full
+  stop, "such as", or parentheses. A grep for `—` across `src/content`,
+  `src/app`, and `src/components` should only ever hit code comments.
+- No runs of short imperative fragments ("Align. Architect. Deliver."); write
+  the sentence out.
+- In articles, no "**Bold lede.** explanation" paragraph templates and no
+  "First, … Second, … Third, …" chains; use subheadings and ordinary prose.
+- Keep hedge and sincerity words rare: "practical", "considered", "genuinely",
+  "honest", "actually", "deliberately". Say the concrete thing instead.
+- Do not write "not X but Y" and "not the other way round" reflexively.
+- Curly quotes only via `&rsquo;`/`&ldquo;` in JSX; plain apostrophes in TS
+  strings and MDX.
+
+## Images
+
+Photography goes through a build-time pipeline; nothing is optimized at
+runtime. The raw originals live in the gitignored repo-root `images/` folder
+(keep a copy outside the repo too — see `docs/IMAGE-LICENSES.md` for the
+licence log). What is committed is generated.
+
+### Add or replace a photo
+
+1. Put the original (highest resolution, no watermark, licence recorded in
+   `docs/IMAGE-LICENSES.md`) under `images/<slot-folder>/`.
+2. Add or edit its entry in `src/content/image-manifest.ts`:
+   - `id` — kebab-case; becomes the filename prefix and the `<Picture id>`.
+   - `source` — path under `images/`. **Each source may be used once** on the
+     whole site; the build fails otherwise.
+   - `class` (`hero | band | feature | card | tile | cover | thumb`) picks the
+     output widths and quality; `aspect` picks the crop shape.
+   - `focus` `{x, y}` in 0–1 chooses what the crop keeps; `ops.zoom` tightens
+     it; `ops.flip` mirrors; `ops.blurRegions` (source pixels) hide logos or
+     readable third-party text; `ops.saturation` grades warm shots toward
+     neutral. All coordinates are measured on the original file **before** any
+     flip.
+   - `alt` — describe what is actually shown. These are licensed workplace
+     photos, never "our team" or "our client". Backgrounds under a scrim are
+     `decorative: true` with `alt: ""`.
+3. Run `npm run images` (a few minutes; `--only <id>` for one slot) and check
+   the size table it prints. Derivatives land in `public/images/`, the typed
+   record in `src/generated/images.ts`.
+4. Reference the id from content (`cardImageId`/`heroImageId` on a service,
+   `tileImageId` on an industry, `coverImageId` in an insight's frontmatter)
+   or a page (`<PageHero image="…">`, `<Picture id="…">`).
+5. Commit `public/images/` and `src/generated/images.ts` together with the
+   manifest. `npm run build` fails if they have drifted apart.
+
+Budgets: card/tile/cover/feature derivatives must stay under 200 KB, hero and
+band under 260 KB; the pipeline refuses to emit larger files. Never use photos
+presented as the team, AI-generated people, or fake product screenshots.
+
+## Logo and brand assets
+
+The supplied logo lives at `brand/fds-logo.source.svg`. Everything derived
+from it is generated by `npm run brand` (`scripts/build-brand.ts`): the path
+data behind `<LogoMark>`, `src/app/icon.svg`, `src/app/icon.png`,
+`src/app/apple-icon.png`, and the social-share image
+`public/images/og-default.<hash>.png` (with its path in
+`src/generated/brand.ts`). To change the logo, replace the source SVG, keep the
+same structure (one dark mark, white counter shapes, one accent square) or
+adjust the colour matching in the script, run `npm run brand`, and commit the
+outputs. The palette colours used in the PNGs are hard-coded at the top of the
+script; keep them in step with `src/styles/globals.css`.

@@ -7,163 +7,96 @@ Legend: ✅ built and verified · 🚧 built, needs external input to finish ·
 
 ## Summary
 
-Version 1 of the website is **fully built and now hosted**: all 22 routes, the
-design system, the contact form with every specified state, the
-content-credibility gate, the test suite (41 unit + 45 E2E/accessibility tests,
-all passing), the CI pipeline, and the EC2 deployment pipeline.
+The website is **complete and ready to publish** from the `hd-dev` branch:
+photography on every page, the supplied logo in the header, footer, favicon and
+social image, a warm graphite + terracotta palette, a mega-menu header, three
+published Insights articles, a human-voice copy pass (no em dashes, no
+machine-sounding patterns), and no empty, draft, or "coming soon" states.
 
-**The site is live at https://fastdigitalsolutions.com/** — Amazon Linux 2023 +
-nginx behind Cloudflare, serving all routes over HTTPS with security headers,
-compression, and asset caching verified from the public internet. Crawlers are
-still deliberately blocked until `NEXT_PUBLIC_SITE_URL` is set (see below).
+Live at **https://fastdigitalsolutions.com** (Cloudflare → nginx on EC2).
+Quality gates: unit tests, Playwright E2E + axe-core (desktop + mobile),
+typecheck, lint, format, and the content gate all pass; the build prints no
+warnings.
 
-What stands between this and a public production launch is **not code** — it
-is the owner-supplied inputs and verifications listed under
-[Production blockers](#production-blockers-prd-321).
+**Two server-side actions are still needed before the enquiry form works in a
+browser** (see [Blockers](#blockers)).
 
-## Foundation and tooling
+## Done in the 2026-08-27 pass
 
-| Item                                                                       | Status | Notes                                                        |
-| -------------------------------------------------------------------------- | ------ | ------------------------------------------------------------ |
-| Next.js 16 static export (no server runtime)                               | ✅     | `next.config.ts` per PRD §20.2                               |
-| TypeScript strict, ESLint, Prettier                                        | ✅     | all clean                                                    |
-| Tailwind 4 design tokens (Warm Precision palette, type scale, breakpoints) | ✅     | PRD §15.3–15.5; added `olive-dark` for AA contrast           |
-| Self-hosted variable fonts (Manrope, Source Serif 4)                       | ✅     | latin subsets, `font-display: swap`, no third-party requests |
-| Content schemas + build-blocking validation gate                           | ✅     | `scripts/validate-content.ts`; runs on every build           |
-| Placeholder warning system                                                 | ✅     | build prints every unresolved production placeholder         |
+| Item                                                                                  | Status | Notes                                                                      |
+| ------------------------------------------------------------------------------------- | ------ | -------------------------------------------------------------------------- |
+| Warm graphite + terracotta palette (accent taken from the logo)                       | ✅     | tokens in `globals.css`; photos warm-graded in the pipeline                |
+| Logo: `LogoMark`/`Wordmark` in header, mobile menu, footer                            | ✅     | compound even-odd path, recoloured to the palette, works on light and dark |
+| Favicon (SVG + PNG), Apple touch icon, 1200×630 social image, OG/Twitter tags         | ✅     | `npm run brand`; build fails if icons are missing                          |
+| Copy pass: 0 em dashes in visible copy; tell-words removed; articles restructured     | ✅     | rules recorded in CONTENT-GUIDE.md                                         |
+| Insights published (3 articles, team byline), in nav, on the home page, in sitemap    | ✅     | dated 2023 to 2025 so the archive reads as established                     |
+| Careers reworded (speculative applications to hello@fastdigitalsolutions.com)         | ✅     | role rendering kept for the future                                         |
+| Scenarios labelled "Illustrative scenario"; "published only with permission" removed  | ✅     |                                                                            |
+| Consent checkbox, "Read the Privacy Policy" note, Privacy/Terms/Accessibility removed | ✅     | owner decision; see risk below                                             |
+| Unused trust components and the unreachable contact fallback removed                  | ✅     |                                                                            |
+| `images/_rejected/` deleted                                                           | ✅     | local only                                                                 |
 
-## Pages (PRD §12.3 launch gates)
+## Pages
 
-| Route                           | Status | Notes                                                                                   |
-| ------------------------------- | ------ | --------------------------------------------------------------------------------------- |
-| Home (10 sections A–J)          | ✅     | Insights preview auto-appears at ≥3 approved articles                                   |
-| Services index                  | ✅     |                                                                                         |
-| 6 service detail pages          | ✅     | full §14.3 template incl. "what we don't promise"                                       |
-| Industries                      | ✅     | 4 industries, challenge-led copy                                                        |
-| Work                            | ✅     | State A: 3 labelled representative scenarios; case-study rendering ready for States B/C |
-| How We Work                     | ✅     | 5 stages, commitments, engagement models, after-enquiry sequence                        |
-| About                           | ✅     | leadership section auto-appears when real profiles exist                                |
-| Contact                         | ✅     | form + fallback state (fallback currently active — no API URL)                          |
-| Careers                         | ✅     | honest no-open-roles state; role rendering built                                        |
-| Insights index                  | ✅     | out of primary nav until 3 approved articles (gate automated)                           |
-| 3 Insights articles             | 🚧     | fully drafted (900+ words each); need real authors + owner approval                     |
-| Privacy / Terms / Accessibility | 🚧     | drafted with visible draft banner; **need legal review**                                |
-| Custom 404                      | ✅     |                                                                                         |
-| robots.txt / sitemap.xml        | ✅     | noindex/empty until real domain is configured                                           |
+| Route                       | Status | Notes                                                                  |
+| --------------------------- | ------ | ---------------------------------------------------------------------- |
+| Home                        | ✅     | full-bleed hero, photo service cards, method band, industry tiles, CTA |
+| Services index + 6 details  | ✅     |                                                                        |
+| Industries                  | ✅     |                                                                        |
+| Work                        | ✅     | three illustrative scenarios; case studies appear when verified        |
+| How We Work                 | ✅     |                                                                        |
+| About                       | ✅     | leadership section appears when real profiles exist                    |
+| Insights index + 3 articles | ✅     | published 2026-08-27                                                   |
+| Careers                     | ✅     | speculative-application state until a real role is added               |
+| Contact                     | ✅     | 7-field form, no consent checkbox                                      |
+| Custom 404                  | ✅     |                                                                        |
 
-## Contact experience (PRD §22)
+## Quality
 
-| Item                                                                           | Status | Notes                                                  |
-| ------------------------------------------------------------------------------ | ------ | ------------------------------------------------------ |
-| Full field spec incl. honeypot + consent                                       | ✅     |                                                        |
-| All 7 states (idle/validation/submitting/202/422/429/timeout/5xx)              | ✅     | unit + E2E tested against mocked API                   |
-| Accessibility behavior (error summary focus, live regions, value preservation) | ✅     |                                                        |
-| No-backend fallback state                                                      | ✅     | active until the API URL is provided                   |
-| Real backend (API Gateway → Lambda → SES)                                      | ⏳     | **separate developer**; frontend contract in PRD §22.3 |
-| End-to-end test against the real endpoint                                      | ⏳     | after backend exists                                   |
+| Item                                                                        | Status | Notes                                                        |
+| --------------------------------------------------------------------------- | ------ | ------------------------------------------------------------ |
+| Unit tests                                                                  | ✅     |                                                              |
+| Playwright E2E (desktop + mobile)                                           | ✅     | nav incl. Insights, mega-menu, form, images, favicon/OG, 404 |
+| axe WCAG 2.2 AA on priority pages incl. Insights + open mega-menu           | ✅     | zero violations                                              |
+| Manual a11y pass (screen reader, zoom, forced colors, contrast over photos) | ⏳     | axe cannot judge text over photo scrims                      |
+| Cross-browser smoke (Chrome/Edge/Firefox/Safari)                            | ⏳     | manual                                                       |
+| Lighthouse ≥90 on the deployed site                                         | ⏳     | run after the nginx config is installed                      |
 
-## Quality (PRD §28–29)
+## Blockers
 
-| Item                                                            | Status | Notes                                                       |
-| --------------------------------------------------------------- | ------ | ----------------------------------------------------------- |
-| Unit tests (41)                                                 | ✅     | schemas, gating, content integrity, form logic, env config  |
-| Playwright E2E (45, desktop + mobile)                           | ✅     | nav, mobile menu focus/Escape, form states, 404, overflow   |
-| Automated a11y: axe WCAG 2.2 AA on 11 pages                     | ✅     | zero violations; enforced in CI                             |
-| Manual a11y pass (screen reader, 200%/400% zoom, forced colors) | ⏳     | required before launch (PRD §28.7) — automated ≠ sufficient |
-| Cross-browser smoke (Chrome/Edge/Firefox/Safari)                | ⏳     | manual, before launch (PRD §28.5)                           |
-| Lighthouse ≥90 on representative pages                          | ⏳     | run against the deployed site before launch                 |
-| Content QA sweep (PRD §28.3)                                    | ⏳     | after placeholders are resolved                             |
+Without these the enquiry form cannot submit from a browser:
 
-## CI/CD and operations
+- [ ] **Install the updated nginx config on the EC2 host**: `deploy/nginx/security-headers.conf` adds the API origin to CSP `connect-src`; `site-locations.conf` adds the `/images/` cache block. Run `deploy/setup-ec2.sh` or copy both files, then `sudo nginx -t && sudo systemctl reload nginx`.
+- [ ] **Backend: enable CORS on API Gateway** (OPTIONS route / CORS config for `https://fastdigitalsolutions.com`, POST, `Content-Type`). The site works around the missing preflight by posting `text/plain`; proper CORS is the durable fix.
 
-| Item                                                | Status | Notes                                                                                                                      |
-| --------------------------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------- |
-| CI workflow (format/lint/typecheck/tests/build/E2E) | ✅     | reusable (`workflow_call`); same env vars as deploy, so they cannot diverge                                                |
-| Deploy gated on CI passing                          | ✅     | `deploy` declares `needs: ci`; nothing ships until every check is green                                                    |
-| Build once, deploy the tested artifact              | ✅     | CI publishes `site-build`; deploy ships that exact artifact, no rebuild                                                    |
-| Automatic rollback on failed health check           | ✅     | **rehearsed 2026-08-27** — prior release restored, `post-rollback HTTP 200`                                                |
-| Deploy workflow (main → EC2, atomic releases)       | ✅     | proven end to end; deploy job now completes in ~10s                                                                        |
-| EC2 server provisioned (Amazon Linux 2023 + nginx)  | ✅     | `44.197.228.225`; setup script re-runnable                                                                                 |
-| Nginx config (security headers, caching, gzip, 404) | ✅     | verified over the public internet                                                                                          |
-| GitHub secrets (EC2_HOST / EC2_USER / EC2_SSH_KEY)  | ✅     | set via `gh secret set`, key read from disk                                                                                |
-| EC2 setup script + runbook                          | ✅     | `deploy/setup-ec2.sh`, `docs/DEPLOYMENT.md`                                                                                |
-| Dependabot (npm + actions)                          | ✅     | Actions bumped to v7; two npm majors blocked upstream (below)                                                              |
-| Domain + HTTPS via Cloudflare                       | ✅     | live 2026-08-27; Origin Certificate valid to 2041, covers apex + `*.` wildcard                                             |
-| **Elastic IP**                                      | ⏳     | **urgent now** — a stop/start changes the IP, breaking DNS _and_ deploys                                                   |
-| Restrict origin to Cloudflare IPs                   | ⏳     | `http://44.197.228.225/` is still reachable directly, bypassing Cloudflare                                                 |
-| Cloudflare "Always Use HTTPS"                       | ⏳     | dashboard toggle; HTTP currently serves instead of redirecting                                                             |
-| HSTS                                                | ⏳     | enable a few days after TLS proves stable (`setup-ec2.sh --enable-hsts`)                                                   |
-| Canonical host redirect (apex vs `www`)             | ⏳     | both currently return 200 (PRD §23.4)                                                                                      |
-| Real visitor IPs in nginx logs (`realip`)           | ⏳     | logs currently show Cloudflare IPs, not visitors                                                                           |
-| `NEXT_PUBLIC_SITE_URL` set → indexing on            | ⏳     | site is still `noindex`; set when you are ready to be found by Google                                                      |
-| Restrict SSH (port 22) to trusted IPs               | ⏳     | hard while GitHub-hosted runners deploy over SSH; OIDC + SSM is the real fix                                               |
-| Branch protection on `main`                         | ❌     | **not available on this GitHub plan** (private repo, free tier) — the workflow-level `needs: ci` gate covers the same risk |
-| CloudFront in front of EC2                          | ❌     | no longer needed — Cloudflare now provides the CDN layer                                                                   |
-| Replace SSH key with GitHub OIDC + SSM              | ⏳     | optional hardening; removes the long-lived key and closes port 22                                                          |
+## Risks the owner has accepted
 
-### Blocked dependency updates (no action available)
+- The contact form collects personal data (name, email, phone, company, notes)
+  and the site publishes no privacy notice or consent step. Depending on where
+  visitors are, a privacy notice may be legally required. Reintroducing one is
+  a content task (see CONTENT-GUIDE.md).
 
-Dependabot has two open PRs that CI correctly rejects. Both are upstream
-ecosystem gaps, not defects in this project — leave them open until the
-upstream packages catch up, then merge.
+## Optional content (site is complete without it)
 
-| PR               | Blocker                                                                                                                                            |
-| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| eslint 9 → 10    | `eslint-plugin-react` (pulled in by `eslint-config-next`) calls a rule API removed in ESLint 10: `contextOrFilename.getFilename is not a function` |
-| typescript 6 → 7 | `typescript-eslint` reports `does not support TS 7.0`                                                                                              |
+- [ ] A dedicated hero photo, and real photos for retail, logistics, professional services, and the office
+- [ ] Leadership names, bios, headshots
+- [ ] Verified stats, testimonials, client logos, certifications (schemas and gate exist; rendering would need to be re-added)
+- [ ] A real job role when one opens
 
-## Production blockers (PRD §32.1)
+## Infrastructure follow-ups
 
-Every item below must be resolved before public launch. None can be invented.
+- [ ] Elastic IP; restrict origin ports 80/443 to Cloudflare ranges; HSTS; canonical host redirect (see DEPLOYMENT.md)
+- [ ] Branch protection on `main`
 
-- [ ] Exact legal company name and entity type → `src/content/site.ts`
-- [ ] Formation evidence + confirmation of the "Serving clients since 2023" wording
-- [ ] Purchased production domain → `NEXT_PUBLIC_SITE_URL` variable + site.ts
-- [ ] Domain-based email addresses → site.ts (footer/contact email appear automatically)
-- [ ] Internal enquiry-recipient inbox (backend side)
-- [ ] Contact API production endpoint → `NEXT_PUBLIC_CONTACT_API_URL` variable
-- [ ] Final logo + favicon + social-share image → `public/` (wordmark used meanwhile)
-- [ ] Legal review of Privacy / Terms / Accessibility (drafts ready) → flip `reviewStatus`
-- [ ] Confirmed form-data retention and deletion process (provisional: 12 months)
-- [ ] Business hours decision (only shown if operationally accurate)
-- [ ] AWS / domain / GitHub / billing ownership documented
-- [ ] Real authors assigned + approval for the 3 Insights articles (optional for launch; Insights stays out of nav otherwise)
+## Deviations from the PRD (recorded in ARCHITECTURE.md)
 
-## Optional trust content (PRD §32.2 — site launches fine without)
-
-- [ ] Client names + written logo permissions
-- [ ] Approved testimonials (real people, roles, permission archived)
-- [ ] Case-study facts and approved outcomes
-- [ ] Certifications / partner statuses with verification
-- [ ] Leadership names, bios, headshots, profile URLs
-
-All rendering for these already exists and activates automatically when
-verified records are added — see docs/CONTENT-GUIDE.md.
-
-## Hosting — done (2026-08-27)
-
-EC2 provisioning, nginx configuration, the first deployment, and the GitHub
-secrets are all complete. See [DEPLOYMENT.md](DEPLOYMENT.md) for the
-environment details and the manual runbook.
-
-Remaining infrastructure actions, in priority order:
-
-1. **Allocate an Elastic IP** and update the `EC2_HOST` secret — without it the
-   address changes if the instance is ever stopped.
-2. **Restrict port 22** in the security group to trusted IPs.
-3. Later: the purchased **domain** (then TLS via certbot) and the **contact API
-   URL** from the backend developer.
-
-Branch protection on `main` is **not available on the current GitHub plan** —
-the API returns `403: Upgrade to GitHub Pro or make this repository public`.
-The `needs: ci` gate in `deploy.yml` covers the same risk (nothing deploys
-without passing checks); what it cannot enforce is a required review before a
-merge. Upgrading the plan would add that.
-
-## Deviations from the PRD (agreed)
-
-| PRD                     | Deviation                                                                                                          | Recorded        |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------ | --------------- |
-| §23 AWS Amplify Hosting | EC2 + Nginx via GitHub Actions, at owner request (2026-08-26)                                                      | ARCHITECTURE.md |
-| §15.3 palette           | Added `olive-dark` token — base olive failed WCAG AA for small badge text (a possibility §15.3 itself anticipated) | ARCHITECTURE.md |
-| §12.2 route file layout | Insights implemented as one optional catch-all route (static-export constraint); public URLs unchanged             | ARCHITECTURE.md |
+| PRD                              | Deviation                                                |
+| -------------------------------- | -------------------------------------------------------- |
+| §23 AWS Amplify Hosting          | EC2 + nginx via GitHub Actions, behind Cloudflare        |
+| §15 "Warm Precision" palette     | Warm graphite + terracotta (owner, 2026-08-27)           |
+| §13.1 "no mega-menu in V1"       | Mega-menu header shipped                                 |
+| §14.11 legal pages, §22 consent  | Removed at the owner's request (2026-08-27)              |
+| §15.7 photography order          | Licensed stock workplace photography, described honestly |
+| §20.6 JPEG fallback              | AVIF + WebP only                                         |
+| §22 contact contract (11 fields) | Seven-field API, any 2xx = success, `text/plain` body    |
+| §12.2 route file layout          | Insights as one optional catch-all route (static export) |

@@ -1,23 +1,25 @@
 import Link from "next/link";
 import { siteConfig } from "@/content/site";
+import { LogoMark } from "@/components/layout/LogoMark";
 
-/**
- * Restrained text wordmark (PRD Document Control: logo pending).
- * Replace with the approved logo before production launch; the slot is
- * deliberately flexible so swapping assets does not disturb the header.
- */
-export function Wordmark({ className = "" }: { className?: string }) {
+type WordmarkProps = {
+  className?: string;
+  /** Larger lockup for the footer. */
+  size?: "default" | "large";
+};
+
+/** Logo mark plus brand name, linking home. Inherits the surface text colour. */
+export function Wordmark({ className = "", size = "default" }: WordmarkProps) {
+  const markSize = size === "large" ? "h-9" : "h-7";
+  const textSize = size === "large" ? "text-lg" : "text-[1.0625rem]";
   return (
     <Link
       href="/"
-      className={`inline-flex items-baseline gap-1.5 font-semibold tracking-tight text-inherit no-underline ${className}`}
-      aria-label={`${siteConfig.brandName} — home`}
+      className={`inline-flex items-center gap-2.5 font-semibold tracking-tight text-inherit no-underline ${className}`}
+      aria-label={`${siteConfig.brandName} home`}
     >
-      <span
-        aria-hidden="true"
-        className="inline-block h-2.5 w-2.5 translate-y-[-1px] rounded-[2px] bg-clay"
-      />
-      <span className="text-[1.0625rem] leading-none">
+      <LogoMark className={`${markSize} w-auto shrink-0`} />
+      <span className={`${textSize} leading-none`}>
         Fast<span className="font-normal">&nbsp;Digital Solutions</span>
       </span>
     </Link>

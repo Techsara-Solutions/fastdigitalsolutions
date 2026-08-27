@@ -2,16 +2,16 @@ import type { CareerRole } from "@/lib/schemas";
 import { isPublishable } from "@/lib/schemas";
 
 /**
- * Careers content (PRD §14.9).
+ * Careers content.
  *
- * EMPTY BY DESIGN: the page shows the honest no-open-roles state. Roles may
- * only be added when they are real; fake openings to appear larger are
- * forbidden. Each role must be approved and verified before it publishes.
+ * Roles may only be added when they are real; each must be approved and
+ * verified before it publishes. With no advertised role, the page invites
+ * speculative applications instead.
  */
 export const careerRoles: CareerRole[] = [];
 
-export const noOpenRolesCopy =
-  "We do not have a public opening at this time. Future opportunities will be posted here.";
+export const speculativeApplicationCopy =
+  "We are not advertising a specific role right now, but we are always glad to hear from engineers, testers, and delivery people who work the way we do. Send a short note about what you would like to work on, along with your CV, and we will reply either way.";
 
 export function getPublishedRoles(): CareerRole[] {
   return careerRoles.filter(isPublishable);

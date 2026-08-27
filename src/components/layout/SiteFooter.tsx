@@ -1,12 +1,17 @@
 import Link from "next/link";
 import { services } from "@/content/services";
-import { footerCompanyLinks, footerLegalLinks } from "@/content/navigation";
+import { industries } from "@/content/industries";
+import { footerCompanyLinks } from "@/content/navigation";
 import { siteConfig, isPlaceholder } from "@/content/site";
+import { Wordmark } from "@/components/layout/Wordmark";
+
+const linkClasses = "text-[0.9375rem] text-paper/85 hover:text-white hover:underline";
+const headingClasses = "text-sm font-bold uppercase tracking-[0.14em] text-paper/70";
 
 /**
- * Site footer (PRD §13.2). No social icons until real, maintained profiles
- * exist. No legal suffix until the entity is verified. The copyright year is
- * generated at build time.
+ * Site footer. No social icons until real, maintained profiles exist. The
+ * copyright line carries the registered legal name; the lockup uses the short
+ * brand name. The copyright year is generated at build time.
  */
 export function SiteFooter() {
   const year = new Date().getFullYear();
@@ -15,28 +20,34 @@ export function SiteFooter() {
   return (
     <footer data-surface="dark" className="bg-espresso text-paper">
       <div className="mx-auto w-full max-w-[1280px] px-5 py-16 sm:px-8 lg:px-12 lg:py-20">
-        <div className="grid gap-12 md:grid-cols-[1.4fr_1fr_1fr] lg:gap-16">
-          <div className="max-w-sm">
-            <p className="flex items-baseline gap-1.5 text-lg font-semibold tracking-tight">
-              <span aria-hidden="true" className="inline-block h-2.5 w-2.5 rounded-[2px] bg-clay" />
-              Fast<span className="font-normal">&nbsp;Digital Solutions</span>
+        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr_1fr] lg:gap-10">
+          <div className="max-w-sm md:col-span-2 lg:col-span-1">
+            <Wordmark size="large" />
+            <p className="mt-4 text-[0.9375rem] leading-relaxed text-paper/80">
+              Cloud, AI, software engineering, quality, and flexible delivery capacity for growing
+              organizations.
             </p>
-            <p className="mt-4 text-[0.9375rem] leading-relaxed text-stone">
-              Technology delivery built around your business — cloud, AI, software engineering,
-              quality, and flexible delivery capacity for growing organizations.
+            <p className="mt-6 text-[0.9375rem]">
+              <a href={siteConfig.phoneHref} className="font-semibold hover:underline">
+                {siteConfig.phoneDisplay}
+              </a>
+              <span className="text-paper/70"> · {siteConfig.timeZoneLabel}</span>
             </p>
-            <p className="mt-6 text-sm text-stone/80">{siteConfig.sinceStatement}</p>
+            {!isPlaceholder(siteConfig.email) ? (
+              <p className="mt-1 text-[0.9375rem]">
+                <a href={`mailto:${siteConfig.email}`} className="hover:underline">
+                  {siteConfig.email}
+                </a>
+              </p>
+            ) : null}
           </div>
 
           <nav aria-label="Footer services">
-            <h2 className="text-sm font-bold uppercase tracking-[0.14em] text-stone">Services</h2>
+            <h2 className={headingClasses}>Services</h2>
             <ul className="mt-4 space-y-2.5">
               {services.map((service) => (
                 <li key={service.slug}>
-                  <Link
-                    href={`/services/${service.slug}/`}
-                    className="text-[0.9375rem] text-paper/90 hover:text-white hover:underline"
-                  >
+                  <Link href={`/services/${service.slug}/`} className={linkClasses}>
                     {service.name}
                   </Link>
                 </li>
@@ -44,67 +55,52 @@ export function SiteFooter() {
             </ul>
           </nav>
 
-          <div className="space-y-10">
-            <nav aria-label="Footer company">
-              <h2 className="text-sm font-bold uppercase tracking-[0.14em] text-stone">Company</h2>
-              <ul className="mt-4 space-y-2.5">
-                {footerCompanyLinks.map((item) => (
-                  <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      className="text-[0.9375rem] text-paper/90 hover:text-white hover:underline"
-                    >
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
+          <nav aria-label="Footer industries">
+            <h2 className={headingClasses}>Industries</h2>
+            <ul className="mt-4 space-y-2.5">
+              {industries.map((industry) => (
+                <li key={industry.slug}>
+                  <Link href="/industries/" className={linkClasses}>
+                    {industry.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
-            <div>
-              <h2 className="text-sm font-bold uppercase tracking-[0.14em] text-stone">Contact</h2>
-              <ul className="mt-4 space-y-2.5 text-[0.9375rem] text-paper/90">
-                <li>
-                  <a href={siteConfig.phoneHref} className="hover:text-white hover:underline">
-                    {siteConfig.phoneDisplay}
-                  </a>
+          <nav aria-label="Footer company">
+            <h2 className={headingClasses}>Company</h2>
+            <ul className="mt-4 space-y-2.5">
+              {footerCompanyLinks.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className={linkClasses}>
+                    {item.label}
+                  </Link>
                 </li>
-                {!isPlaceholder(siteConfig.email) ? (
-                  <li>
-                    <a
-                      href={`mailto:${siteConfig.email}`}
-                      className="hover:text-white hover:underline"
-                    >
-                      {siteConfig.email}
-                    </a>
-                  </li>
-                ) : null}
-                <li className="pt-2 text-sm leading-relaxed text-stone/90">
-                  <span className="block font-semibold text-stone">{address.label}</span>
-                  {address.line1}
-                  <br />
-                  {address.city}, {address.region} {address.postalCode}
-                  <br />
-                  {address.country}
-                </li>
-              </ul>
-            </div>
+              ))}
+            </ul>
+          </nav>
+
+          <div>
+            <h2 className={headingClasses}>Contact</h2>
+            <p className="mt-4 text-sm leading-relaxed text-paper/80">
+              <span className="block font-semibold text-paper/90">{address.label}</span>
+              {address.line1}
+              <br />
+              {address.city}, {address.region} {address.postalCode}
+              <br />
+              {address.country}
+            </p>
+            <p className="mt-4 text-sm text-paper/80">
+              Enquiries answered {siteConfig.responseCommitment}.
+            </p>
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col gap-4 border-t border-white/10 pt-8 text-sm text-stone/80 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-14 border-t border-white/10 pt-8 text-sm text-paper/70">
           <p>
-            © {year} {siteConfig.brandName}. All rights reserved.
+            © {year} {siteConfig.legalName}. All rights reserved.
           </p>
-          <ul className="flex flex-wrap gap-x-6 gap-y-2">
-            {footerLegalLinks.map((item) => (
-              <li key={item.href}>
-                <Link href={item.href} className="hover:text-white hover:underline">
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
         </div>
       </div>
     </footer>
