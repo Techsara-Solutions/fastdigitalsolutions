@@ -51,7 +51,7 @@ jobs:
       # No checkout or npm install: this job ships the artifact CI already built
       # and tested, rather than producing a second, separately-built copy.
       - name: Download the exact build that passed CI
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: site-build
           path: out
